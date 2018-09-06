@@ -5,11 +5,6 @@ import NotFound from '../components/GeneralViews/NotFoundPage.vue'
 // Admin pages
 import Overview from 'src/components/Dashboard/Views/Overview.vue'
 import UserProfile from 'src/components/Dashboard/Views/UserProfile.vue'
-import TableList from 'src/components/Dashboard/Views/TableList.vue'
-import Typography from 'src/components/Dashboard/Views/Typography.vue'
-import Icons from 'src/components/Dashboard/Views/Icons.vue'
-import Maps from 'src/components/Dashboard/Views/Maps.vue'
-import Notifications from 'src/components/Dashboard/Views/Notifications.vue'
 
 const routes = [
   {
@@ -31,31 +26,6 @@ const routes = [
         path: 'user',
         name: 'User',
         component: UserProfile
-      },
-      {
-        path: 'table-list',
-        name: 'Table List',
-        component: TableList
-      },
-      {
-        path: 'typography',
-        name: 'Typography',
-        component: Typography
-      },
-      {
-        path: 'icons',
-        name: 'Icons',
-        component: Icons
-      },
-      {
-        path: 'maps',
-        name: 'Maps',
-        component: Maps
-      },
-      {
-        path: 'notifications',
-        name: 'Notifications',
-        component: Notifications
       }
     ]
   },
