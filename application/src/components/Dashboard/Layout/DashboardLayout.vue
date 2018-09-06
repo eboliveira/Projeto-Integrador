@@ -10,6 +10,10 @@
         <i class="nc-icon nc-circle-09"></i>
         <p>User Profile</p>
       </sidebar-link>
+      <sidebar-link to="/admin/calendar">
+        <i class="nc-icon nc-grid-45"></i>
+        <p>Calendar</p>
+      </sidebar-link>
     </side-bar>
     <div class="main-panel">
       <top-navbar></top-navbar>
