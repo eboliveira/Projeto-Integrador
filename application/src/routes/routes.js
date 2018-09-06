@@ -5,6 +5,7 @@ import NotFound from '../components/GeneralViews/NotFoundPage.vue'
 // Admin pages
 import Overview from 'src/components/Dashboard/Views/Overview.vue'
 import UserProfile from 'src/components/Dashboard/Views/UserProfile.vue'
+import Calendar from 'src/components/Dashboard/Views/Calendar.vue'
 
 const routes = [
   {
@@ -26,6 +27,11 @@ const routes = [
         path: 'user',
         name: 'User',
         component: UserProfile
+      },
+      {
+        path: 'calendar',
+        name: 'Calendar',
+        component: Calendar
       }
     ]
   },
