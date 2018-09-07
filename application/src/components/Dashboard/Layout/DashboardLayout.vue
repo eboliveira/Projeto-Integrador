@@ -11,8 +11,8 @@
         <p>User Profile</p>
       </sidebar-link>
       <sidebar-link to="/admin/calendar">
-        <i class="nc-icon nc-grid-45"></i>
-        <p>Calendar</p>
+        <i class="fa fa-calendar-o"></i>
+        <p>Calendário</p>
       </sidebar-link>
     </side-bar>
     <div class="main-panel">
