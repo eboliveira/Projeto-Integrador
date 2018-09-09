@@ -10,6 +10,9 @@ import routes from './routes/routes'
 // plugin setup
 Vue.use(VueRouter)
 Vue.use(LightBootstrap)
+const moment = require('moment')
+require('moment/locale/pt-br')
+Vue.use(require('vue-moment'), {moment})
 
 // configure router
 const router = new VueRouter({
