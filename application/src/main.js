@@ -1,15 +1,20 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuetify from 'vuetify'
 import App from './App.vue'
+import InputTeste from './components/Dashboard/Views/InputTeste.vue'
 
 // LightBootstrap plugin
 import LightBootstrap from './light-bootstrap-main'
+import 'vuetify/dist/vuetify.min.css'
 
 // router setup
 import routes from './routes/routes'
 // plugin setup
 Vue.use(VueRouter)
 Vue.use(LightBootstrap)
+Vue.use(Vuetify)
+
 
 // configure router
 const router = new VueRouter({
