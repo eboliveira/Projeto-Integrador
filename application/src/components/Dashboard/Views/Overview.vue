@@ -8,11 +8,8 @@
               <i class="nc-icon nc-chart text-warning"></i>
             </div>
             <div slot="content">
-              <p class="card-category">Capacity</p>
-              <h4 class="card-title">105GB</h4>
-            </div>
-            <div slot="footer">
-              <i class="fa fa-refresh"></i>Updated now
+              <p class="card-category">Pedidos Reserva</p>
+              <h4 class="card-title">105</h4>
             </div>
           </stats-card>
         </div>
@@ -61,77 +58,10 @@
             </div>
           </stats-card>
         </div>
-
-      </div>
-      <div class="row">
-        <div class="col-md-8">
-          <chart-card :chart-data="lineChart.data"
-                      :chart-options="lineChart.options"
-                      :responsive-options="lineChart.responsiveOptions">
-            <template slot="header">
-              <h4 class="card-title">Users Behavior</h4>
-              <p class="card-category">24 Hours performance</p>
-            </template>
-            <template slot="footer">
-              <div class="legend">
-                <i class="fa fa-circle text-info"></i> Open
-                <i class="fa fa-circle text-danger"></i> Click
-                <i class="fa fa-circle text-warning"></i> Click Second Time
-              </div>
-              <hr>
-              <div class="stats">
-                <i class="fa fa-history"></i> Updated 3 minutes ago
-              </div>
-            </template>
-          </chart-card>
-        </div>
-
-        <div class="col-md-4">
-          <chart-card :chart-data="pieChart.data" chart-type="Pie">
-            <template slot="header">
-              <h4 class="card-title">Email Statistics</h4>
-              <p class="card-category">Last Campaign Performance</p>
-            </template>
-            <template slot="footer">
-              <div class="legend">
-                <i class="fa fa-circle text-info"></i> Open
-                <i class="fa fa-circle text-danger"></i> Bounce
-                <i class="fa fa-circle text-warning"></i> Unsubscribe
-              </div>
-              <hr>
-              <div class="stats">
-                <i class="fa fa-clock-o"></i> Campaign sent 2 days ago
-              </div>
-            </template>
-          </chart-card>
-        </div>
       </div>
 
       <div class="row">
-        <div class="col-md-6">
-          <chart-card
-            :chart-data="barChart.data"
-            :chart-options="barChart.options"
-            :chart-responsive-options="barChart.responsiveOptions"
-            chart-type="Bar">
-            <template slot="header">
-              <h4 class="card-title">2014 Sales</h4>
-              <p class="card-category">All products including Taxes</p>
-            </template>
-            <template slot="footer">
-              <div class="legend">
-                <i class="fa fa-circle text-info"></i> Tesla Model S
-                <i class="fa fa-circle text-danger"></i> BMW 5 Series
-              </div>
-              <hr>
-              <div class="stats">
-                <i class="fa fa-check"></i> Data information certified
-              </div>
-            </template>
-          </chart-card>
-        </div>
-
-        <div class="col-md-6">
+        <div class="col-md-12">
           <card>
             <template slot="header">
               <h5 class="title">Tasks</h5>
@@ -147,10 +77,10 @@
                 </td>
                 <td>{{row.title}}</td>
                 <td class="td-actions text-right">
-                  <button type="button" class="btn-simple btn btn-xs btn-info" v-tooltip.top-center="editTooltip">
+                  <button type="button" class="btn-simple btn btn-xs btn-info">
                     <i class="fa fa-edit"></i>
                   </button>
-                  <button type="button" class="btn-simple btn btn-xs btn-danger" v-tooltip.top-center="Tooltip">
+                  <button type="button" class="btn-simple btn btn-xs btn-danger">
                     <i class="fa fa-times"></i>
                   </button>
                 </td>
