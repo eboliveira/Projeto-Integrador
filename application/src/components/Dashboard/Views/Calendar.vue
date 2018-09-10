@@ -3,9 +3,9 @@
     <button @click="refreshEvents">Refresh</button>
     <button v-if="selected._id" @click="removeEvent">Remove</button>
     <full-calendar ref="calendar" :event-sources="eventSources" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
-  </div>
-  <div>
-    <button @click="runScript()" class="btn btn-primary btn-fill">Gerar horários</button>
+    <div>
+      <button @click="runScript()" class="btn btn-primary btn-fill">Gerar horários</button>
+    </div>
   </div>
 </template>
 
