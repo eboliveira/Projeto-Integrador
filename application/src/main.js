@@ -10,6 +10,9 @@ import routes from './routes/routes'
 // plugin setup
 Vue.use(VueRouter)
 Vue.use(LightBootstrap)
+const moment = require('moment')
+require('moment/locale/pt-br')
+Vue.use(require('vue-moment'), {moment})
 
 // configure router
 const router = new VueRouter({
@@ -18,6 +21,7 @@ const router = new VueRouter({
 })
 
 import FullCalendar from 'vue-full-calendar';
+import 'fullcalendar/dist/locale/pt';
 Vue.use(FullCalendar);
 
 /* eslint-disable no-new */
