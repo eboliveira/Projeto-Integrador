@@ -150,7 +150,7 @@
                   <button type="button" class="btn-simple btn btn-xs btn-info" v-tooltip.top-center="editTooltip">
                     <i class="fa fa-edit"></i>
                   </button>
-                  <button type="button" class="btn-simple btn btn-xs btn-danger" v-tooltip.top-center="deleteTooltip">
+                  <button type="button" class="btn-simple btn btn-xs btn-danger" v-tooltip.top-center="Tooltip">
                     <i class="fa fa-times"></i>
                   </button>
                 </td>

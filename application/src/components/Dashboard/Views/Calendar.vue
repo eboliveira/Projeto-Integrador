@@ -4,7 +4,25 @@
     <button v-if="selected._id" @click="removeEvent">Remove</button>
     <full-calendar ref="calendar" :event-sources="eventSources" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
   </div>
+  <div>
+    <button @click="runScript()" class="btn btn-primary btn-fill">Gerar horários</button>
+  </div>
 </template>
+
+<style>
+  @import "~fullcalendar/dist/fullcalendar.css";
+  #app {
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+    color: #2c3e50;
+    margin-top: 60px;
+  }
+</style>
+
+
+
 
 <script>
   import moment from 'moment';
@@ -71,16 +89,5 @@
       },
     },
   };
-</script>
 
-<style>
-  @import "~fullcalendar/dist/fullcalendar.css";
-  #app {
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin-top: 60px;
-  }
-</style>
+</script>
