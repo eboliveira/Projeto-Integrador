@@ -17,6 +17,9 @@ const router = new VueRouter({
   linkActiveClass: 'nav-item active'
 })
 
+import FullCalendar from 'vue-full-calendar';
+Vue.use(FullCalendar);
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
