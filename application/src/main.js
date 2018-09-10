@@ -21,6 +21,7 @@ const router = new VueRouter({
 })
 
 import FullCalendar from 'vue-full-calendar';
+import 'fullcalendar/dist/locale/pt';
 Vue.use(FullCalendar);
 
 /* eslint-disable no-new */
