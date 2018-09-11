@@ -8,11 +8,7 @@
               <i class="nc-icon nc-simple-add text-warning"></i>
             </div>
             <div slot="content">
-<<<<<<< Updated upstream
-              <p class="card-category">Pedidos Reserva</p>
-=======
               <p class="card-category">Novas Reservas</p>
->>>>>>> Stashed changes
               <h4 class="card-title">105</h4>
             </div>
           </stats-card>
@@ -62,18 +58,10 @@
             </div>
           </stats-card>
         </div>
-<<<<<<< Updated upstream
       </div>
 
       <div class="row">
         <div class="col-md-12">
-=======
-
-      </div>
-
-      <div class="row">
-        <div class="col-md-6">
->>>>>>> Stashed changes
           <card>
             <template slot="header">
               <h5 class="title">Tasks</h5>
