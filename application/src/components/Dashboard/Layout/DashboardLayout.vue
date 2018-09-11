@@ -14,10 +14,6 @@
         <i class="fa fa-calendar-o"></i>
         <p>Calendário</p>
       </sidebar-link>
-       <sidebar-link to="/admin/classroom">
-        <i class="nc-icon nc-ruler-pencil"></i>
-        <p>Sala</p>
-      </sidebar-link>
     </side-bar>
     <div class="main-panel">
       <top-navbar></top-navbar>
