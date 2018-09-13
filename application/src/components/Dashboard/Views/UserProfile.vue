@@ -22,8 +22,8 @@
                       <td>DACOM</td>
                       <td>Professor</td>
                       <td>
-                        <button class="btn btn-warning nc-settings-90 nc-icon"></button>
-                        <button class="btn btn-danger nc-scissors nc-icon"></button>
+                        <button class="btn btn-warning nc-settings-90 nc-icon" v-tooltip="Editar"></button>
+                        <button class="btn btn-danger nc-scissors nc-icon" v-tooltip="Excluir"></button>
                       </td>
                     </tr>
                     <tr>
@@ -31,8 +31,8 @@
                       <td>DALIM</td>
                       <td>Professora</td>
                       <td>
-                        <button class="btn btn-warning nc-settings-90 nc-icon"></button>
-                        <button class="btn btn-danger nc-scissors nc-icon"></button>
+                        <button class="btn btn-warning nc-settings-90 nc-icon" v-tooltip="Editar"></button>
+                        <button class="btn btn-danger nc-scissors nc-icon" v-tooltip="Excluir"></button>
                       </td>
                     </tr>
                     <tr>
@@ -40,8 +40,8 @@
                       <td>DIRPLAD</td>
                       <td>SERVIDOR</td>
                       <td>
-                        <button class="btn btn-warning nc-settings-90 nc-icon"></button>
-                        <button class="btn btn-danger nc-scissors nc-icon"></button>
+                        <button class="btn btn-warning nc-settings-90 nc-icon" v-tooltip="Editar"></button>
+                        <button class="btn btn-danger nc-scissors nc-icon" v-tooltip="Excluir"></button>
                       </td>
                     </tr>
                   </tbody>
