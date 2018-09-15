@@ -19,9 +19,9 @@
           {{headerTitle}}
         </v-card-title>
 
-        <div v-for="components in componentsBody">
-          <component is="components"></component>
-        </div>
+        <!-- <div v-for="components in componentsBody">
+          <component v-bind:is="components"></component>
+        </div> -->
 
         <v-divider></v-divider>
 

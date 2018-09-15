@@ -7,6 +7,7 @@ import InputTeste from './components/Dashboard/Views/InputTeste.vue'
 // LightBootstrap plugin
 import LightBootstrap from './light-bootstrap-main'
 import 'vuetify/dist/vuetify.min.css'
+import 'vue-multiselect/dist/vue-multiselect.min.css'
 
 // router setup
 import routes from './routes/routes'
