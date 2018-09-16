@@ -41,8 +41,8 @@ module.exports.updateEvent = function (updateEvent, callback){
       event.responsable = (updateEvent.responsable && updateEvent.responsable != event.responsable) ? updateEvent.responsable : event.responsable
       event.status = (updateEvent.status && updateEvent.status != event.status) ? updateEvent.status : event.status
       event.save(callback)
-  } else {
+    } else {
       callback(true, null)
-  }
+    }
   })
 }
