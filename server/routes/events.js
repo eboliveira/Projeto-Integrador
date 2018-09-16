@@ -85,5 +85,3 @@ module.exports = {
   path : '/event',
   router: router
 }
-  
-
