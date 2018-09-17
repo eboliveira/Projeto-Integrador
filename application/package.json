@@ -18,7 +18,7 @@
     "chartist": "^0.11.0",
     "es6-promise": "^4.1.1",
     "google-maps": "^3.2.1",
-    "v-tooltip": "^2.0.0-rc.1",
+    "v-tooltip": "^2.0.0-rc.33",
     "vue": "^2.5.2",
     "vue-clickaway": "^2.1.0",
     "vue-full-calendar": "^2.6.1",
