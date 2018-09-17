@@ -2,15 +2,15 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var EventCalendar = new Schema({
-    title: String,    //Exemplo: Aula, Reunião, Palestra, Minicurso
-    description: [String],  //Exemplo: Código da disciplina, Código da turma, Nome da aula, Nome da palestra
-    room: String,       //Exemplo: B001, B002
-    type_room: String,  //Exemplo: Laboratório, sala de aula comum
-    startDate: Date,    //Dia de inicio do evento, para eventos com mais de um dia
-    finalDate: Date,    //Dia do final do evento, para eventos com mais de um dia
-    schedule: [String],   //horários, Exemplo: m1, m2, n1, n2
-    responsable : String, //nome do professor ou quem requisitou a sala
-    status : Number     //status de aprovação
+    title: String,
+    description: String,
+    room: String,
+    type_room: String,
+    startDate: Date,
+    finalDate: Date,
+    schedule: [String],
+    responsable : String,
+    status : Number
   })
 
 
