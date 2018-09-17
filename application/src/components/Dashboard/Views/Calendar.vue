@@ -1,9 +1,9 @@
 <template>
   <div id="app">
-    <button @click="refreshEvents">Refresh</button>
-    <button v-if="selected._id" @click="removeEvent">Remove</button>
+    <button @click="refreshEvents" class="btn btn-primary">Refresh</button>
+    <button v-if="selected._id" @click="removeEvent" class="btn">Remove</button>
     <full-calendar ref="calendar" :event-sources="eventSources" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
-    <div>
+    <div style="margin-top: 10px;">
       <button @click="runScript()" class="btn btn-primary btn-fill">Gerar horários</button>
     </div>
   </div>
@@ -17,12 +17,9 @@
     -moz-osx-font-smoothing: grayscale;
     text-align: center;
     color: #2c3e50;
-    margin-top: 60px;
+    margin: 20px;
   }
 </style>
-
-
-
 
 <script>
   import moment from 'moment';
@@ -89,5 +86,4 @@
       },
     },
   };
-
 </script>

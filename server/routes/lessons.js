@@ -20,6 +20,18 @@ router.get('/allLessons', (req, res) => {
     })
   })
 
+router.get('/eventsAtInterval/:startDate/:finalDate', (req, res) => {
+    EventCalendar.getEventsAtInterval(req.params.startDate, req.params.finalDate, function (err, evnt){
+      if(err){
+        console.log(err)
+        return res.status(400).send('server could not understand the request')
+      }
+      else{
+        res.status(200).send(evnt);
+      }
+    })
+  })
+
 router.get('/:id', (req, res) => {
     LessonCalendar.getLessonById(req.params.id ,function (err, evnt){
       if(err){
@@ -85,5 +97,3 @@ module.exports = {
   path : '/lesson',
   router: router
 }
-  
-
