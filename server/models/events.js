@@ -10,7 +10,7 @@ var EventCalendar = new Schema({
     finalDate: Date,
     schedule: [String],
     responsable : String,
-    status : Number
+    status : String
   })
 
 

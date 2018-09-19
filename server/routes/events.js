@@ -8,7 +8,7 @@ mongoose.connect('mongodb://localhost:27017/JEED');
 var db = mongoose.connection;
 
 
-router.get('/allEvents', (req, res) => {
+router.get('/all', (req, res) => {
     EventCalendar.getAllEvents(function (err, evnt){
       if(err){
         console.log(err)
@@ -43,7 +43,7 @@ router.get('/:id', (req, res) => {
       }
     })
 })
-router.post('/postEvent', (req, res) =>{
+router.post('/post', (req, res) =>{
   let new_event = {}
   new_event.title = req.body.title;
   new_event.description = req.body.description;
@@ -53,7 +53,7 @@ router.post('/postEvent', (req, res) =>{
   new_event.finalDate = req.body.finalDate;
   new_event.schedule = req.body.schedule;
   new_event.responsable = req.body.responsable;
-  new_event.status = 0;
+  new_event.status = "undefined";
   EventCalendar.addEvent(new_event, function (err, evnt) {
     if (err) {
         console.log(err)
