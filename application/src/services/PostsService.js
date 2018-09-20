@@ -1,4 +1,5 @@
-import DB from './Api';
+const ApiRequire = require('./Api')
+const DB = ApiRequire.DB
 
 
 function postEvent(json){
@@ -16,7 +17,7 @@ function postEvent(json){
     return response.status;
   })
 }
-export default {
+export {
   postEvent
 }
 
