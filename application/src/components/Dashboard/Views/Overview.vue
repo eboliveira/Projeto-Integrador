@@ -72,6 +72,7 @@
   import Card from 'src/components/UIComponents/Cards/Card.vue'
   import LTable from 'src/components/UIComponents/Table.vue'
   import Checkbox from 'src/components/UIComponents/Inputs/Checkbox.vue'
+  import {postEvent} from '../../../services/PostsService'
 
   export default {
     components: {
@@ -166,6 +167,19 @@
           ]
         }
       }
+    },
+    mounted: function () {
+      let new_event = {}
+      new_event.title = "teste"
+      new_event.description = "teste"
+      new_event.room = "teste"
+      new_event.type_room = "teste"
+      new_event.startDate = "2018-02-02"
+      new_event.finalDate = "2018-02-02"
+      new_event.schedule = "teste"
+      new_event.responsable = "teste"
+      new_event.status = "undefined"
+      postEvent(new_event)
     }
   }
 </script>
