@@ -1,6 +1,6 @@
 const express = require('express')
 const mongoose = require('mongoose');
-const EventCalendar = require('../models/events')
+const LessonCalendar = require('../models/lessons')
 
 const router = express.Router();
 
@@ -8,8 +8,8 @@ mongoose.connect('mongodb://localhost:27017/JEED');
 var db = mongoose.connection;
 
 
-router.get('/all', (req, res) => {
-    EventCalendar.getAllEvents(function (err, evnt){
+router.get('/allLessons', (req, res) => {
+    LessonCalendar.getAllLessons(function (err, evnt){
       if(err){
         console.log(err)
         return res.status(400).send('server could not understand the request')
@@ -33,7 +33,7 @@ router.get('/eventsAtInterval/:startDate/:finalDate', (req, res) => {
   })
 
 router.get('/:id', (req, res) => {
-    EventCalendar.getEventById(req.params.id, function (err, evnt){
+    LessonCalendar.getLessonById(req.params.id ,function (err, evnt){
       if(err){
         console.log(err)
         return res.status(400).send('server could not understand the request')
@@ -43,18 +43,18 @@ router.get('/:id', (req, res) => {
       }
     })
 })
-router.post('/post', (req, res) =>{
-  let new_event = {}
-  new_event.title = req.body.title;
-  new_event.description = req.body.description;
-  new_event.room = req.body.room;
-  new_event.type_room = req.body.type_room;
-  new_event.startDate = req.body.startDate;
-  new_event.finalDate = req.body.finalDate;
-  new_event.schedule = req.body.schedule;
-  new_event.responsable = req.body.responsable;
-  new_event.status = "undefined";
-  EventCalendar.addEvent(new_event, function (err, evnt) {
+router.post('/postLesson', (req, res) =>{
+  let new_lesson = {}
+  new_lesson.room = req.body.room;
+  new_lesson.type_room = req.body.type_room;
+  new_lesson.capacity = req.body.capacity;
+  new_lesson.schedule = req.body.schedule;
+  new_lesson.discipline_cod = req.body.discipline_cod;
+  new_lesson.class_name = req.body.class_name;
+  new_lesson.discipline_name = req.body.discipline_name;
+  new_lesson.description = req.body.description;
+  new_lesson.responsable = req.body.responsable;
+  LessonCalendar.addLesson(new_lesson, function (err, evnt) {
     if (err) {
         console.log(err)
         return res.status(400).send('server could not understand the request')
@@ -64,7 +64,7 @@ router.post('/post', (req, res) =>{
 }
 )
 router.get('/:id', (req, res) => {
-    EventCalendar.getEventById(req.params.id ,function (err, evnt){
+    LessonCalendar.getLessonById(req.params.id ,function (err, evnt){
       if(err){
         console.log(err)
         return res.status(400).send('server could not understand the request')
@@ -76,15 +76,15 @@ router.get('/:id', (req, res) => {
 })
 
 router.put('/:id', (req, res) => {
-  let updatedEvent = {}
-  updatedEvent.title = req.body.title
-  updatedEvent.description = req.body.description
-  updatedEvent.responsable = req.body.responsable
-  updatedEvent.startDate = req.body.startDate
-  updatedEvent.finalDate = req.body.finalDate
-  updatedEvent.status = req.body.status
-  updatedEvent.id = req.params.id
-  EventCalendar.updateEvent(updatedEvent, function (err, todo) {
+  let updatedLesson = {}
+  updatedLesson.title = req.body.title
+  updatedLesson.description = req.body.description
+  updatedLesson.responsable = req.body.responsable
+  updatedLesson.startDate = req.body.startDate
+  updatedLesson.finalDate = req.body.finalDate
+  updatedLesson.status = req.body.status
+  updatedLesson.id = req.params.id
+  LessonCalendar.updateLesson(updatedLesson, function (err, todo) {
       if (err) {
           console.log(err)
           return res.status(400).send('server could not understand the request')
@@ -94,6 +94,6 @@ router.put('/:id', (req, res) => {
 })
 
 module.exports = {
-  path : '/event',
+  path : '/lesson',
   router: router
 }
