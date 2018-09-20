@@ -1,29 +1,32 @@
 <template>
     <div class="row">
         <div class="col-md-6">
-            <card class="card">
+            <card>
                 <h4 slot="header" 
-                    class="card-title">Reservar Horário</h4>
+                    class="card-title">Registrar Responsavel</h4>
                 <div class="row">
                     <div class="col-md-6">
-                        <label>Dia</label>
-                            <multiselect v-model="value_day" :options="day" :multiple="true" :close-on-select="false" :clear-on-select="false" :hide-selected="true" :preserve-search="true" placeholder="" label="day" track-by="day">
-                                <template slot="tag" slot-scope="props"><span class="custom__tag"><span>{{ props.option.day }}</span><span class="custom__remove" @click="props.remove(props.option)">❌</span></span></template>
-                            </multiselect>
+                        <fg-input type="text"
+                                  label="Nome">
+                        </fg-input>
                     </div>
                      <div class="col-md-6">
-                        <label>Horario</label>
-                            <multiselect v-model="value_time" :options="time" :multiple="true" :close-on-select="false" :clear-on-select="false" :hide-selected="true" :preserve-search="true" placeholder="" label="time" track-by="time">
-                                <template slot="tag" slot-scope="props"><span class="custom__tag"><span>{{ props.option.time }}</span><span class="custom__remove" @click="props.remove(props.option)">❌</span></span></template>
-                            </multiselect>
+                        <label>Motivo</label>
+                        <textarea class="form-control border-input">
+                        </textarea>
                     </div>
                 </div>
+                <div>
+                 <button type="submit" class="btn btn-info btn-fill btn-next" @click.prevent="updateProfile">
+          Próximo
+        </button>
+            </div>
             </card>
         </div>
         <div class="col-md-6">
              <card>
                 <h4 slot="header" 
-                    class="card-title">Salas Disponíveis</h4>
+                    class="card-title">Horários Selecionados</h4>
             </card>      
         </div>
     </div>
@@ -81,11 +84,6 @@ export default {
         margin-top: 1rem;
         left: 50%;
     margin-right: -50%;
-    }
-
-    .card {
-        height: 300px;
-        margin-top:10%;
     }
 
 </style>

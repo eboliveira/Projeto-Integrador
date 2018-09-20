@@ -14,6 +14,10 @@
         <i class="fa fa-calendar-o"></i>
         <p>Calendário</p>
       </sidebar-link>
+      <sidebar-link to="/admin/reserve">
+        <i class="fa fa-calendar-o"></i>
+        <p>Reserva</p>
+      </sidebar-link>
     </side-bar>
     <div class="main-panel">
       <top-navbar></top-navbar>
