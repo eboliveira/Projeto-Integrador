@@ -23,6 +23,9 @@ module.exports.addLesson = function (evnt, callback){
 module.exports.getAllLessons = function (callback){
   Lesson.find(callback)
 }
+module.exports.getLessonsAtRoom = function (roomSearch,callback){
+  Lesson.find({room : roomSearch},callback)
+}
 
 module.exports.getLessonById = function (id, callback){
   Lesson.findOne({

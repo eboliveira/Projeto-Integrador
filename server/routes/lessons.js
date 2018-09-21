@@ -8,7 +8,7 @@ mongoose.connect('mongodb://localhost:27017/JEED');
 var db = mongoose.connection;
 
 
-router.get('/allLessons', (req, res) => {
+router.get('/all', (req, res) => {
     LessonCalendar.getAllLessons(function (err, evnt){
       if(err){
         console.log(err)
@@ -20,6 +20,17 @@ router.get('/allLessons', (req, res) => {
     })
   })
 
+router.get('/room/:room', (req, res) => {
+    LessonCalendar.getLessonsAtRoom(req.params.room, function (err, evnt){
+      if(err){
+        console.log(err)
+        return res.status(400).send('server could not understand the request')
+      }
+      else{
+        res.status(200).send(evnt);
+      }
+    })
+  })
 router.get('/eventsAtInterval/:startDate/:finalDate', (req, res) => {
     EventCalendar.getEventsAtInterval(req.params.startDate, req.params.finalDate, function (err, evnt){
       if(err){
@@ -43,7 +54,7 @@ router.get('/:id', (req, res) => {
       }
     })
 })
-router.post('/postLesson', (req, res) =>{
+router.post('/post', (req, res) =>{
   let new_lesson = {}
   new_lesson.room = req.body.room;
   new_lesson.type_room = req.body.type_room;

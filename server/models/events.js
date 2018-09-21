@@ -28,6 +28,9 @@ module.exports.getAllEvents = function (callback){
 module.exports.getEventsAtInterval = function (startDate, finalDate, callback){
   Evnt.find({$and:[{startDate:{$lte:new Date(finalDate).toISOString()}}, {finalDate:{$gte:new Date(startDate).toISOString()}}]}, callback)
 }
+module.exports.getEventsAtRoom = function (roomSearch, callback){
+  Evnt.find({room : roomSearch}, callback)
+}
 
 module.exports.getEventById = function (id, callback){
   Evnt.findOne({

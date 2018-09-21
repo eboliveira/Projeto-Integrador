@@ -8,6 +8,7 @@ import UserProfile from 'src/components/Dashboard/Views/UserProfile.vue'
 import Calendar from 'src/components/Dashboard/Views/Calendar.vue'
 import Form from 'src/components/ReserveClass/Form.vue'
 import Reserve from 'src/components/Dashboard/Views/Reserve/Reserve.vue'
+import Classes from 'src/components/Dashboard/Views/Classes.vue'
 
 const routes = [
   {
@@ -29,6 +30,11 @@ const routes = [
         path: 'user',
         name: 'User',
         component: UserProfile
+      },
+      {
+        path: 'classes',
+        name: 'Classes',
+        component: Classes
       },
       {
         path: 'calendar',
