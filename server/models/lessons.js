@@ -10,7 +10,7 @@ var Lesson_calendar = new Schema({
   class_cod : String,       //código da turma
   discipline_name : String, //nome da disciplina
   responsable : String //nome do professor ou quem requisitou a sala
-  })
+})
 
 
 var Lesson = mongoose.model('Lesson',Lesson_calendar,'lesson');
@@ -23,8 +23,52 @@ module.exports.addLesson = function (evnt, callback){
 module.exports.getAllLessons = function (callback){
   Lesson.find(callback)
 }
+
 module.exports.getLessonsAtRoom = function (roomSearch,callback){
-  Lesson.find({room : roomSearch},callback)
+  Lesson.find({room : roomSearch}, callback)
+}
+
+module.exports.getLessonsAtRoomAtSchedule = function (roomSearch, schedule, callback){
+  Lesson.find(
+    {$and:[
+      {room: roomSearch},
+      {schedule: {$all:[schedule]}}
+    ]}, callback
+  )
+}
+
+module.exports.getFreeRoomsAtSchedule = function (schedule, callback){
+  Lesson.find({schedule: {$nin:[schedule]}}, callback)
+}
+
+module.exports.getFreeRoomsByTypeAtSchedule = function (roomType, schedule, callback){
+  Lesson.find(
+    {$and:[
+      {type_room: roomType},
+      {schedule: {$nin:[schedule]}}
+    ]}, callback
+  )
+}
+
+module.exports.getLessonsAtSchedule = function (schedule, callback){
+  Lesson.find({schedule: {$all:[schedule]}}, callback)
+}
+
+module.exports.getLessonsByRoomType = function (roomType, callback){
+  Lesson.find({type_room: roomType}, callback)
+}
+
+module.exports.getLessonsByRoomTypeAtSchedule = function (roomType, schedule, callback){
+  Lesson.find(
+    {$and:[
+      {type_room: roomType},
+      {schedule: {$all:[schedule]}}
+    ]}, callback
+  )
+}
+
+module.exports.getLessonsByResponsable = function (responsable, callback){
+  Lesson.find({responsable: responsable}, callback)
 }
 
 module.exports.getLessonById = function (id, callback){
@@ -43,8 +87,8 @@ module.exports.updateLesson = function (updateLesson, callback){
       lesson.responsable = (updateLesson.responsable && updateLesson.responsable != lesson.responsable) ? updateLesson.responsable : lesson.responsable
       lesson.status = (updateLesson.status && updateLesson.status != lesson.status) ? updateLesson.status : lesson.status
       lesson.save(callback)
-  } else {
+    } else {
       callback(true, null)
-  }
+    }
   })
 }
