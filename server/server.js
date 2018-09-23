@@ -48,7 +48,7 @@ console.log("Server running on port: " + port)
 app.listen(process.env.PORT || port)
 
 app.get('/', function (req, res) {
-    res.send('Root')
+    res.status(200).send('Root')
 })
 app.get('/generateDB', function (req, res) {
     fs.readFile('resources/horarios-2018-2.csv', 'utf8', (err, csv) =>{
