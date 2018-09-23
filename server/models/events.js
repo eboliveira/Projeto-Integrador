@@ -38,6 +38,26 @@ module.exports.getEventsAtRoom = function (roomSearch, callback){
   Evnt.find({room: roomSearch}, callback)
 }
 
+module.exports.getEventsAtRoomAtSchedule = function (roomSearch, schedule, callback){
+  Evnt.find(
+    {$and:[
+      {room: roomSearch},
+      {schedule: {$all:[schedule]}}
+    ]}, callback
+  )
+}
+
+module.exports.getEventsAtRoomAtScheduleAtInterval = function (roomSearch, schedule, startDate, finalDate, callback){
+  Evnt.find(
+    {$and:[
+      {startDate:{$lte:new Date(finalDate).toISOString()}},
+      {finalDate:{$gte:new Date(startDate).toISOString()}},
+      {room: roomSearch},
+      {schedule: {$all:[schedule]}}
+    ]}, callback
+  )
+}
+
 module.exports.getEventsAtRoomAtInterval = function (roomSearch, startDate, finalDate, callback){
   Evnt.find(
     {$and:[

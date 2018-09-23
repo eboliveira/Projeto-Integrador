@@ -24,8 +24,20 @@ export async function atRoom(room){
   })
 }
 
+export async function atRoom(room, schedule){
+  return await DB.post('event/room/' + room, schedule).then((res) => {
+    return res.data
+  })
+}
+
 export async function atRoomAtInterval(room, startDate, finalDate){
   return await DB.get('event/room/' + room + '/' + startDate + '/' + finalDate).then((res) => {
+    return res.data
+  })
+}
+
+export async function atRoomAtInterval(room, schedule, startDate, finalDate){
+  return await DB.post('event/room/' + room + '/' + startDate + '/' + finalDate, schedule).then((res) => {
     return res.data
   })
 }

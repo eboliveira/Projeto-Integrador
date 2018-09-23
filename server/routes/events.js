@@ -56,8 +56,32 @@ router.get('/room/:room', (req, res) => {
   })
 })
 
+router.post('/room/:room', (req, res) => {
+  EventCalendar.getEventsAtRoomAtSchedule(req.params.room, req.body.schedule, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
 router.get('/room/:room/:startDate/:finalDate', (req, res) => {
   EventCalendar.getEventsAtRoomAtInterval(req.params.room, req.params.startDate, req.params.finalDate, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.post('/room/:room/:startDate/:finalDate', (req, res) => {
+  EventCalendar.getEventsAtRoomAtScheduleAtInterval(req.params.room, req.body.schedule, req.params.startDate, req.params.finalDate, function (err, evnt){
     if(err){
       console.log(err)
       return res.status(400).send('server could not understand the request')
