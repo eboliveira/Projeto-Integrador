@@ -24,8 +24,34 @@ module.exports.getAllLessons = function (callback){
   Lesson.find(callback)
 }
 
-module.exports.getLessonsAtRoom = function (roomSearch,callback){
+module.exports.getLessonsAtRoom = function (roomSearch, callback){
   Lesson.find({room : roomSearch}, callback)
+}
+
+module.exports.getLessonsByDisciplineCod = function (discipline_cod, callback){
+  Lesson.find({discipline_cod: discipline_cod}, callback)
+}
+
+module.exports.getLessonsByDisciplineName = function (discipline_name, callback){
+  Lesson.find({discipline_name: discipline_name}, callback)
+}
+
+module.exports.getLessonsByDisciplineCodAtClassCod = function (discipline_cod, class_cod, callback){
+  Lesson.find(
+    {$and:[
+      {class_cod: class_cod},
+      {discipline_cod: discipline_cod}
+    ]}, callback
+  )
+}
+
+module.exports.getLessonsByDisciplineNameAtClassCod = function (discipline_name, class_cod, callback){
+  Lesson.find(
+    {$and:[
+      {class_cod: class_cod},
+      {discipline_name: discipline_name}
+    ]}, callback
+  )
 }
 
 module.exports.getLessonsAtRoomAtSchedule = function (roomSearch, schedule, callback){

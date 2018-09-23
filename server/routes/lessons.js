@@ -116,6 +116,54 @@ router.get('/responsable/:responsable', (req, res) => {
   })
 })
 
+router.get('/discipline/code/:cod/class/:classroom', (req, res) => {
+  LessonCalendar.getLessonsByDisciplineCodAtClassCod(req.params.cod, req.params.classroom, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.get('/discipline/name/:disciplineName/class/:classroom', (req, res) => {
+  LessonCalendar.getLessonsByDisciplineNameAtClassCod(req.params.disciplineName, req.params.classroom, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.get('/discipline/code/:cod', (req, res) => {
+  LessonCalendar.getLessonsByDisciplineCod(req.params.cod, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.get('/discipline/name/:disciplineName', (req, res) => {
+  LessonCalendar.getLessonsByDisciplineName(req.params.disciplineName, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
 router.get('/:id', (req, res) => {
   LessonCalendar.getLessonById(req.params.id ,function (err, evnt){
     if(err){
