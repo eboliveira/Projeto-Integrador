@@ -1,6 +1,6 @@
 import {DB} from './Api'
 
-function postEvent (json) {
+export function postEvent (json) {
   let new_event = {}
   new_event.title = json.title
   new_event.description = json.description
@@ -18,5 +18,3 @@ function postEvent (json) {
     console.log(err)
   })
 }
-
-export {postEvent}
