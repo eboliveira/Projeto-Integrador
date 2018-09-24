@@ -3,7 +3,7 @@
       <form>
          <v-btn icon="false" 
                class="back" 
-               to="/admin/calendar">
+               to="/admin/overview">
           <font-awesome-icon icon="chevron-left"/>
          </v-btn>
         <v-stepper v-model="nstep">
@@ -17,30 +17,44 @@
             <v-stepper-items>
                 <v-stepper-content step="1">
                     <step-one></step-one>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <v-btn color="blue-grey darken-1">
+                                <v-btn color="blue-grey lighten-3"
+                                       to="/admin/overview">
                                     Cancelar
                                 </v-btn>
-                            </div>
-                            <div class="col-md-6 prox">
                                 <v-btn color="green lighten-1" 
                                     @click="nstep = 2">
                                 Proximo
                                 </v-btn>
-                            </div>
-                        </div>
                 </v-stepper-content>
                  <v-stepper-content step="2">
                     <step-two></step-two>
-                        <v-btn color="indigo darken-3" 
+                        <v-btn color="deep-orange darken-2" 
+                               to="/admin/overview">
+                               Cancelar
+                        </v-btn>
+                        <v-btn color="blue-grey lighten-3" 
+                               @click="nstep = 1">
+                               Voltar
+                        </v-btn>
+                        <v-btn color="green lighten-1" 
+                               @click="nstep = 3">
+                               Proximo
+                        </v-btn>
+                </v-stepper-content>
+                 <v-stepper-content step="3">
+                    <step-three></step-three>
+                        <v-btn color="deep-orange darken-2" 
+                               to="/admin/overview">
+                               Cancelar
+                        </v-btn>
+                        <v-btn color="blue-grey lighten-3" 
                                @click="nstep = 2">
-                        Proximo
-                    </v-btn>
-                    <v-btn color="indigo darken-3" 
-                               @click="nstep = 2">
-                        Cancelar
-                    </v-btn>
+                               Voltar
+                        </v-btn>
+                        <v-btn color="light-blue darken-1" 
+                               >
+                               Concluir
+                        </v-btn>
                 </v-stepper-content>
             </v-stepper-items>
         </v-stepper>
@@ -50,13 +64,15 @@
 </template>
 
 <script>
-import StepOne from './StepOne.vue';
+import StepOne from './StepOne.vue'
 import StepTwo from './StepTwo.vue'
+import StepThree from './StepThree.vue'
 
 export default {
     components: {
       StepOne,
-      StepTwo
+      StepTwo,
+      StepThree
     },
     data () {
       return {
