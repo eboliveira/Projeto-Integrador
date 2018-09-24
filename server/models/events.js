@@ -2,16 +2,16 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var EventCalendar = new Schema({
-    title: String,
-    description: String,
-    room: String,
-    type_room: String,
-    startDate: Date,
-    finalDate: Date,
-    schedule: [String],
-    responsable : String,
-    status : String
-  })
+  title: String,
+  description: String,
+  room: String,
+  type_room: String,
+  startDate: Date,
+  finalDate: Date,
+  schedule: [String],
+  responsable : String,
+  status : String
+})
 
 
 var Evnt = mongoose.model('Evnt',EventCalendar,'events');
@@ -26,10 +26,107 @@ module.exports.getAllEvents = function (callback){
 }
 
 module.exports.getEventsAtInterval = function (startDate, finalDate, callback){
-  Evnt.find({$and:[{startDate:{$lte:new Date(finalDate).toISOString()}}, {finalDate:{$gte:new Date(startDate).toISOString()}}]}, callback)
+  Evnt.find(
+    {$and:[
+      {startDate:{$lte:new Date(finalDate).toISOString()}},
+      {finalDate:{$gte:new Date(startDate).toISOString()}}
+    ]}, callback
+  )
 }
+
 module.exports.getEventsAtRoom = function (roomSearch, callback){
-  Evnt.find({room : roomSearch}, callback)
+  Evnt.find({room: roomSearch}, callback)
+}
+
+module.exports.getEventsAtRoomAtSchedule = function (roomSearch, schedule, callback){
+  Evnt.find(
+    {$and:[
+      {room: roomSearch},
+      {schedule: {$all:[schedule]}}
+    ]}, callback
+  )
+}
+
+module.exports.getEventsAtRoomAtScheduleAtInterval = function (roomSearch, schedule, startDate, finalDate, callback){
+  Evnt.find(
+    {$and:[
+      {startDate:{$lte:new Date(finalDate).toISOString()}},
+      {finalDate:{$gte:new Date(startDate).toISOString()}},
+      {room: roomSearch},
+      {schedule: {$all:[schedule]}}
+    ]}, callback
+  )
+}
+
+module.exports.getEventsAtRoomAtInterval = function (roomSearch, startDate, finalDate, callback){
+  Evnt.find(
+    {$and:[
+      {startDate:{$lte:new Date(finalDate).toISOString()}},
+      {finalDate:{$gte:new Date(startDate).toISOString()}},
+      {room: roomSearch}
+    ]}, callback
+  )
+}
+
+module.exports.getEventsByRoomType = function (roomType, callback){
+  Evnt.find({type_room: roomType}, callback)
+}
+
+module.exports.getEventsByRoomTypeAtInterval = function (roomType, startDate, finalDate, callback){
+  Evnt.find(
+    {$and:[{startDate:{$lte:new Date(finalDate).toISOString()}},
+      {finalDate:{$gte:new Date(startDate).toISOString()}},
+      {type_room: roomType}
+    ]}, callback
+  )
+}
+
+module.exports.getFreeEventRoomsAtScheduleAtIntertal = function (schedule, startDate, finalDate, callback){
+  Evnt.find(
+    {$and:[
+      {startDate:{$lte:new Date(finalDate).toISOString()}},
+      {finalDate:{$gte:new Date(startDate).toISOString()}},
+      {schedule: {$nin:[schedule]}}
+    ]}, callback
+  )
+}
+
+module.exports.getFreeEventRoomsAtSchedule = function (schedule, callback){
+  Evnt.find({schedule: {$nin:[schedule]}}, callback)
+}
+
+module.exports.getFreeEventRoomsByTypeAtSchedule = function (roomType, schedule, startDate, finalDate, callback){
+  Evnt.find(
+    {$and:[
+      {startDate:{$lte:new Date(finalDate).toISOString()}},
+      {finalDate:{$gte:new Date(startDate).toISOString()}},
+      {type_room: roomType},
+      {schedule: {$nin:[schedule]}}
+    ]}, callback
+  )
+}
+
+module.exports.getEventsByScheduleAtInterval = function (schedule, startDate, finalDate, callback){
+  Evnt.find(
+    {$and:[
+      {startDate:{$lte:new Date(finalDate).toISOString()}},
+      {finalDate:{$gte:new Date(startDate).toISOString()}},
+      {schedule: {$all:[schedule]}}
+    ]}, callback
+  )
+}
+
+module.exports.getEventsByResponsable = function (responsable, callback){
+  Evnt.find({responsable: responsable}, callback)
+}
+
+module.exports.getEventsByResponsableAtInterval = function (responsable, startDate, finalDate, callback){
+  Evnt.find(
+    {$and:[{startDate:{$lte:new Date(finalDate).toISOString()}},
+      {finalDate:{$gte:new Date(startDate).toISOString()}},
+      {responsable: responsable}
+    ]}, callback
+  )
 }
 
 module.exports.getEventById = function (id, callback){
