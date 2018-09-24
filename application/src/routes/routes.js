@@ -6,6 +6,9 @@ import NotFound from '../components/GeneralViews/NotFoundPage.vue'
 import Overview from 'src/components/Dashboard/Views/Overview.vue'
 import UserProfile from 'src/components/Dashboard/Views/UserProfile.vue'
 import Calendar from 'src/components/Dashboard/Views/Calendar.vue'
+import Form from 'src/components/ReserveClass/Form.vue'
+import Reserve from 'src/components/Dashboard/Views/Reserve/Reserve.vue'
+import Classes from 'src/components/Dashboard/Views/Classes.vue'
 
 const routes = [
   {
@@ -29,10 +32,25 @@ const routes = [
         component: UserProfile
       },
       {
+        path: 'classes',
+        name: 'Classes',
+        component: Classes
+      },
+      {
         path: 'calendar',
         name: 'Calendar',
         component: Calendar
-      }
+      },
+       {
+        path: 'reserveclass',
+        name: 'ReserveClass',
+        component: Form
+      },
+      {
+        path: 'reserve',
+        name: 'Reserve',
+        component: Reserve
+      },
     ]
   },
   { path: '*', component: NotFound }

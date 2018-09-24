@@ -10,9 +10,13 @@
         <i class="nc-icon nc-circle-09"></i>
         <p>Users</p>
       </sidebar-link>
-      <sidebar-link to="/admin/calendar">
+      <sidebar-link to="/admin/reserve">
         <i class="fa fa-calendar-o"></i>
-        <p>Calendário</p>
+        <p>Fazer reserva</p>
+      </sidebar-link>
+      <sidebar-link to="/admin/classes">
+        <i class="fa fa-calendar-o"></i>
+        <p>Reservas feitas</p>
       </sidebar-link>
     </side-bar>
     <div class="main-panel">

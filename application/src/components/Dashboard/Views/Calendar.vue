@@ -5,6 +5,11 @@
     <full-calendar ref="calendar" :event-sources="eventSources" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
     <div style="margin-top: 10px;">
       <button @click="runScript()" class="btn btn-primary btn-fill">Gerar horários</button>
+       <v-btn to="/admin/reserveclass"
+            color="teal lighten-2"
+            class="btn btn-simple">
+            Reservar horário
+        </v-btn>
     </div>
   </div>
 </template>
