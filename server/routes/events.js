@@ -9,40 +9,185 @@ var db = mongoose.connection;
 
 
 router.get('/all', (req, res) => {
-    EventCalendar.getAllEvents(function (err, evnt){
-      if(err){
-        console.log(err)
-        return res.status(400).send('server could not understand the request')
-      }
-      else{
-        res.status(200).send(evnt);
-      }
-    })
+  EventCalendar.getAllEvents(function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
   })
+})
 
-router.get('/eventsAtInterval/:startDate/:finalDate', (req, res) => {
-    EventCalendar.getEventsAtInterval(req.params.startDate, req.params.finalDate, function (err, evnt){
-      if(err){
-        console.log(err)
-        return res.status(400).send('server could not understand the request')
-      }
-      else{
-        res.status(200).send(evnt);
-      }
-    })
+router.get('/responsable/:responsable', (req, res) => {
+  EventCalendar.getEventsByResponsable(req.params.responsable, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
   })
+})
+
+router.get('/responsable/:responsable/:startDate/:finalDate', (req, res) => {
+  EventCalendar.getEventsByResponsableAtInterval(req.params.responsable, req.params.startDate, req.params.finalDate, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.get('/room/:room', (req, res) => {
+  EventCalendar.getEventsAtRoom(req.params.room, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.post('/room/:room', (req, res) => {
+  EventCalendar.getEventsAtRoomAtSchedule(req.params.room, req.body.schedule, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.get('/room/:room/:startDate/:finalDate', (req, res) => {
+  EventCalendar.getEventsAtRoomAtInterval(req.params.room, req.params.startDate, req.params.finalDate, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.post('/room/:room/:startDate/:finalDate', (req, res) => {
+  EventCalendar.getEventsAtRoomAtScheduleAtInterval(req.params.room, req.body.schedule, req.params.startDate, req.params.finalDate, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.get('/room/type/:roomType', (req, res) => {
+  EventCalendar.getEventsByRoomType(req.params.roomType, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.get('/room/type/:roomType/:startDate/:finalDate', (req, res) => {
+  EventCalendar.getEventsByRoomTypeAtInterval(req.params.roomType, req.params.startDate, req.params.finalDate, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.post('/freeRooms', (req, res) => {
+  EventCalendar.getFreeEventRoomsAtSchedule(req.body.schedule, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.post('/freeRooms/:startDate/:finalDate', (req, res) => {
+  EventCalendar.getFreeEventRoomsAtScheduleAtIntertal(req.body.schedule, req.params.startDate, req.params.finalDate, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.post('/freeRooms/type/:roomType/:startDate/:finalDate', (req, res) => {
+  EventCalendar.getFreeEventRoomsByTypeAtSchedule(req.params.roomType, req.body.schedule, req.params.startDate, req.params.finalDate, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.get('/atInterval/:startDate/:finalDate', (req, res) => {
+  EventCalendar.getEventsAtInterval(req.params.startDate, req.params.finalDate, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
+router.post('/atScheduleAtIntertal/:startDate/:finalDate', (req, res) => {
+  EventCalendar.getEventsByScheduleAtInterval(req.body.schedule, req.params.startDate, req.params.finalDate, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
 
 router.get('/:id', (req, res) => {
-    EventCalendar.getEventById(req.params.id, function (err, evnt){
-      if(err){
-        console.log(err)
-        return res.status(400).send('server could not understand the request')
-      }
-      else{
-        res.status(200).send(evnt);
-      }
-    })
+  EventCalendar.getEventById(req.params.id, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
 })
+
 router.post('/post', (req, res) =>{
   let new_event = {}
   new_event.title = req.body.title;
@@ -56,23 +201,11 @@ router.post('/post', (req, res) =>{
   new_event.status = "undefined";
   EventCalendar.addEvent(new_event, function (err, evnt) {
     if (err) {
-        console.log(err)
-        return res.status(400).send('server could not understand the request')
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
     }
     res.status(201).json(evnt)
   })
-}
-)
-router.get('/:id', (req, res) => {
-    EventCalendar.getEventById(req.params.id ,function (err, evnt){
-      if(err){
-        console.log(err)
-        return res.status(400).send('server could not understand the request')
-      }
-      else{
-        res.status(200).send(evnt);
-      }
-    })
 })
 
 router.put('/:id', (req, res) => {
@@ -85,11 +218,11 @@ router.put('/:id', (req, res) => {
   updatedEvent.status = req.body.status
   updatedEvent.id = req.params.id
   EventCalendar.updateEvent(updatedEvent, function (err, todo) {
-      if (err) {
-          console.log(err)
-          return res.status(400).send('server could not understand the request')
-      }
-      res.status(200).json(todo)
+    if (err) {
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    res.status(200).json(todo)
   })
 })
 
