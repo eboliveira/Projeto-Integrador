@@ -33,13 +33,22 @@ const routes = [
       },
       {
         path: 'classes',
+        redirect: 'classes/',
         name: 'Classes',
-        component: Classes
+        component: Calendar,
+        children:[
+          {
+            path: '*',
+            components:{
+              calendarView: Classes
+            }
+          }
+        ]
       },
       {
         path: 'calendar',
         name: 'Calendar',
-        component: Calendar
+        component: Calendar,
       },
        {
         path: 'reserveclass',

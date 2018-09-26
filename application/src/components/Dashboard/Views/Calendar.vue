@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <router-view/><router-view name = "calendarView"/>
     <button @click="refreshEvents" class="btn btn-primary">Refresh</button>
     <button v-if="selected._id" @click="removeEvent" class="btn">Remove</button>
     <full-calendar ref="calendar" :event-sources="eventSources" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
@@ -34,23 +35,22 @@
       return {
         events: [
           {
-            id: 1,
-            title: 'event1',
-            start: moment().hours(12).minutes(0),
-          },
-          {
-            id: 2,
-            title: 'event2',
-            start: moment().add(-1, 'days'),
-            end: moment().add(1, 'days'),
+              title: 'test',
             allDay: true,
+            start: '2018-09-25T00:00:00',
+            end: '2018-09-25T12:00:00'
           },
           {
-            id: 3,
-            title: 'event3',
-            start: moment().add(2, 'days'),
-            end: moment().add(2, 'days').add(6, 'hours'),
-            allDay: false,
+          //   title: 'test2',
+          // allDay: true,
+          // start: moment().add(1, 'd'),
+          // end: moment().add(2, 'd')
+          },
+          {
+          //   title: 'test3',
+          // allDay: true,
+          // start: moment(),
+          // end: moment().add(3, 'd')
           },
         ],
         config: {
@@ -62,7 +62,7 @@
       };
     },
     methods: {
-      refreshEvents() {
+      refreshEvents(res) {
         this.$refs.calendar.$emit('refetch-events');
       },
       removeEvent() {
@@ -75,6 +75,9 @@
       eventCreated(...test) {
         console.log(test);
       },
+    },
+    mounted:function(){
+      console.log(moment())
     },
     computed: {
       eventSources() {

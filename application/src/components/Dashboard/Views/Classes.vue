@@ -36,9 +36,8 @@
         find:function(inputVal){
             inputVal = inputVal.toUpperCase()
             findRoom(inputVal).then(res =>{
-                console.log(res[0])
+                // this.$parent.refreshEvents(res)
             })
-            // location.href = '#/admin/calendar'
         }
     },
   };
