@@ -3,7 +3,7 @@
       <form>
          <v-btn icon="false" 
                class="back" 
-               to="/admin/calendar">
+               to="/admin/overview">
           <font-awesome-icon icon="chevron-left"/>
          </v-btn>
         <v-stepper v-model="nstep">
@@ -17,50 +17,63 @@
             <v-stepper-items>
                 <v-stepper-content step="1">
                     <step-one></step-one>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <v-btn color="blue-grey darken-1">
-                                    Cancelar
-                                </v-btn>
-                            </div>
-                            <div class="col-md-6 prox">
-                                <v-btn color="green lighten-1" 
-                                    @click="nstep = 2">
-                                Proximo
-                                </v-btn>
-                            </div>
-                        </div>
                 </v-stepper-content>
                  <v-stepper-content step="2">
                     <step-two></step-two>
-                        <v-btn color="indigo darken-3" 
-                               @click="nstep = 2">
-                        Proximo
-                    </v-btn>
-                    <v-btn color="indigo darken-3" 
-                               @click="nstep = 2">
-                        Cancelar
-                    </v-btn>
+                </v-stepper-content>
+                 <v-stepper-content step="3">
+                    <step-three></step-three>
                 </v-stepper-content>
             </v-stepper-items>
+            <v-layout row justify-center>
+                 <v-dialog v-model="dialog" persistent max-width="400">
+                    <v-btn slot="activator" color="deep-orange darken-2" >
+                                Cancelar
+                    </v-btn>
+                     <v-card>
+                        <v-card-title class="headline">Deseja Cancelar a Reserva de Horarios?</v-card-title>
+                            <v-card-text>As informações preenchidas no cadastro até o momento serão perdidas caso deseja sair!</v-card-text>
+                        <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="green darken-1" flat @click.native="dialog = false">Cancelar</v-btn>
+                        <v-btn color="green darken-1" flat @click.native="dialog = false" to="/admin/overview">Confimar</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                     </v-dialog>
+                       <v-btn v-if="nstep > '1'" color="blue-grey lighten-3" 
+                        @click="nstep --">
+                            Voltar
+                    </v-btn>
+                    <v-btn v-if="nstep < '3'" color="green lighten-1" 
+                        @click="nstep ++">
+                        Proximo
+                    </v-btn>
+                    <v-btn v-if="nstep == '3'" color="green lighten-1" 
+                        >
+                        Confirmar
+                    </v-btn>
+            </v-layout>
         </v-stepper>
-
       </form>
     </div>
 </template>
 
 <script>
-import StepOne from './StepOne.vue';
+import StepOne from './StepOne.vue'
 import StepTwo from './StepTwo.vue'
+import StepThree from './StepThree.vue'
 
 export default {
     components: {
       StepOne,
-      StepTwo
+      StepTwo,
+      StepThree
     },
     data () {
       return {
-        nstep: 0
+        nstep: 0,
+        dialog: false,
+        cancel: false
       }
     }
 }

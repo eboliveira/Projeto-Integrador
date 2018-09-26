@@ -3,26 +3,8 @@
         <div class="col-md-6">
             <card>
                 <h4 slot="header" 
-                    class="card-title">Registrar Responsavel</h4>
-                <div class="row">
-                    <div class="col-md-6">
-                        <fg-input type="text"
-                                  label="Nome">
-                        </fg-input>
-                    </div>
-                     <div class="col-md-6">
-                        <label>Motivo</label>
-                        <textarea class="form-control border-input">
-                        </textarea>
-                    </div>
-                </div>
+                    class="card-title">Confirmação</h4>
             </card>
-        </div>
-        <div class="col-md-6">
-             <card>
-                <h4 slot="header" 
-                    class="card-title">Horários Selecionados</h4>
-            </card>      
         </div>
     </div>
 </template>
@@ -35,7 +17,6 @@ import Multiselect from 'vue-multiselect'
 export default {
     components: {
       Card,
-      Multiselect
     },
     data () {
         return {
