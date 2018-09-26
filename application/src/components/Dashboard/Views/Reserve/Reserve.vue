@@ -4,7 +4,8 @@
         <h4 slot="header" class="card-title">Reservas</h4>
         <form>
             <div class="col">
-                      <v-btn color="blue-grey darken-1">
+                      <v-btn color="blue-grey darken-1"
+                             to="/admin/reserveclass">
                         Reserva de Horários de Salas
                     </v-btn>
                       <v-btn color="blue-grey darken-1">

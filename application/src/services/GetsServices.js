@@ -1,7 +1,6 @@
 import {DB} from './Api'
 
 export async function findRoom(room){
-    let teste = {}
     const findInEvents = (room) =>{
         return DB.get('event/room/' + room)
         .then( (res) =>{
