@@ -9,7 +9,9 @@ Vue.use(VTooltip);
 // LightBootstrap plugin
 import LightBootstrap from './light-bootstrap-main'
 import 'vuetify/dist/vuetify.min.css'
-import 'vue-multiselect/dist/vue-multiselect.min.css'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'bootstrap-vue/dist/bootstrap-vue.css'
+import BootstrapVue from 'bootstrap-vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
@@ -24,6 +26,7 @@ import routes from './routes/routes'
 Vue.use(VueRouter)
 Vue.use(LightBootstrap)
 Vue.use(Vuetify)
+Vue.use(BootstrapVue);
 
 const moment = require('moment')
 require('moment/locale/pt-br')
