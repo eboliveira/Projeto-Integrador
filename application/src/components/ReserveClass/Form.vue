@@ -17,48 +17,43 @@
             <v-stepper-items>
                 <v-stepper-content step="1">
                     <step-one></step-one>
-                                <v-btn color="blue-grey lighten-3"
-                                       to="/admin/overview">
-                                    Cancelar
-                                </v-btn>
-                                <v-btn color="green lighten-1" 
-                                    @click="nstep = 2">
-                                Proximo
-                                </v-btn>
                 </v-stepper-content>
                  <v-stepper-content step="2">
                     <step-two></step-two>
-                        <v-btn color="deep-orange darken-2" 
-                               to="/admin/overview">
-                               Cancelar
-                        </v-btn>
-                        <v-btn color="blue-grey lighten-3" 
-                               @click="nstep = 1">
-                               Voltar
-                        </v-btn>
-                        <v-btn color="green lighten-1" 
-                               @click="nstep = 3">
-                               Proximo
-                        </v-btn>
                 </v-stepper-content>
                  <v-stepper-content step="3">
                     <step-three></step-three>
-                        <v-btn color="deep-orange darken-2" 
-                               to="/admin/overview">
-                               Cancelar
-                        </v-btn>
-                        <v-btn color="blue-grey lighten-3" 
-                               @click="nstep = 2">
-                               Voltar
-                        </v-btn>
-                        <v-btn color="light-blue darken-1" 
-                               >
-                               Concluir
-                        </v-btn>
                 </v-stepper-content>
             </v-stepper-items>
+            <v-layout row justify-center>
+                 <v-dialog v-model="dialog" persistent max-width="400">
+                    <v-btn slot="activator" color="deep-orange darken-2" >
+                                Cancelar
+                    </v-btn>
+                     <v-card>
+                        <v-card-title class="headline">Deseja Cancelar a Reserva de Horarios?</v-card-title>
+                            <v-card-text>As informações preenchidas no cadastro até o momento serão perdidas caso deseja sair!</v-card-text>
+                        <v-card-actions>
+                        <v-spacer></v-spacer>
+                        <v-btn color="green darken-1" flat @click.native="dialog = false">Cancelar</v-btn>
+                        <v-btn color="green darken-1" flat @click.native="dialog = false" to="/admin/overview">Confimar</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                     </v-dialog>
+                       <v-btn v-if="nstep > '1'" color="blue-grey lighten-3" 
+                        @click="nstep --">
+                            Voltar
+                    </v-btn>
+                    <v-btn v-if="nstep < '3'" color="green lighten-1" 
+                        @click="nstep ++">
+                        Proximo
+                    </v-btn>
+                    <v-btn v-if="nstep == '3'" color="green lighten-1" 
+                        >
+                        Confirmar
+                    </v-btn>
+            </v-layout>
         </v-stepper>
-
       </form>
     </div>
 </template>
@@ -76,7 +71,9 @@ export default {
     },
     data () {
       return {
-        nstep: 0
+        nstep: 0,
+        dialog: false,
+        cancel: false
       }
     }
 }
