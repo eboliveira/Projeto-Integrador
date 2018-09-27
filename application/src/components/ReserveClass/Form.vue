@@ -13,7 +13,7 @@
                     <v-stepper-step step="3">Confirmação</v-stepper-step>
                 </v-stepper-header>
                 <v-stepper-items>
-                <v-stepper-content step="1" style="padding: 5px">
+                    <v-stepper-content step="1" style="padding: 5px">
                         <step-one></step-one>
                     </v-stepper-content>
                     <v-stepper-content step="2">
