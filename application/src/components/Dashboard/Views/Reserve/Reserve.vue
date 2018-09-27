@@ -8,7 +8,7 @@
                         <div class="row">
                             <v-layout justify-center>
                                 <div class="col-3">
-                                    <g-button-ujarak color="success" size="button--size-m" to="/admin/reserveclass">Reserva Salas</g-button-ujarak>
+                                    <g-button-ujarak color="success" size="button--size-m">Reserva Salas</g-button-ujarak>
                                 </div>
                                 <div class="col-1"></div>
                                 <div class="col-3">
