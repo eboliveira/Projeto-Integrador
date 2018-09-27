@@ -1,7 +1,7 @@
 .card{
     border-radius: $border-radius-base;
     background-color: $white-color;
-    margin-bottom: 30px;
+    margin: 5px;
 
     .card-image{
         width: 100%;
@@ -43,10 +43,10 @@
         @include opacity(1);
     }
     .card-body{
-        padding: 15px 15px 10px 15px;
+        padding: 5px;
     }
     .card-header{
-        padding: 15px 15px 0;
+        padding: 5px 5px 0;
         background-color: $white-color;
         border-bottom: none !important;
 
@@ -165,7 +165,7 @@
 
 .card-stats{
     .card-body{
-        padding: 15px 15px 0px;
+        padding: 15px;
 
         .numbers{
             font-size: 1.8rem;

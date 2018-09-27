@@ -41,18 +41,16 @@
 
 <script>
 export default {
-    props: {
-      widthModal: String,
-      btnTitle: String,
-      btnColor: String,
-      headerColor: String,
-      headerTitle: String,
-      componentsBody: Array
-    },
-    data: () => ({
-        dialog: false
-    }),
-  
-}
-    
+  props: {
+    widthModal: String,
+    btnTitle: String,
+    btnColor: String,
+    headerColor: String,
+    headerTitle: String,
+    componentsBody: Array
+  },
+  data: () => ({
+    dialog: false
+  })
+};
 </script>
