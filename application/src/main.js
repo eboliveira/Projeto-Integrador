@@ -6,6 +6,12 @@ import App from './App.vue'
 import VTooltip from 'v-tooltip';
 Vue.use(VTooltip);
 
+import vueButtonEffect from 'vue-button-effect'
+Vue.use(vueButtonEffect);
+
+import LightTimeline from 'vue-light-timeline';
+Vue.use(LightTimeline);
+
 // LightBootstrap plugin
 import LightBootstrap from './light-bootstrap-main'
 import 'vuetify/dist/vuetify.min.css'

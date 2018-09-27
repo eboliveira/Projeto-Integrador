@@ -1,12 +1,10 @@
 .btn{
-    border-width: $border-thick;
-    background-color: $transparent-bg;
     font-weight: $font-weight-normal;
 
     @include opacity(.8);
     padding: $padding-base-vertical $padding-base-horizontal;
 
-    @include btn-styles($default-color, $default-states-color);
+    @include btn-styles($default-color, none);
 
     &:hover,
     &:focus{
@@ -29,11 +27,11 @@
 
 // Apply the mixin to the buttons
 //.btn-default { @include btn-styles($default-color, $default-states-color); }
-.btn-primary { @include btn-styles($primary-color, $primary-states-color); }
-.btn-success { @include btn-styles($success-color, $success-states-color); }
-.btn-info    { @include btn-styles($info-color, $info-states-color); }
-.btn-warning { @include btn-styles($warning-color, $warning-states-color); }
-.btn-danger  { @include btn-styles($danger-color, $danger-states-color); }
+.btn-primary { @include btn-styles($white-color, $primary-states-color); }
+.btn-success { @include btn-styles($white-color, $success-states-color); }
+.btn-info    { @include btn-styles($white-color, $info-states-color); }
+.btn-warning { @include btn-styles($white-color, $warning-states-color); }
+.btn-danger  { @include btn-styles($white-color, $danger-states-color); }
 .btn-neutral {
     @include btn-styles($white-color, $white-color);
 
@@ -96,7 +94,7 @@
 }
 
 .btn-group.select{
-    width: 100%;
+    width: auto;
 }
 .btn-group.select .btn{
     text-align: left;
