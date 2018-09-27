@@ -1,49 +1,53 @@
 <template>
-    <div class="content">
-        <form>
-            <!--<v-btn icon="false" class="back" to="/admin/overview">
-                <font-awesome-icon icon="chevron-left"/>
-            </v-btn>-->
-            <v-stepper v-model="nstep">
-                <v-stepper-header>
-                    <v-stepper-step :complete="nstep > 1" step="1">Selecionar Horários Livres</v-stepper-step>
-                    <v-divider></v-divider>
-                    <v-stepper-step :complete="nstep > 2" step="2">Registrar Responsável </v-stepper-step>
-                    <v-divider></v-divider>
-                    <v-stepper-step step="3">Confirmação</v-stepper-step>
-                </v-stepper-header>
-                <v-stepper-items>
-                    <v-stepper-content step="1" style="padding: 5px">
-                        <step-one></step-one>
-                    </v-stepper-content>
-                    <v-stepper-content step="2">
-                        <step-two></step-two>
-                    </v-stepper-content>
-                    <v-stepper-content step="3">
-                        <step-three></step-three>
-                    </v-stepper-content>
-                </v-stepper-items>
-                <v-layout justify-center style="margin-bottom: 10px;">
-                    <v-dialog v-model="dialog" persistent>
-                        <v-card>
-                            <v-card-title class="headline">Deseja Cancelar a Reserva de Horarios?</v-card-title>
-                            <v-card-text>As informações preenchidas no cadastro até o momento serão perdidas caso deseja sair!</v-card-text>
-                            <v-card-actions>
-                                <v-spacer></v-spacer>
-                                <v-btn color="green darken-1" flat @click.native="dialog = false">Cancelar</v-btn>
-                                <v-btn color="green darken-1" flat @click.native="dialog = false" to="/admin/overview">Confimar</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
-                    <b-button-group>
-                        <b-btn slot="activator" variant="danger">Cancelar</b-btn>
-                        <b-btn v-if="nstep > '1'" variant="warning" @click="nstep --">Voltar</b-btn>
-                        <b-btn v-if="nstep < '3'" variant="primary" @click="nstep ++">Proximo</b-btn>
-                        <b-btn v-if="nstep == '3'" variant="success" >Confirmar</b-btn>
-                    </b-button-group>
-                </v-layout>
-            </v-stepper>
-        </form>
+    <div class="container-fluid" style="padding-left: 10px; padding-right: 10px; margin-top: 10px;">
+        <div class="row">
+            <div class="col-12">
+                    <form>
+                        <!--<v-btn icon="false" class="back" to="/admin/overview">
+                            <font-awesome-icon icon="chevron-left"/>
+                        </v-btn>-->
+                        <v-stepper v-model="nstep">
+                            <v-stepper-header>
+                                <v-stepper-step :complete="nstep > 1" step="1">Selecionar Horários Livres</v-stepper-step>
+                                <v-divider></v-divider>
+                                <v-stepper-step :complete="nstep > 2" step="2">Registrar Responsável </v-stepper-step>
+                                <v-divider></v-divider>
+                                <v-stepper-step step="3">Confirmação</v-stepper-step>
+                            </v-stepper-header>
+                            <v-stepper-items>
+                                <v-stepper-content step="1">
+                                    <step-one></step-one>
+                                </v-stepper-content>
+                                <v-stepper-content step="2">
+                                    <step-two></step-two>
+                                </v-stepper-content>
+                                <v-stepper-content step="3">
+                                    <step-three></step-three>
+                                </v-stepper-content>
+                            </v-stepper-items>
+                            <v-layout justify-center style="margin-bottom: 10px;">
+                                <v-dialog v-model="dialog" persistent>
+                                    <v-card>
+                                        <v-card-title class="headline">Deseja Cancelar a Reserva de Horarios?</v-card-title>
+                                        <v-card-text>As informações preenchidas no cadastro até o momento serão perdidas caso deseja sair!</v-card-text>
+                                        <v-card-actions>
+                                            <v-spacer></v-spacer>
+                                            <v-btn color="green darken-1" flat @click.native="dialog = false">Cancelar</v-btn>
+                                            <v-btn color="green darken-1" flat @click.native="dialog = false" to="/admin/overview">Confimar</v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-dialog>
+                                <b-button-group>
+                                    <b-btn slot="activator" variant="danger">Cancelar</b-btn>
+                                    <b-btn v-if="nstep > '1'" variant="warning" @click="nstep --">Voltar</b-btn>
+                                    <b-btn v-if="nstep < '3'" variant="primary" @click="nstep ++">Proximo</b-btn>
+                                    <b-btn v-if="nstep == '3'" variant="success" >Confirmar</b-btn>
+                                </b-button-group>
+                            </v-layout>
+                        </v-stepper>
+                    </form>
+            </div>
+        </div>
     </div>
 </template>
 
