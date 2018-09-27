@@ -38,8 +38,8 @@
                                     </v-card>
                                 </v-dialog>
                                 <b-button-group>
-                                    <b-btn slot="activator" variant="danger">Cancelar</b-btn>
                                     <b-btn v-if="nstep > '1'" variant="warning" @click="nstep --">Voltar</b-btn>
+                                    <b-btn slot="activator" variant="danger">Cancelar</b-btn>
                                     <b-btn v-if="nstep < '3'" variant="primary" @click="nstep ++">Proximo</b-btn>
                                     <b-btn v-if="nstep == '3'" variant="success" >Confirmar</b-btn>
                                 </b-button-group>
