@@ -13,7 +13,7 @@
                     <v-stepper-step step="3">Confirmação</v-stepper-step>
                 </v-stepper-header>
                 <v-stepper-items>
-                    <v-stepper-content step="1">
+                <v-stepper-content step="1" style="padding: 5px">
                         <step-one></step-one>
                     </v-stepper-content>
                     <v-stepper-content step="2">
@@ -23,7 +23,7 @@
                         <step-three></step-three>
                     </v-stepper-content>
                 </v-stepper-items>
-                <v-layout justify-center>
+                <v-layout justify-center style="margin-bottom: 10px;">
                     <v-dialog v-model="dialog" persistent>
                         <v-card>
                             <v-card-title class="headline">Deseja Cancelar a Reserva de Horarios?</v-card-title>
