@@ -1,4 +1,7 @@
 import {DB} from './Api'
+import {RoomBinarySearch} from './utils';
+import * as events from './eventQuerys'
+import * as lessons from './lessonQuerys'
 
 export async function findRoom(room){
     let teste = {}
@@ -23,4 +26,20 @@ export async function findRoom(room){
         return lessons_list;
     }
     return await do_search()
+}
+
+export async function freeRooms(schedule, startDate, finalDate){
+  let freeRooms = {}
+  var freeLessonsRooms = await lessons.freeRooms(schedule)
+  var eventsRooms = await events.atScheduleAtInterval(schedule, startDate, finalDate)
+
+  if (eventsRooms.length > 0) {
+    for (var i = 0; i < freeLessonsRooms.length; i++) {
+      if (RoomBinarySearch(0, eventsRooms.length, eventsRooms, freeLessonsRooms[i].room) < 0) {
+        freeLessonsRooms.splice(i, 1)
+      }
+    }
+  }
+  console.log(freeLessonsRooms)
+  return freeLessonsRooms
 }
