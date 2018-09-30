@@ -1,33 +1,30 @@
 <template>
-    <div class="row">
-        <div class="col-md-6">
-            <card>
-                <h4 slot="header" 
-                    class="card-title">Registrar Responsavel</h4>
-                <div class="row">
-                    <div class="col-md-6">
-                        <fg-input type="text"
-                                  label="Nome">
-                        </fg-input>
+    <div class="container-fluid" style="padding-left: 5px; padding-right: 5px;">
+        <div class="row">
+            <div class="col-6">
+                <card>
+                    <h4 slot="header" class="card-title">Registrar Responsável</h4>
+                    <div class="container-fluid">
+                        <div class="row">
+                            <div class="col-12">
+                                <fg-input type="text" label="Nome"></fg-input>
+                            </div>
+                            <div class="col-12">
+                                <label>Motivo</label>
+                                <textarea class="form-control border-input"></textarea>
+                            </div>
+                        </div>
                     </div>
-                     <div class="col-md-6">
-                        <label>Motivo</label>
-                        <textarea class="form-control border-input">
-                        </textarea>
-                    </div>
-                </div>
-                <div>
-                 <button type="submit" class="btn btn-info btn-fill btn-next" @click.prevent="updateProfile">
-          Próximo
-        </button>
+                </card>
             </div>
-            </card>
-        </div>
-        <div class="col-md-6">
-             <card>
-                <h4 slot="header" 
-                    class="card-title">Horários Selecionados</h4>
-            </card>      
+            <div class="col-6">
+                <card>
+                    <h4 slot="header" class="card-title">Horários Selecionados</h4>
+                    <v-layout justify-center>
+                        <light-timeline :items='items'></light-timeline>
+                    </v-layout>
+                </card>      
+            </div>
         </div>
     </div>
 </template>
@@ -36,6 +33,7 @@
 
 import Card from 'src/components/UIComponents/Cards/Card.vue'
 import Multiselect from 'vue-multiselect'
+const theme = 'red';
 
 export default {
     components: {
@@ -71,19 +69,37 @@ export default {
                     { time: 'N3'},
                     { time: 'N4'},
                     { time: 'N5'},
-                ]
+                ],
+            
+            items: [                
+                {
+                    tag: '27/09/2018 M1, M2, M3',
+                    color: '#dcdcdc',
+                    type: 'circle',
+                    content: 'E001'
+                },
+                {
+                    tag: '27/09/2018 T1, T2',
+                    color: '#dcdcdc',
+                    type: 'circle',
+                    content: 'F100'
+                },
+                {
+                    tag: '27/09/2018 N2, N3',
+                    color: '#dcdcdc',
+                    type: 'circle',
+                    content: 'H004'
+                },
+                {
+                    tag: '27/09/2018 M1, M2, M3',
+                    color: '#dcdcdc',
+                    type: 'circle',
+                    content: 'C104'
+                }
+            ]
         }
   }
 }
 
 
 </script>
-
-<style>
-    .btn-next {
-        margin-top: 1rem;
-        left: 50%;
-    margin-right: -50%;
-    }
-
-</style>

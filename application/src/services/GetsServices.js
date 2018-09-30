@@ -4,7 +4,6 @@ import * as events from './eventQuerys'
 import * as lessons from './lessonQuerys'
 
 export async function findRoom(room){
-    let teste = {}
     const findInEvents = (room) =>{
         return DB.get('event/room/' + room)
         .then( (res) =>{

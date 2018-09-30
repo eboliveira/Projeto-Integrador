@@ -4,11 +4,9 @@
         <label for="title">Código da sala</label>
         <div @keydown.enter="handleSubmit">
             <div class="input-group">
-                <input class="form-control" placeholder="Digite o código da sala aqui"
-                v-model="inputVal"
-                type = "text">
+                <input class="form-control" placeholder="Digite o código da sala aqui" v-model="inputVal" type = "text">
                 <span class="input-group-btn">
-                    <button @click="find(inputVal)" class="btn btn-success btn-fill" type="submit">Buscar</button>
+                    <button @click="find(inputVal)" class="btn btn-success" type="submit">Buscar</button>
                 </span>
                 </div>
             </div>
@@ -36,9 +34,8 @@
         find:function(inputVal){
             inputVal = inputVal.toUpperCase()
             findRoom(inputVal).then(res =>{
-                console.log(res[0])
+                // this.$parent.refreshEvents(res)
             })
-            // location.href = '#/admin/calendar'
         }
     },
   };
