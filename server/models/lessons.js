@@ -22,6 +22,15 @@ module.exports.addLesson = function (evnt, callback){
 
 module.exports.getAllLessons = function (callback){
   Lesson.find(callback).sort({room:'asc'})
+  // Lesson.aggregate([
+  //       { "$match": {} },
+  //       { "$group": {
+  //           "_id": "$room",
+  //           "capacity": { "$first": "$capacity" },
+  //           "type_room": { "$first": "$type_room" }
+  //       }},
+  //       { "$sort": {_id: 1 } }
+  //   ], callback)
 }
 
 module.exports.getLessonsAtRoom = function (roomSearch, callback){
@@ -64,16 +73,39 @@ module.exports.getLessonsAtRoomAtSchedule = function (roomSearch, schedule, call
 }
 
 module.exports.getFreeRoomsAtSchedule = function (schedule, callback){
-  Lesson.find({schedule: {$nin:schedule}}, callback).sort({room:'asc'})
+  // Lesson.find({schedule: {$nin:schedule}}, callback).sort({room:'asc'})
+  Lesson.aggregate([
+        { "$match": {schedule: {$nin:schedule}} },
+        { "$group": {
+            "_id": "$room",
+            "room":{ "$first": "$room" },
+            "capacity": { "$first": "$capacity" },
+            "type_room": { "$first": "$type_room" }
+        }},
+        { "$sort": {room: 1 } }
+    ], callback)
 }
 
 module.exports.getFreeRoomsByTypeAtSchedule = function (roomType, schedule, callback){
-  Lesson.find(
-    {$and:[
-      {type_room: roomType},
-      {schedule: {$nin:schedule}}
-    ]}, callback
-  ).sort({room:'asc'})
+  // Lesson.find(
+  //   {$and:[
+  //     {type_room: roomType},
+  //     {schedule: {$nin:schedule}}
+  //   ]}, callback
+  // ).sort({room:'asc'})
+  Lesson.aggregate([
+        { "$match": {$and:[
+          {type_room: roomType},
+          {schedule: {$nin:schedule}}
+        ]} },
+        { "$group": {
+            "_id": "$room",
+            "room":{ "$first": "$room" },
+            "capacity": { "$first": "$capacity" },
+            "type_room": { "$first": "$type_room" }
+        }},
+        { "$sort": {room: 1 } }
+    ], callback)
 }
 
 module.exports.getLessonsAtSchedule = function (schedule, callback){

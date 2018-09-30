@@ -82,28 +82,67 @@ module.exports.getEventsByRoomTypeAtInterval = function (roomType, startDate, fi
 }
 
 module.exports.getFreeEventRoomsAtScheduleAtIntertal = function (schedule, startDate, finalDate, callback){
-  Evnt.find(
-    {$and:[
-      {startDate:{$lte:new Date(finalDate).toISOString()}},
-      {finalDate:{$gte:new Date(startDate).toISOString()}},
-      {schedule: {$nin:schedule}}
-    ]}, callback
-  ).sort({room:'asc'})
+  // Evnt.find(
+  //   {$and:[
+  //     {startDate:{$lte:new Date(finalDate).toISOString()}},
+  //     {finalDate:{$gte:new Date(startDate).toISOString()}},
+  //     {schedule: {$nin:schedule}}
+  //   ]}, callback
+  // ).sort({room:'asc'})
+  Evnt.aggregate([
+        { "$match": {$and:[
+          {startDate:{$lte:new Date(finalDate).toISOString()}},
+          {finalDate:{$gte:new Date(startDate).toISOString()}},
+          {schedule: {$nin:schedule}}
+        ]} },
+        { "$group": {
+            "_id": "$room",
+            "room":{ "$first": "$room" },
+            "capacity": { "$first": "$capacity" },
+            "type_room": { "$first": "$type_room" }
+        }},
+        { "$sort": {room: 1 } }
+    ], callback)
 }
 
 module.exports.getFreeEventRoomsAtSchedule = function (schedule, callback){
-  Evnt.find({schedule: {$nin:schedule}}, callback).sort({room:'asc'})
+  // Evnt.find({schedule: {$nin:schedule}}, callback).sort({room:'asc'})
+  Evnt.aggregate([
+        { "$match": {schedule: {$nin:schedule}} },
+        { "$group": {
+            "_id": "$room",
+            "room":{ "$first": "$room" },
+            "capacity": { "$first": "$capacity" },
+            "type_room": { "$first": "$type_room" }
+        }},
+        { "$sort": {room: 1 } }
+    ], callback)
 }
 
 module.exports.getFreeEventRoomsByTypeAtSchedule = function (roomType, schedule, startDate, finalDate, callback){
-  Evnt.find(
-    {$and:[
-      {startDate:{$lte:new Date(finalDate).toISOString()}},
-      {finalDate:{$gte:new Date(startDate).toISOString()}},
-      {type_room: roomType},
-      {schedule: {$nin:schedule}}
-    ]}, callback
-  ).sort({room:'asc'})
+  // Evnt.find(
+  //   {$and:[
+  //     {startDate:{$lte:new Date(finalDate).toISOString()}},
+  //     {finalDate:{$gte:new Date(startDate).toISOString()}},
+  //     {type_room: roomType},
+  //     {schedule: {$nin:schedule}}
+  //   ]}, callback
+  // ).sort({room:'asc'})
+  Evnt.aggregate([
+        { "$match": {$and:[
+              {startDate:{$lte:new Date(finalDate).toISOString()}},
+              {finalDate:{$gte:new Date(startDate).toISOString()}},
+              {type_room: roomType},
+              {schedule: {$nin:schedule}}
+            ]} },
+        { "$group": {
+            "_id": "$room",
+            "room":{ "$first": "$room" },
+            "capacity": { "$first": "$capacity" },
+            "type_room": { "$first": "$type_room" }
+        }},
+        { "$sort": {room: 1 } }
+    ], callback)
 }
 
 module.exports.getEventsByScheduleAtInterval = function (schedule, startDate, finalDate, callback){
