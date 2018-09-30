@@ -32,7 +32,7 @@ function format_csv(csv){
         new_lesson.room = formated_item[0];
         new_lesson.type_room = formated_item[1];
         new_lesson.capacity = formated_item[2];
-        new_lesson.schedule = formated_item[3];
+        new_lesson.schedule = [formated_item[3]];
         new_lesson.discipline_cod = formated_item[4];
         new_lesson.class_cod = formated_item[5];
         new_lesson.discipline_name = formated_item[6];

@@ -22,7 +22,7 @@ module.exports.addEvent = function (evnt, callback){
 }
 
 module.exports.getAllEvents = function (callback){
-  Evnt.find(callback)
+  Evnt.find(callback).sort({room:'asc'})
 }
 
 module.exports.getEventsAtInterval = function (startDate, finalDate, callback){
@@ -31,20 +31,20 @@ module.exports.getEventsAtInterval = function (startDate, finalDate, callback){
       {startDate:{$lte:new Date(finalDate).toISOString()}},
       {finalDate:{$gte:new Date(startDate).toISOString()}}
     ]}, callback
-  )
+  ).sort({startDate:'asc'})
 }
 
 module.exports.getEventsAtRoom = function (roomSearch, callback){
-  Evnt.find({room: roomSearch}, callback)
+  Evnt.find({room: roomSearch}, callback).sort({title:'asc'})
 }
 
 module.exports.getEventsAtRoomAtSchedule = function (roomSearch, schedule, callback){
   Evnt.find(
     {$and:[
       {room: roomSearch},
-      {schedule: {$all:[schedule]}}
+      {schedule: {$in:schedule}}
     ]}, callback
-  )
+  ).sort({title:'asc'})
 }
 
 module.exports.getEventsAtRoomAtScheduleAtInterval = function (roomSearch, schedule, startDate, finalDate, callback){
@@ -53,9 +53,9 @@ module.exports.getEventsAtRoomAtScheduleAtInterval = function (roomSearch, sched
       {startDate:{$lte:new Date(finalDate).toISOString()}},
       {finalDate:{$gte:new Date(startDate).toISOString()}},
       {room: roomSearch},
-      {schedule: {$all:[schedule]}}
+      {schedule: {$in:schedule}}
     ]}, callback
-  )
+  ).sort({title:'asc'})
 }
 
 module.exports.getEventsAtRoomAtInterval = function (roomSearch, startDate, finalDate, callback){
@@ -65,11 +65,11 @@ module.exports.getEventsAtRoomAtInterval = function (roomSearch, startDate, fina
       {finalDate:{$gte:new Date(startDate).toISOString()}},
       {room: roomSearch}
     ]}, callback
-  )
+  ).sort({title:'asc'})
 }
 
 module.exports.getEventsByRoomType = function (roomType, callback){
-  Evnt.find({type_room: roomType}, callback)
+  Evnt.find({type_room: roomType}, callback).sort({room:'asc'})
 }
 
 module.exports.getEventsByRoomTypeAtInterval = function (roomType, startDate, finalDate, callback){
@@ -78,7 +78,7 @@ module.exports.getEventsByRoomTypeAtInterval = function (roomType, startDate, fi
       {finalDate:{$gte:new Date(startDate).toISOString()}},
       {type_room: roomType}
     ]}, callback
-  )
+  ).sort({room:'asc'})
 }
 
 module.exports.getFreeEventRoomsAtScheduleAtIntertal = function (schedule, startDate, finalDate, callback){
@@ -86,13 +86,13 @@ module.exports.getFreeEventRoomsAtScheduleAtIntertal = function (schedule, start
     {$and:[
       {startDate:{$lte:new Date(finalDate).toISOString()}},
       {finalDate:{$gte:new Date(startDate).toISOString()}},
-      {schedule: {$nin:[schedule]}}
+      {schedule: {$nin:schedule}}
     ]}, callback
-  )
+  ).sort({room:'asc'})
 }
 
 module.exports.getFreeEventRoomsAtSchedule = function (schedule, callback){
-  Evnt.find({schedule: {$nin:[schedule]}}, callback)
+  Evnt.find({schedule: {$nin:schedule}}, callback).sort({room:'asc'})
 }
 
 module.exports.getFreeEventRoomsByTypeAtSchedule = function (roomType, schedule, startDate, finalDate, callback){
@@ -101,9 +101,9 @@ module.exports.getFreeEventRoomsByTypeAtSchedule = function (roomType, schedule,
       {startDate:{$lte:new Date(finalDate).toISOString()}},
       {finalDate:{$gte:new Date(startDate).toISOString()}},
       {type_room: roomType},
-      {schedule: {$nin:[schedule]}}
+      {schedule: {$nin:schedule}}
     ]}, callback
-  )
+  ).sort({room:'asc'})
 }
 
 module.exports.getEventsByScheduleAtInterval = function (schedule, startDate, finalDate, callback){
@@ -111,13 +111,13 @@ module.exports.getEventsByScheduleAtInterval = function (schedule, startDate, fi
     {$and:[
       {startDate:{$lte:new Date(finalDate).toISOString()}},
       {finalDate:{$gte:new Date(startDate).toISOString()}},
-      {schedule: {$all:[schedule]}}
+      {schedule: {$in:schedule}}
     ]}, callback
-  )
+  ).sort({room:'asc'})
 }
 
 module.exports.getEventsByResponsable = function (responsable, callback){
-  Evnt.find({responsable: responsable}, callback)
+  Evnt.find({responsable: responsable}, callback).sort({responsable:'asc'})
 }
 
 module.exports.getEventsByResponsableAtInterval = function (responsable, startDate, finalDate, callback){
@@ -126,7 +126,7 @@ module.exports.getEventsByResponsableAtInterval = function (responsable, startDa
       {finalDate:{$gte:new Date(startDate).toISOString()}},
       {responsable: responsable}
     ]}, callback
-  )
+  ).sort({responsable:'asc'})
 }
 
 module.exports.getEventById = function (id, callback){
