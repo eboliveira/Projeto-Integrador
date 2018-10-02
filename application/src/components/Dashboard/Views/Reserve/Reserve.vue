@@ -8,11 +8,11 @@
                         <div class="row">
                             <v-layout justify-center>
                                 <div class="col-3">
-                                    <g-button-ujarak color="success" size="button--size-m">Reserva Salas</g-button-ujarak>
+                                    <b-button variant="primary" to="/admin/reserveclass">Reservar Salas</b-button>
                                 </div>
                                 <div class="col-1"></div>
                                 <div class="col-3">
-                                    <g-button-ujarak color="primary" size="button--size-m">Reserva Equipamentos</g-button-ujarak>
+                                    <b-button variant="primary">Reservar Equipamentos</b-button>
                                 </div>
                             </v-layout>
                         </div>
