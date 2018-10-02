@@ -9,6 +9,7 @@ import Calendar from 'src/components/Dashboard/Views/Calendar.vue'
 import Form from 'src/components/ReserveClass/Form.vue'
 import Reserve from 'src/components/Dashboard/Views/Reserve/Reserve.vue'
 import Classes from 'src/components/Dashboard/Views/Classes.vue'
+import Equipments from 'src/components/Dashboard/Views/Equipment/Equipment.vue'
 
 const routes = [
   {
@@ -59,6 +60,11 @@ const routes = [
         path: 'reserve',
         name: 'Reserve',
         component: Reserve
+      },
+      {
+        path: 'equipment',
+        name: 'Equipment',
+        component: Equipments
       },
     ]
   },
