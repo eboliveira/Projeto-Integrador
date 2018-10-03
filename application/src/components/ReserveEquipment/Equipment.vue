@@ -1,7 +1,7 @@
 <template>
-    <div class="container-fluid">
-        <div class="row">
-            <div class="col-12">
+    <b-container fluid>
+        <b-row>
+            <b-col md="12">
                 <card class="card" style="padding: 15px;">
                     <h4 slot="header" class="card-title">
                         Equipamentos
@@ -10,7 +10,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <v-layout justify-center>
-                                <b-table striped hover :items="items" :fields="fields">
+                                <b-table striped hover stacked="md" :items="items" :fields="fields">
                                     <template slot="settings" slot-scope="row">
                                         <v-layout justify-center>
                                             <button type="button" class="btn-simple btn btn-xs btn-warning">
@@ -26,20 +26,16 @@
                         </div>
                     </div>
                 </card>
-            </div>
-        </div>
-    </div>
+            </b-col>
+        </b-row>
+    </b-container>
 </template>
 
 <script>
     import Card from 'src/components/UIComponents/Cards/Card.vue'
+    import {findEquipments} from 'src/services/GetsServices.js'
 
-    const items = [
-        { codigo: '100', tipo_equipamento: 'Multimidia', codigo_sala: 'H102'},
-        { codigo: '200', tipo_equipamento: 'Projetor', codigo_sala: 'B005' },
-        { codigo: '300', tipo_equipamento: 'Notebook', codigo_sala: 'E105' },
-        { codigo: '400', tipo_equipamento: 'Multimidia', codigo_sala: 'C001' }
-    ]
+    const items = []
 
     export default {
         components: {
@@ -47,9 +43,27 @@
         },
         data() {
             return {
-                fields: [ 'codigo', 'tipo_equipamento', 'codigo_sala',  'settings'],
+                fields: [
+                    {key: 'codigo', label: 'Código', sortable: true, sortDirection: 'asc'},
+                    {key: 'tipo_equipamento', label: 'Tipo Equipamento', sortable: true, sortDirection: 'asc'},
+                    {key: 'marca', label: 'Marca', sortable: true, sortDirection: 'asc'},
+                    {key: 'modelo', label: 'Modelo', sortable: true, sortDirection: 'asc'},
+                    {key: 'quantidade_total', label: 'Quantidade Total', sortable: false, 'class': 'text-center' },
+                    {key: 'quantidade_disponivel', label: 'Quantidade Disponível', sortable: false, 'class': 'text-center' },
+                    {key: 'settings', label: 'Ações', sortable: false, 'class': 'text-center' },
+                ],
                 items: items,
             }
+        },
+        methods: {
+
+        },
+        mounted(){
+            findEquipments().then(res =>{
+                res.forEach(element => {
+                    items.push({ codigo: element.patrimonio, tipo_equipamento: element.nome, marca: element.marca, modelo: element.modelo, quantidade_total: element.quantidade_total, quantidade_disponivel: element.quantidade_disponivel})
+                });
+            })
         }
     }
 </script>

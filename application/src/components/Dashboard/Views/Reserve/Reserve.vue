@@ -8,11 +8,11 @@
                         <div class="row">
                             <v-layout justify-center>
                                 <div class="col-3">
-                                    <b-button variant="primary" to="/admin/reserveclass">Reservar Salas</b-button>
+                                    <b-button class="btn-lg" variant="primary" to="/admin/reserveclass">Reservar Salas</b-button>
                                 </div>
                                 <div class="col-1"></div>
                                 <div class="col-3">
-                                    <b-button variant="primary">Reservar Equipamentos</b-button>
+                                    <b-button class="btn-lg" variant="primary">Reservar Equipamentos</b-button>
                                 </div>
                             </v-layout>
                         </div>

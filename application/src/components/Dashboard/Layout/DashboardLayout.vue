@@ -11,11 +11,11 @@
         <p>Users</p>
       </sidebar-link>
       <sidebar-link to="/admin/reserve">
-        <i class="fa fa-calendar-o"></i>
+        <i class="nc-icon nc-notes"></i>
         <p>Fazer reserva</p>
       </sidebar-link>
       <sidebar-link to="/admin/classes">
-        <i class="fa fa-calendar-o"></i>
+        <i class="nc-icon nc-bullet-list-67"></i>
         <p>Reservas feitas</p>
       </sidebar-link>
       <sidebar-link to="/admin/equipment">
