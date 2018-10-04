@@ -27,6 +27,21 @@ export async function findRoom(room){
     return await do_search()
 }
 
+export async function findEquipments(){
+    const getAllEquipments = () =>{
+        return DB.get('equipments/all').then( (res) =>{
+            return res.data
+        });
+    };
+
+    async function do_search(){
+        const equipmentsList = await getAllEquipments();
+
+        return equipmentsList;
+    }
+
+    return await do_search()
+}
 export async function freeRooms(schedule, startDate, finalDate){
   let freeRooms = {}
   var freeLessonsRooms = await lessons.freeRooms(schedule)

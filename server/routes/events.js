@@ -227,6 +227,6 @@ router.put('/:id', (req, res) => {
 })
 
 module.exports = {
-  path : '/event',
+  path : '/events',
   router: router
 }
