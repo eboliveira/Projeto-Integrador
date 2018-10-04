@@ -27,7 +27,7 @@
         find:function(inputVal){
             inputVal = inputVal.toUpperCase()
             findRoom(inputVal).then(res =>{
-                // this.$parent.refreshEvents(res)
+                this.$parent.refreshEvents(res)
             })
         }
     },

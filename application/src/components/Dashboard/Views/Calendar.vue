@@ -15,7 +15,7 @@
               <button @click="runScript()" class="btn btn-warning float-right">Gerar horários</button>
             </div>
           </div>
-          <full-calendar ref="calendar" :event-sources="eventSources" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
+          <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
         </div>
       </div>
     </div>
@@ -46,16 +46,16 @@ export default {
           end: "2018-10-26T12:00:00"
         },
         {
-          //   title: 'test2',
-          // allDay: true,
-          // start: moment().add(1, 'd'),
-          // end: moment().add(2, 'd')
+            title: 'test2',
+          allDay: true,
+          start: moment().add(1, 'd'),
+          end: moment().add(2, 'd')
         },
         {
-          //   title: 'test3',
-          // allDay: true,
-          // start: moment(),
-          // end: moment().add(3, 'd')
+            title: 'test3',
+          allDay: true,
+          start: moment(),
+          end: moment().add(3, 'd')
         }
       ],
       config: {
@@ -68,7 +68,9 @@ export default {
   },
   methods: {
     refreshEvents(res) {
-      this.$refs.calendar.$emit("refetch-events");
+      res.forEach(item => {
+        
+      });
     },
     removeEvent() {
       this.$refs.calendar.$emit("remove-event", this.selected);
@@ -82,21 +84,6 @@ export default {
     }
   },
   mounted: function() {
-    console.log(moment());
-  },
-  computed: {
-    eventSources() {
-      const self = this;
-      return [
-        {
-          events(start, end, timezone, callback) {
-            setTimeout(() => {
-              callback(self.events.filter(() => Math.random() > 0.5));
-            }, 1000);
-          }
-        }
-      ];
-    }
   }
 };
 </script>
