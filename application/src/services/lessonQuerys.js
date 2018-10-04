@@ -36,7 +36,7 @@ export async function atRoom(room){
   })
 }
 
-export async function atRoom(room, schedule){
+export async function atRoomAtSchedule(room, schedule){
   return await DB.post('lesson/room/' + room, schedule).then((res) => {
     return res.data
   })

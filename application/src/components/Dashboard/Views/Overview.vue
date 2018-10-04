@@ -72,7 +72,7 @@
   import Card from 'src/components/UIComponents/Cards/Card.vue'
   import LTable from 'src/components/UIComponents/Table.vue'
   import Checkbox from 'src/components/UIComponents/Inputs/Checkbox.vue'
-  import {postEvent} from '../../../services/PostsService'
+  import {freeRooms} from '../../../services/GetsServices'
 
   export default {
     components: {
@@ -169,17 +169,7 @@
       }
     },
     mounted: function () {
-      let new_event = {}
-      new_event.title = "teste"
-      new_event.description = "teste"
-      new_event.room = "teste"
-      new_event.type_room = "teste"
-      new_event.startDate = "2018-02-02"
-      new_event.finalDate = "2018-02-02"
-      new_event.schedule = "teste"
-      new_event.responsable = "teste"
-      new_event.status = "undefined"
-      postEvent(new_event)
+      freeRooms({"schedule":["2m1", "6m1"]}, '2018-04-10T00:00:00.000Z', '2018-04-11T00:00:00.000Z')
     }
   }
 </script>
