@@ -5,8 +5,17 @@
                 <card class="card" style="padding: 15px;">
                     <h4 slot="header" class="card-title">
                         Equipamentos
-                        <b-btn class="float-right" variant="success">Cadastrar</b-btn>
+                        <b-btn class="float-right" v-b-toggle.cadastroEquipamento href="#" variant="primary">Cadastrar</b-btn>
                     </h4>
+                    <b-collapse id="cadastroEquipamento" accordion="collapse" role="tabpanel">
+                        <b-form inline @submit="onSubmit" @reset="onReset" v-if="show">
+                            <b-input class="mr-sm-2 mb-sm-0" id="patrimonio" placeholder="Patrimônio" v-model="form.patrimonio" required/>
+                            <b-input class="mr-sm-2 mb-sm-0" id="tipoEquipamento" placeholder="Tipo Equipamento" v-model="form.tipoEquipamento" required/>
+                            <b-input class="mr-sm-2 mb-sm-0" id="marca" placeholder="Marca" v-model="form.marca" required/>
+                            <b-input class="mr-sm-2 mb-sm-0" id="modelo" placeholder="Modelo" v-model="form.modelo" required/>
+                            <b-button type="submit" variant="success">Save</b-button>
+                        </b-form>
+                    </b-collapse>
                     <b-container fluid>
                         <b-row>
                             <b-table striped hover stacked="md" :items="items" :fields="fields">
@@ -46,10 +55,33 @@
                     {key: 'settings',         label: 'Ações',            sortable: false, 'class': 'text-center'},
                 ],
                 items : [],
+
+                form: {
+                    patrimonio: '',
+                    tipoEquipamento: '',
+                    marca: '',
+                    modelo: '',
+                },
+
+                show: true
             }
         },
         methods: {
-            
+            onSubmit (evt) {
+                evt.preventDefault();
+                alert(JSON.stringify(this.form));
+            },
+            onReset (evt) {
+                evt.preventDefault();
+                /* Reset our form values */
+                this.form.patrimonio = '';
+                this.form.tipoEquipamento = '';
+                this.form.marca = '';
+                this.form.modelo = '';
+                /* Trick to reset/clear native browser form validation state */
+                this.show = false;
+                this.$nextTick(() => { this.show = true });
+            }
         },
         mounted(){
             allEquipments().then(res =>{
