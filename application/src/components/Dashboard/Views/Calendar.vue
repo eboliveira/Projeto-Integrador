@@ -4,17 +4,6 @@
       <div class="col-12">
         <div id="app">
           <router-view/><router-view name = "calendarView"/>
-          <div class="row" style="margin-bottom: 10px;">
-            <div class="col-3">
-              <button v-if="selected._id" @click="removeEvent" class="btn btn-danger float-left">Remove</button>
-            </div>
-            <div class="col-6">
-              <button @click="refreshEvents" class="btn btn-primary">Refresh</button>
-            </div>
-            <div class="col-3">
-              <button @click="runScript()" class="btn btn-warning float-right">Gerar horários</button>
-            </div>
-          </div>
           <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
         </div>
       </div>
@@ -34,29 +23,12 @@
 
 <script>
 import moment from "moment";
+import {parseScheduleToDate} from "./../../../services/utils"
 export default {
   name: "app",
   data() {
     return {
       events: [
-        {
-          title: "test",
-          allDay: true,
-          start: "2018-10-25T00:00:00",
-          end: "2018-10-26T12:00:00"
-        },
-        {
-            title: 'test2',
-          allDay: true,
-          start: moment().add(1, 'd'),
-          end: moment().add(2, 'd')
-        },
-        {
-            title: 'test3',
-          allDay: true,
-          start: moment(),
-          end: moment().add(3, 'd')
-        }
       ],
       config: {
         eventClick: event => {
@@ -68,9 +40,22 @@ export default {
   },
   methods: {
     refreshEvents(res) {
+      if(res.length == 0){
+        alert("Sala não encontrada")
+        return false
+      }
+      this.events = []
       res.forEach(item => {
-        
+        const schedule = parseScheduleToDate(item['schedule'][0])
+        let new_event = {
+          title:item['discipline_name'],
+          start: schedule['start'],
+          end: schedule['end'],
+          dow: [parseInt(item['schedule'][0][0])]
+        }
+        this.events.push(new_event)
       });
+        return true
     },
     removeEvent() {
       this.$refs.calendar.$emit("remove-event", this.selected);
@@ -80,7 +65,7 @@ export default {
       this.selected = event;
     },
     eventCreated(...test) {
-      console.log(test);
+
     }
   },
   mounted: function() {

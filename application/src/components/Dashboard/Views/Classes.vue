@@ -1,13 +1,20 @@
 <template>
     <div class="container-fluid" style="margin-top: 10px;">
         <div class="row" style="margin-bottom: 10px;">
-            <b-input-group @keydown.enter="handleSubmit">
-                <b-form-input placeholder="Digite o código da sala" v-model="inputVal"></b-form-input>
+            <b-input-group @keydown.enter="onSubmit(inputVal)">
+                <b-form-input placeholder="Digite o código da sala" v-model="inputVal" maxlength=4 :state=this.isValid aria-describedby="inputError">
+                </b-form-input>
                 <b-input-group-append>
-                    <b-btn variant="info" @click="find(inputVal)" style="border: 1px solid #17a2b8">Buscar</b-btn>
+                    <b-btn variant="success" @click="onSubmit(inputVal)" style="border: 1px solid #17a2b8" >
+                      <i class = "fa fa-search"> </i>
+                    </b-btn>
                 </b-input-group-append>
+                <b-form-invalid-feedback id = "formError">
+                    Escreva um formato válido de código de sala
+                </b-form-invalid-feedback>
             </b-input-group>
         </div>
+        <h1><b-badge variant="info">{{this.badgeText}}</b-badge></h1>
     </div>
 </template>
 
@@ -17,19 +24,28 @@
   export default {
     data() {
       return {
-        inputVal : '',
+        inputVal: '',
+        isValid: null,
+        badgeText: ''
       };
     },
     components:{
         fgInput
     },
     methods: {
-        find:function(inputVal){
+        onSubmit:function(inputVal){
+            if (this.inputVal.length < 4 || !isNaN(parseInt(inputVal[0])) || isNaN(parseInt(inputVal[1])) || isNaN(parseInt(inputVal[2])) || isNaN(parseInt(inputVal[3]))){
+                this.isValid = false
+                return
+            }
+            this.isValid = true
             inputVal = inputVal.toUpperCase()
             findRoom(inputVal).then(res =>{
-                this.$parent.refreshEvents(res)
+                if (this.$parent.refreshEvents(res)){
+                    this.badgeText=res[0]['room']
+                }
             })
-        }
+        },
     },
   };
 </script>
