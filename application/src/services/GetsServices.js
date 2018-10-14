@@ -42,6 +42,7 @@ export async function findEquipments(){
 
     return await do_search()
 }
+
 export async function freeRooms(schedule, startDate, finalDate){
   let freeRooms = {}
   var freeLessonsRooms = await lessons.freeRooms(schedule)
