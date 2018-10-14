@@ -51,7 +51,7 @@ export default {
           title:item['discipline_name'],
           start: schedule['start'],
           end: schedule['end'],
-          dow: [parseInt(item['schedule'][0][0])]
+          dow: [(parseInt(item['schedule'][0][0]))-1]
         }
         this.events.push(new_event)
       });
