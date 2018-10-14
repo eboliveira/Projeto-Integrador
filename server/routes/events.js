@@ -193,11 +193,10 @@ router.post('/post', (req, res) =>{
   new_event.title = req.body.title;
   new_event.description = req.body.description;
   new_event.room = req.body.room;
-  new_event.type_room = req.body.type_room;
   new_event.startDate = req.body.startDate;
   new_event.finalDate = req.body.finalDate;
-  new_event.schedule = req.body.schedule;
   new_event.responsable = req.body.responsable;
+  new_event.repeat = req.body.repeat;
   new_event.status = "undefined";
   EventCalendar.addEvent(new_event, function (err, evnt) {
     if (err) {

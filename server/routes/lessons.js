@@ -21,7 +21,8 @@ router.get('/all', (req, res) => {
 })
 
 router.get('/room/:room', (req, res) => {
-  LessonCalendar.getLessonsAtRoom(req.params.room, function (err, evnt){
+  room = req.params.room.toUpperCase()
+  LessonCalendar.getLessonsAtRoom(room, function (err, evnt){
     if(err){
       console.log(err)
       return res.status(400).send('server could not understand the request')
