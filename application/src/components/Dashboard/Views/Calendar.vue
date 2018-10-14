@@ -24,6 +24,8 @@
 <script>
 import moment from "moment";
 import {parseScheduleToDate} from "./../../../services/utils"
+import controllers from "./../../../services/eventsFullCalendar"
+
 export default {
   name: "app",
   data() {
@@ -46,16 +48,35 @@ export default {
       }
       this.events = []
       res.forEach(item => {
-        const schedule = parseScheduleToDate(item['schedule'][0])
-        let new_event = {
-          title:item['discipline_name'],
-          start: schedule['start'],
-          end: schedule['end'],
-          dow: [parseInt(item['schedule'][0][0])]
+        let new_event = {};
+        if (item['description']){       //se é um evento
+            if(item['repeat']){         //se tem repetição
+                let events_list = []
+                if(item['repeat'] == "daily"){ //se é diariamente
+                    events_list = controllers.repeat(item, 'day')
+                }
+                else if(item['repeat'] == "weekly"){ //se é semanalmente
+                    events_list = controllers.repeat(item, 'week')
+                }
+                else if(item['repeat'] == "monthly"){ //se é semanalmente
+                    events_list = controllers.repeat(item, 'month')
+                }
+                events_list.forEach(item =>{
+                    this.events.push(item)
+                })
+            }
+            else{
+                new_event = controllers.createEvent(item)
+                this.events.push(new_event)
+            }
         }
-        this.events.push(new_event)
-      });
+        else{
+            const schedule = parseScheduleToDate(item['schedule'][0])
+            new_event = controllers.createLesson(item, schedule)
+            this.events.push(new_event)
+        }
         return true
+      });
     },
     removeEvent() {
       this.$refs.calendar.$emit("remove-event", this.selected);

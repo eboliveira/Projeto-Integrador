@@ -5,12 +5,11 @@ var EventCalendar = new Schema({
   title: String,
   description: String,
   room: String,
-  type_room: String,
   startDate: Date,
   finalDate: Date,
-  schedule: [String],
   responsable : String,
-  status : String
+  status : String,
+  repeat : String
 }, { versionKey: false })
 
 
