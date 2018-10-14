@@ -11,7 +11,7 @@ var EventCalendar = new Schema({
   schedule: [String],
   responsable : String,
   status : String
-})
+}, { versionKey: false })
 
 
 var Evnt = mongoose.model('Evnt',EventCalendar,'events');

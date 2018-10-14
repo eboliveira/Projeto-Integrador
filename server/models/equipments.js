@@ -7,7 +7,7 @@ var Schema = new Schema({
     description: String,
     startDate: Date,
     finalDate: Date,
-})
+}, { versionKey: false })
 
 var Equi = mongoose.model('Equi',Schema,'equipments');
 module.exports = Equi;
