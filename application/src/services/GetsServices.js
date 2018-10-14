@@ -2,10 +2,11 @@ import {DB} from './Api'
 import {RoomBinarySearch} from './utils';
 import * as events from './eventQuerys'
 import * as lessons from './lessonQuerys'
+import * as equipments from './equipmentsQuery'
 
 export async function findRoom(room){
     const findInEvents = (room) =>{
-        return DB.get('event/room/' + room)
+        return DB.get('events/room/' + room)
         .then( (res) =>{
             return res.data
         });
@@ -27,22 +28,6 @@ export async function findRoom(room){
     return await do_search()
 }
 
-export async function findEquipments(){
-    const getAllEquipments = () =>{
-        return DB.get('equipments/all').then( (res) =>{
-            return res.data
-        });
-    };
-
-    async function do_search(){
-        const equipmentsList = await getAllEquipments();
-
-        return equipmentsList;
-    }
-
-    return await do_search()
-}
-
 export async function freeRooms(schedule, startDate, finalDate){
   let freeRooms = {}
   var freeLessonsRooms = await lessons.freeRooms(schedule)
@@ -55,6 +40,10 @@ export async function freeRooms(schedule, startDate, finalDate){
       }
     }
   }
-  console.log(freeLessonsRooms)
+
   return freeLessonsRooms
+}
+
+export async function allEquipments(){
+    return await equipments.all()
 }
