@@ -11,13 +11,13 @@ var Room_schema = new Schema({
 var Room = mongoose.model('Room', Room_schema, 'room');
 module.exports = Room;
 
-module.exports.add = function(evnt, callback){
+module.exports.updateOrCreate = function(evnt, callback){
   Room.findOneAndUpdate(
-    { _id:evnt.room_name },
+    { _id:evnt._id },
     {
       $setOnInsert:
       {
-        _id:evnt.room_name
+        _id:evnt._id
       },
       $set:
       {
@@ -27,7 +27,7 @@ module.exports.add = function(evnt, callback){
     },
     {
       upsert: true,
-      returnNewDocument: true
+      new: true
     },
     callback
   )
@@ -37,53 +37,54 @@ module.exports.all = function (callback){
   Room.find(callback).sort({_id:'asc'})
 }
 
-module.exports.getFree = function (schedule, callback){
-  Room.aggregate([
-    {
-      $lookup: {
-        from: "lesson",
-        let: { class_room: "$_id" },
-        pipeline:[
-          {
-            $match:{
-              $expr:{
-                $eq:["$$class_room", "$room"]
-              }
-            }
-          },
-          { $project: { schedule:true, _id:false } }
-        ],
-        as: "Lessons"
-      }
-    },
-    {
-      $lookup: {
-        from: "events",
-        let: { class_room: "$_id" },
-        pipeline:[
-          {
-            $match:{
-              $expr:{
-                $eq:["$$class_room", "$room"]
-              }
-            }
-          },
-          { $project: { schedule:true, _id:false } }
-        ],
-        as: "Events"
-      }
-    },
-    {
-      "$match": {$and:[
-        {"Lessons.schedule": {$not:{$in:schedule}}},
-        {"Events.schedule": {$not:{$in:schedule}}}
-      ]}
-    },
-    { "$sort": {_id: 1 } }
-  ], callback)
-}
+// module.exports.getFree = function (schedule, callback){
+//   Room.aggregate([
+//     {
+//       $lookup: {
+//         from: "lesson",
+//         let: { class_room: "$_id" },
+//         pipeline:[
+//           {
+//             $match:{
+//               $expr:{
+//                 $eq:["$$class_room", "$room"]
+//               }
+//             }
+//           },
+//           { $project: { schedule:true, _id:false } }
+//         ],
+//         as: "Lessons"
+//       }
+//     },
+//     {
+//       $lookup: {
+//         from: "events",
+//         let: { class_room: "$_id" },
+//         pipeline:[
+//           {
+//             $match:{
+//               $expr:{
+//                 $eq:["$$class_room", "$room"]
+//               }
+//             }
+//           },
+//           { $project: { schedule:true, _id:false } }
+//         ],
+//         as: "Events"
+//       }
+//     },
+//     {
+//       "$match": {$and:[
+//         {"Lessons.schedule": {$not:{$in:schedule}}},
+//         {"Events.schedule": {$not:{$in:schedule}}}
+//       ]}
+//     },
+//     { "$sort": {_id: 1 } }
+//   ], callback)
+// }
 
-module.exports.getFreeByType = function (schedule, roomType, callback){
+// Free rooms at schedule
+module.exports.getFreeByType = function (schedule, roomType, startDate, finalDate, callback){
   Room.aggregate([
     {
       $lookup: {
@@ -109,23 +110,26 @@ module.exports.getFreeByType = function (schedule, roomType, callback){
         pipeline:[
           {
             $match:{
-              $expr:{
-                $eq:["$$class_room", "$room"]
+              $expr:{ $and:[
+                {$eq:["$$class_room", "$room"]},
+              ]
               }
             }
           },
-          { $project: { schedule:true, _id:false } }
+          { $project: { schedule:true, startDate: true, finalDate: true, _id:false } }
         ],
         as: "Events"
       }
     },
     {
       "$match": {$and:[
-        {type_room:{$eq:roomType}},
+        {type_room:{$ne:roomType}},
         {"Lessons.schedule": {$not:{$in:schedule}}},
-        {"Events.schedule": {$not:{$in:schedule}}}
+        // {"Events.startDate":{$lte:new Date(finalDate).toISOString()}},
+        // {"Events.finalDate":{$gte:new Date(startDate).toISOString()}}
       ]}
     },
+    { $project: { Lessons:false, Events:false } },
     { "$sort": {_id: 1 } }
   ], callback)
 }
