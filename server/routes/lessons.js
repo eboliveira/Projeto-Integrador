@@ -45,54 +45,6 @@ router.post('/room/:room', (req, res) => {
   })
 })
 
-router.get('/room/type/:roomType', (req, res) => {
-  LessonCalendar.getLessonsByRoomType(req.params.roomType, function (err, evnt){
-    if(err){
-      console.log(err)
-      return res.status(400).send('server could not understand the request')
-    }
-    else{
-      res.status(200).send(evnt);
-    }
-  })
-})
-
-router.post('/room/type/:roomType', (req, res) => {
-  LessonCalendar.getLessonsByRoomTypeAtSchedule(req.params.roomType, req.body.schedule, function (err, evnt){
-    if(err){
-      console.log(err)
-      return res.status(400).send('server could not understand the request')
-    }
-    else{
-      res.status(200).send(evnt);
-    }
-  })
-})
-
-router.post('/freeRooms', (req, res) => {
-  LessonCalendar.getFreeRoomsAtSchedule(req.body.schedule, function (err, evnt){
-    if(err){
-      console.log(err)
-      return res.status(400).send('server could not understand the request')
-    }
-    else{
-      res.status(200).send(evnt);
-    }
-  })
-})
-
-router.post('/freeRooms/:roomType', (req, res) => {
-  LessonCalendar.getFreeRoomsByTypeAtSchedule(req.params.roomType, req.body.schedule, function (err, evnt){
-    if(err){
-      console.log(err)
-      return res.status(400).send('server could not understand the request')
-    }
-    else{
-      res.status(200).send(evnt);
-    }
-  })
-})
-
 router.post('/schedule', (req, res) => {
   LessonCalendar.getLessonsAtSchedule(req.body.schedule, function (err, evnt){
     if(err){
@@ -179,7 +131,6 @@ router.get('/:id', (req, res) => {
 router.post('/post', (req, res) =>{
   let new_lesson = {}
   new_lesson.room = req.body.room;
-  new_lesson.type_room = req.body.type_room;
   new_lesson.capacity = req.body.capacity;
   new_lesson.schedule = req.body.schedule;
   new_lesson.discipline_cod = req.body.discipline_cod;

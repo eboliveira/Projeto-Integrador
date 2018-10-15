@@ -92,66 +92,6 @@ router.post('/room/:room/:startDate/:finalDate', (req, res) => {
   })
 })
 
-router.get('/room/type/:roomType', (req, res) => {
-  EventCalendar.getEventsByRoomType(req.params.roomType, function (err, evnt){
-    if(err){
-      console.log(err)
-      return res.status(400).send('server could not understand the request')
-    }
-    else{
-      res.status(200).send(evnt);
-    }
-  })
-})
-
-router.get('/room/type/:roomType/:startDate/:finalDate', (req, res) => {
-  EventCalendar.getEventsByRoomTypeAtInterval(req.params.roomType, req.params.startDate, req.params.finalDate, function (err, evnt){
-    if(err){
-      console.log(err)
-      return res.status(400).send('server could not understand the request')
-    }
-    else{
-      res.status(200).send(evnt);
-    }
-  })
-})
-
-router.post('/freeRooms', (req, res) => {
-  EventCalendar.getFreeEventRoomsAtSchedule(req.body.schedule, function (err, evnt){
-    if(err){
-      console.log(err)
-      return res.status(400).send('server could not understand the request')
-    }
-    else{
-      res.status(200).send(evnt);
-    }
-  })
-})
-
-router.post('/freeRooms/:startDate/:finalDate', (req, res) => {
-  EventCalendar.getFreeEventRoomsAtScheduleAtIntertal(req.body.schedule, req.params.startDate, req.params.finalDate, function (err, evnt){
-    if(err){
-      console.log(err)
-      return res.status(400).send('server could not understand the request')
-    }
-    else{
-      res.status(200).send(evnt);
-    }
-  })
-})
-
-router.post('/freeRooms/type/:roomType/:startDate/:finalDate', (req, res) => {
-  EventCalendar.getFreeEventRoomsByTypeAtSchedule(req.params.roomType, req.body.schedule, req.params.startDate, req.params.finalDate, function (err, evnt){
-    if(err){
-      console.log(err)
-      return res.status(400).send('server could not understand the request')
-    }
-    else{
-      res.status(200).send(evnt);
-    }
-  })
-})
-
 router.get('/atInterval/:startDate/:finalDate', (req, res) => {
   EventCalendar.getEventsAtInterval(req.params.startDate, req.params.finalDate, function (err, evnt){
     if(err){

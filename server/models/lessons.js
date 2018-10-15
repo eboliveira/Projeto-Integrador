@@ -20,15 +20,6 @@ module.exports.add = function (evnt, callback){
 
 module.exports.getAllLessons = function (callback){
   Lesson.find(callback).sort({room:'asc'})
-  // Lesson.aggregate([
-  //       { "$match": {} },
-  //       { "$group": {
-  //           "_id": "$room",
-  //           "capacity": { "$first": "$capacity" },
-  //           "type_room": { "$first": "$type_room" }
-  //       }},
-  //       { "$sort": {_id: 1 } }
-  //   ], callback)
 }
 
 module.exports.getLessonsAtRoom = function (roomSearch, callback){
@@ -70,57 +61,8 @@ module.exports.getLessonsAtRoomAtSchedule = function (roomSearch, schedule, call
   ).sort({discipline_cod:'asc'})
 }
 
-module.exports.getFreeRoomsAtSchedule = function (schedule, callback){
-  // Lesson.find({schedule: {$nin:schedule}}, callback).sort({room:'asc'})
-  Lesson.aggregate([
-        { "$match": {schedule: {$in:schedule}} },
-        { "$group": {
-            "_id": "$room",
-            "room":{ "$first": "$room" },
-            "capacity": { "$first": "$capacity" },
-            "type_room": { "$first": "$type_room" }
-        }},
-        { "$sort": {room: 1 } }
-    ], callback)
-}
-
-module.exports.getFreeRoomsByTypeAtSchedule = function (roomType, schedule, callback){
-  // Lesson.find(
-  //   {$and:[
-  //     {type_room: roomType},
-  //     {schedule: {$nin:schedule}}
-  //   ]}, callback
-  // ).sort({room:'asc'})
-  Lesson.aggregate([
-        { "$match": {$and:[
-          {type_room: roomType},
-          {schedule: {$nin:schedule}}
-        ]} },
-        { "$group": {
-            "_id": "$room",
-            "room":{ "$first": "$room" },
-            "capacity": { "$first": "$capacity" },
-            "type_room": { "$first": "$type_room" }
-        }},
-        { "$sort": {room: 1 } }
-    ], callback)
-}
-
 module.exports.getLessonsAtSchedule = function (schedule, callback){
   Lesson.find({schedule: {$in:schedule}}, callback).sort({discipline_cod:'asc'})
-}
-
-module.exports.getLessonsByRoomType = function (roomType, callback){
-  Lesson.find({type_room: roomType}, callback).sort({room:'asc'})
-}
-
-module.exports.getLessonsByRoomTypeAtSchedule = function (roomType, schedule, callback){
-  Lesson.find(
-    {$and:[
-      {type_room: roomType},
-      {schedule: {$in:schedule}}
-    ]}, callback
-  ).sort({room:'asc'})
 }
 
 module.exports.getLessonsByResponsable = function (responsable, callback){

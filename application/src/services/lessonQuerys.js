@@ -42,30 +42,6 @@ export async function atRoomAtSchedule(room, schedule){
   })
 }
 
-export async function byRoomType(roomType){
-  return await DB.get('lesson/room/type/' + roomType).then((res) => {
-    return res.data
-  })
-}
-
-export async function byRoomTypeAtSchedule(roomType, schedule){
-  return await DB.post('lesson/room/type/' + roomType, schedule).then((res) => {
-    return res.data
-  })
-}
-
-export async function freeRooms(schedule){
-  return await DB.post('lesson/freeRooms', schedule).then((res) => {
-    return res.data
-  })
-}
-
-export async function freeRoomsByType(roomType, schedule){
-  return await DB.post('lesson/freeRooms/' + roomType, schedule).then((res) => {
-    return res.data
-  })
-}
-
 export async function bySchedule(schedule){
   return await DB.post('lesson/schedule', schedule).then((res) => {
     return res.data

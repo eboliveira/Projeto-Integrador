@@ -42,36 +42,6 @@ export async function atRoomAtScheduleAtInterval(room, schedule, startDate, fina
   })
 }
 
-export async function byRoomType(roomType){
-  return await DB.get('event/room/type/' + roomType).then((res) => {
-    return res.data
-  })
-}
-
-export async function byRoomTypeAtInterval(roomType, startDate, finalDate){
-  return await DB.get('event/room/type/' + roomType + '/' + startDate + '/' + finalDate).then((res) => {
-    return res.data
-  })
-}
-
-export async function freeRoomsAtSchedule(schedule){
-  return await DB.post('event/freeRooms', schedule).then((res) => {
-    return res.data
-  })
-}
-
-export async function freeRoomsAtScheduleAtIntertal(schedule, startDate, finalDate){
-  return await DB.post('event/freeRooms/' + startDate + '/' + finalDate, schedule).then((res) => {
-    return res.data
-  })
-}
-
-export async function freeRoomsByTypeAtSchedule(schedule, roomType, startDate, finalDate){
-  return await DB.post('event/freeRooms/type/' + roomType + '/' + startDate + '/' + finalDate, schedule).then((res) => {
-    return res.data
-  })
-}
-
 export async function atInterval(startDate, finalDate){
   return await DB.get('event/atInterval/' + startDate + '/' + finalDate).then((res) => {
     return res.data
