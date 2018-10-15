@@ -73,7 +73,8 @@ module.exports.getEventsByRoomType = function (roomType, callback){
 
 module.exports.getEventsByRoomTypeAtInterval = function (roomType, startDate, finalDate, callback){
   Evnt.find(
-    {$and:[{startDate:{$lte:new Date(finalDate).toISOString()}},
+    {$and:[
+      {startDate:{$lte:new Date(finalDate).toISOString()}},
       {finalDate:{$gte:new Date(startDate).toISOString()}},
       {type_room: roomType}
     ]}, callback
