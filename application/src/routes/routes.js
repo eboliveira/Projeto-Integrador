@@ -11,6 +11,8 @@ import Reserve from 'src/components/Dashboard/Views/Reserve/Reserve.vue'
 import Classes from 'src/components/Dashboard/Views/Classes.vue'
 import Equipments from 'src/components/Dashboard/Views/Equipment.vue'
 import ReserveEquipment from 'src/components/ReserveEquipment/Equipment.vue'
+import Pendents from 'src/components/Dashboard/Views/Pendents.vue'
+
 
 const routes = [
   {
@@ -69,8 +71,13 @@ const routes = [
       },
       {
         path: 'reserveEquipment',
-        name: 'ReserveEquipment',
+        name: 'reserveEquipment',
         component: ReserveEquipment
+      },
+      {
+        path: 'pendents',
+        name: 'pendentsReserves',
+        component: Pendents
       },
     ]
   },
