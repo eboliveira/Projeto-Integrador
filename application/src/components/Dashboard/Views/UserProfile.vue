@@ -22,8 +22,8 @@
                       <td>DACOM</td>
                       <td>Professor</td>
                       <td>
-                        <button class="btn btn-warning nc-settings-90 nc-icon" v-tooltip="Editar"></button>
-                        <button class="btn btn-danger nc-scissors nc-icon" v-tooltip="Excluir"></button>
+                        <a class="btn btn-info btn-xs" v-tooltip="Visualizar" href="#"><i class="fa fa-eye fa-2x" style="padding-right:21px; color:black;"></i></a>
+                        <a class="btn btn-danger btn-xs" v-tooltip="Excluir" href="#"><i class="fa fa-times fa-2x" style="padding-right:15px; color:black;"></i></a>
                       </td>
                     </tr>
                     <tr>
@@ -31,8 +31,8 @@
                       <td>DALIM</td>
                       <td>Professora</td>
                       <td>
-                        <button class="btn btn-warning nc-settings-90 nc-icon" v-tooltip="Editar"></button>
-                        <button class="btn btn-danger nc-scissors nc-icon" v-tooltip="Excluir"></button>
+                          <a class="btn btn-info btn-xs" v-tooltip="Visualizar" href="#"><i class="fa fa-eye fa-2x" style="padding-right:21px; color:black;"></i></a>
+                          <a class="btn btn-danger btn-xs" v-tooltip="Excluir" href="#"><i class="fa fa-times fa-2x" style="padding-right:15px; color:black;"></i></a>
                       </td>
                     </tr>
                     <tr>
@@ -40,8 +40,8 @@
                       <td>DIRPLAD</td>
                       <td>SERVIDOR</td>
                       <td>
-                        <button class="btn btn-warning nc-settings-90 nc-icon" v-tooltip="Editar"></button>
-                        <button class="btn btn-danger nc-scissors nc-icon" v-tooltip="Excluir"></button>
+                          <a class="btn btn-info btn-xs" v-tooltip="Visualizar" href="#"><i class="fa fa-eye fa-2x" style="padding-right:21px; color:black;"></i></a>
+                          <a class="btn btn-danger btn-xs" v-tooltip="Excluir" href="#"><i class="fa fa-times fa-2x" style="padding-right:15px; color:black;"></i></a>
                       </td>
                     </tr>
                   </tbody>

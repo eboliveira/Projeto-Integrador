@@ -22,7 +22,6 @@
 </style>
 
 <script>
-import moment from "moment";
 import {parseScheduleToDate} from "./../../../services/utils"
 import controllers from "./../../../services/eventsFullCalendar"
 

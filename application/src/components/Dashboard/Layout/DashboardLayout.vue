@@ -15,12 +15,16 @@
         <p>Fazer reserva</p>
       </sidebar-link>
       <sidebar-link to="/admin/classes">
-        <i class="nc-icon nc-bullet-list-67"></i>
+        <i class="nc-icon nc-check-2 "></i>
         <p>Reservas feitas</p>
       </sidebar-link>
       <sidebar-link to="/admin/equipment">
         <i class="nc-icon nc-camera-20"></i>
         <p>Equipamentos</p>
+      </sidebar-link>
+      <sidebar-link to="/admin/pendents">
+        <i class="nc-icon nc-bullet-list-67"></i>
+        <p>Reservas pendentes</p>
       </sidebar-link>
     </side-bar>
     <div class="main-panel">
