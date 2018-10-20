@@ -169,7 +169,9 @@
       }
     },
     mounted: function () {
-      freeRooms({"schedule":["2m1", "6m1"]}, '2018-04-10T00:00:00.000Z', '2018-04-11T00:00:00.000Z')
+      freeRooms({"schedule":["6n1", "6n2", "6n3", "6n4", "6n5"]}, '2018-04-09T07:00:00.000Z', '2018-04-12T23:00:00.000Z').then((value) => {
+        console.log(value)
+      })
     }
   }
 </script>
