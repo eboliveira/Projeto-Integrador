@@ -2,7 +2,7 @@
     <b-container fluid>
         <b-row>
             <b-col md="12">
-                <card class="card" style="padding: 15px;">
+                <card style="padding: 15px;">
                     <h4 slot="header" class="card-title">
                         Equipamentos
                         <b-btn class="float-right" v-b-toggle.cadastroEquipamento href="#" variant="primary">Cadastrar</b-btn>
