@@ -48,6 +48,12 @@ import FullCalendar from 'vue-full-calendar';
 import 'fullcalendar/dist/locale/pt';
 Vue.use(FullCalendar);
 
+// vue-bootstrap-datetimepicker
+import datePicker from 'vue-bootstrap-datetimepicker';
+import 'bootstrap/dist/css/bootstrap.css';
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
+Vue.use(datePicker);
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',

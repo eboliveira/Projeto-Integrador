@@ -10,8 +10,8 @@ var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
 var env = process.env.NODE_ENV === 'testing'
-  ? require('../config/test.env')
-  : config.build.env
+? require('../config/test.env')
+: config.build.env
 
 var webpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -53,8 +53,8 @@ var webpackConfig = merge(baseWebpackConfig, {
     // see https://github.com/ampedandwired/html-webpack-plugin
     new HtmlWebpackPlugin({
       filename: process.env.NODE_ENV === 'testing'
-        ? 'index.html'
-        : config.build.index,
+      ? 'index.html'
+      : config.build.index,
       template: 'index.html',
       inject: true,
       minify: {
@@ -96,7 +96,14 @@ var webpackConfig = merge(baseWebpackConfig, {
         to: config.build.assetsSubDirectory,
         ignore: ['.*']
       }
-    ])
+    ]),
+    new webpack.ProvidePlugin({
+      Vue: ['vue/dist/vue.esm.js', 'default'],
+      jQuery: 'jquery',
+      'window.jQuery': 'jquery',
+      $: 'jquery',
+      moment: 'moment',
+    }),
   ]
 })
 
