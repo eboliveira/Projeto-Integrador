@@ -1,3 +1,6 @@
+import moment from 'moment'
+
+
 export function RoomBinarySearch(start, end, vector, element) {
   var guess = Math.floor((start+end) / 2)
 
@@ -15,6 +18,23 @@ export function RoomBinarySearch(start, end, vector, element) {
 
   return RoomBinarySearch(start, guess-1, vector, element)
 
+}
+
+export function checkConflicts(reservationStart, reservationEnd, periodStart, periodEnd) {
+  var reservation_start = moment(new Date(reservationStart))
+  var reservation_end = moment(new Date(reservationEnd))
+  var checkingStart = moment(new Date(periodStart))
+  var checkingEnd = moment(new Date(periodEnd))
+
+  if (checkingStart.isBetween(reservation_start, reservation_end, null, '[]') || checkingEnd.isBetween(reservation_start, reservation_end, null, '[]')) {
+    return true // There is a reservation whose start and / or end is within the selected period.
+  }
+
+  if (reservation_start.isBetween(checkingStart, checkingEnd, null, '[]') || reservation_end.isBetween(checkingStart, checkingEnd, null, '[]')) {
+    return true // The start and / or end is within the period of an existing reservation.
+  }
+
+  return false
 }
 
 const classSchedules = {

@@ -6,7 +6,7 @@ var Schema = new Schema({
     nome: String,
     marca: String,
     modelo: String
-})
+}, { versionKey: false })
 
 var Equi = mongoose.model('Equi',Schema,'equipments');
 module.exports = Equi;
@@ -24,7 +24,7 @@ module.exports.getequiById = function (id, callback){
         _id : id
     }, callback)
 }
-  
+
 module.exports.updateEqui = function (updateEqui, callback){
     Equi.getequiById(updateEqui.id,(err, equi) =>{
         if (equi) {

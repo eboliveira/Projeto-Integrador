@@ -20,19 +20,15 @@ function checkConflicts(reservationStart, reservationEnd, periodStart, periodEnd
   var checkingStart = moment(new Date(periodStart))
   var checkingEnd = moment(new Date(periodEnd))
 
-  if (checkingStart.isBetween(reservation_start, reservation_end) || checkingEnd.isBetween(reservation_start, reservation_end)) {
-    return 1 // There is a reservation whose start and / or end is within the selected period.
+  if (checkingStart.isBetween(reservation_start, reservation_end, null, '[]') || checkingEnd.isBetween(reservation_start, reservation_end, null, '[]')) {
+    return true // There is a reservation whose start and / or end is within the selected period.
   }
 
-  if (reservation_start.isBetween(checkingStart, checkingEnd) || reservation_end.isBetween(checkingStart, checkingEnd)) {
-    return 2 // The start and / or end is within the period of an existing reservation.
+  if (reservation_start.isBetween(checkingStart, checkingEnd, null, '[]') || reservation_end.isBetween(checkingStart, checkingEnd, null, '[]')) {
+    return true // The start and / or end is within the period of an existing reservation.
   }
 
-  if (reservation_start.isSame(checkingStart) || reservation_end.isSame(checkingEnd)) {
-    return 3
-  }
-
-  return 0
+  return false
 }
 
 function getConflicts(reservationStart, reservationEnd, callback) {
@@ -53,4 +49,4 @@ function getConflicts(reservationStart, reservationEnd, callback) {
   })
 }
 
-module.exports = {checkValid, getConflicts}
+module.exports = {checkValid, getConflicts, checkConflicts}

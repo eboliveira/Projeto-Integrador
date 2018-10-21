@@ -6,7 +6,8 @@ var mongoose = require('mongoose');
 const loadRoutes = require('./routes').loadRoutes
 const app = express()
 const fs = require('fs')
-const model = require('./models/lessons')
+const lesson = require('./models/lessons')
+const room = require('./models/rooms')
 
 
 app.use(morgan('combined'))
@@ -29,19 +30,29 @@ function format_csv(csv){
             return val
         });
         let new_lesson = {}
-        new_lesson.room = formated_item[0];
-        new_lesson.type_room = formated_item[1];
-        new_lesson.capacity = formated_item[2];
-        new_lesson.schedule = [formated_item[3]];
-        new_lesson.discipline_cod = formated_item[4];
-        new_lesson.class_cod = formated_item[5];
-        new_lesson.discipline_name = formated_item[6];
-        new_lesson.responsable = formated_item[7];
-        model.addLesson(new_lesson, function(err,evnt){
-            if (err){
-                console.log(err);
-            }
-        });
+        let new_room = {}
+        if (formated_item[0] != "") {
+          new_room._id = formated_item[0];
+          new_room.type_room = formated_item[1];
+          new_room.capacity = formated_item[2];
+          room.updateOrCreate(new_room, function(err, evnt){
+              if (err){
+                  console.log(err);
+              }
+          });
+
+          new_lesson.room = formated_item[0];
+          new_lesson.schedule = [formated_item[3]];
+          new_lesson.discipline_cod = formated_item[4];
+          new_lesson.class_cod = formated_item[5];
+          new_lesson.discipline_name = formated_item[6];
+          new_lesson.responsable = formated_item[7];
+          lesson.add(new_lesson, function(err, evnt){
+              if (err){
+                  console.log(err);
+              }
+          });
+        }
     });
 }
 console.log("Server running on port: " + port)

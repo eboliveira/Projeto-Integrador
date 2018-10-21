@@ -1,10 +1,9 @@
 const express = require('express')
 const dateTime = require('../actions/dateTime')
-const saltRounds = 10
 
 const router = express.Router()
 
-router.get('/:startDate/:endDate', (req, res) => {
+router.get('/getConflicts/:startDate/:endDate', (req, res) => {
   if (dateTime.checkValid(req.params.startDate,req.params.endDate)) {
     dateTime.getConflicts(req.params.startDate,req.params.endDate, function (err, conflicts) {
       if (err) res.status(500).send(err)
@@ -15,7 +14,15 @@ router.get('/:startDate/:endDate', (req, res) => {
   }
 })
 
+router.get('/checkConflicts/p1/:reservationStart/:reservationEnd/p2/:periodStart/:periodEnd', (req, res) => {
+  if (dateTime.checkConflicts(req.params.reservationStart, req.params.reservationEnd, req.params.periodStart, req.params.periodEnd)) {
+    res.status(200).send("true")
+  } else {
+    res.status(200).send("false")
+  }
+})
+
 module.exports = {
-    path: '/actions',
-    router: router
+  path: '/actions',
+  router: router
 }

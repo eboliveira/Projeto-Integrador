@@ -3,34 +3,23 @@ var Schema = mongoose.Schema;
 
 var Lesson_calendar = new Schema({
   room: String,       //Exemplo: B001, B002
-  type_room: String,  //Exemplo: Laboratório, sala de aula comum
-  capacity : Number,  //Capacidade da sala, pode ser vazio
   schedule: [String],   //horários, Exemplo: m1, m2, n1, n2
   discipline_cod : String,  //código da disciplina
   class_cod : String,       //código da turma
   discipline_name : String, //nome da disciplina
   responsable : String //nome do professor ou quem requisitou a sala
-})
+}, { versionKey: false })
 
 
 var Lesson = mongoose.model('Lesson',Lesson_calendar,'lesson');
 module.exports = Lesson;
 
-module.exports.addLesson = function (evnt, callback){
+module.exports.add = function (evnt, callback){
   Lesson.create(evnt, callback);
 }
 
 module.exports.getAllLessons = function (callback){
   Lesson.find(callback).sort({room:'asc'})
-  // Lesson.aggregate([
-  //       { "$match": {} },
-  //       { "$group": {
-  //           "_id": "$room",
-  //           "capacity": { "$first": "$capacity" },
-  //           "type_room": { "$first": "$type_room" }
-  //       }},
-  //       { "$sort": {_id: 1 } }
-  //   ], callback)
 }
 
 module.exports.getLessonsAtRoom = function (roomSearch, callback){
@@ -72,57 +61,8 @@ module.exports.getLessonsAtRoomAtSchedule = function (roomSearch, schedule, call
   ).sort({discipline_cod:'asc'})
 }
 
-module.exports.getFreeRoomsAtSchedule = function (schedule, callback){
-  // Lesson.find({schedule: {$nin:schedule}}, callback).sort({room:'asc'})
-  Lesson.aggregate([
-        { "$match": {schedule: {$nin:schedule}} },
-        { "$group": {
-            "_id": "$room",
-            "room":{ "$first": "$room" },
-            "capacity": { "$first": "$capacity" },
-            "type_room": { "$first": "$type_room" }
-        }},
-        { "$sort": {room: 1 } }
-    ], callback)
-}
-
-module.exports.getFreeRoomsByTypeAtSchedule = function (roomType, schedule, callback){
-  // Lesson.find(
-  //   {$and:[
-  //     {type_room: roomType},
-  //     {schedule: {$nin:schedule}}
-  //   ]}, callback
-  // ).sort({room:'asc'})
-  Lesson.aggregate([
-        { "$match": {$and:[
-          {type_room: roomType},
-          {schedule: {$nin:schedule}}
-        ]} },
-        { "$group": {
-            "_id": "$room",
-            "room":{ "$first": "$room" },
-            "capacity": { "$first": "$capacity" },
-            "type_room": { "$first": "$type_room" }
-        }},
-        { "$sort": {room: 1 } }
-    ], callback)
-}
-
 module.exports.getLessonsAtSchedule = function (schedule, callback){
   Lesson.find({schedule: {$in:schedule}}, callback).sort({discipline_cod:'asc'})
-}
-
-module.exports.getLessonsByRoomType = function (roomType, callback){
-  Lesson.find({type_room: roomType}, callback).sort({room:'asc'})
-}
-
-module.exports.getLessonsByRoomTypeAtSchedule = function (roomType, schedule, callback){
-  Lesson.find(
-    {$and:[
-      {type_room: roomType},
-      {schedule: {$in:schedule}}
-    ]}, callback
-  ).sort({room:'asc'})
 }
 
 module.exports.getLessonsByResponsable = function (responsable, callback){

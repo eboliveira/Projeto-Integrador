@@ -5,7 +5,7 @@
                 <b-form-input placeholder="Digite o código da sala" v-model="inputVal" maxlength=4 :state=this.isValid aria-describedby="inputError">
                 </b-form-input>
                 <b-input-group-append>
-                    <b-btn variant="success" @click="onSubmit(inputVal)" style="border: 1px solid #17a2b8" >
+                    <b-btn variant="success" v-on:click="onSubmit(inputVal)" style="border: 1px solid #17a2b8" >
                       <i class = "fa fa-search"> </i>
                     </b-btn>
                 </b-input-group-append>
