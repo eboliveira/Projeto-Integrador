@@ -1,7 +1,7 @@
-import {DB} from './Api'
+import {equipments} from './Api'
 
 export async function all(){
-    return await DB.get('equipments/all').then( (res) =>{
+    return await equipments.get('all').then( (res) =>{
         return res.data
     });
 };

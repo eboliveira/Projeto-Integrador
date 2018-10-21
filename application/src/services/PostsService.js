@@ -1,4 +1,4 @@
-import {DB} from './Api'
+import {events} from './Api'
 
 export function postEvent (json) {
   let new_event = {}
@@ -11,7 +11,7 @@ export function postEvent (json) {
   new_event.schedule = json.schedule
   new_event.responsable = json.responsable
   new_event.status = "undefined"
-  DB.post('event/post', new_event).then(response =>{
+  events.post('post', new_event).then(response =>{
     console.log(response)
     return response.status
   }).catch((err) => {
