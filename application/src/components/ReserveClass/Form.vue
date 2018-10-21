@@ -32,19 +32,19 @@
                                     <v-card-text>As informações preenchidas no cadastro até o momento serão perdidas caso deseja sair!</v-card-text>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="green darken-1" flat @click.native="dialog = false">Cancelar</v-btn>
-                                        <v-btn color="green darken-1" flat @click.native="dialog = false" to="/admin/overview">Confimar</v-btn>
+                                        <v-btn color="green darken-1" flat v-on:click.native="dialog = false">Cancelar</v-btn>
+                                        <v-btn color="green darken-1" flat v-on:click.native="dialog = false" to="/admin/overview">Confimar</v-btn>
                                     </v-card-actions>
                                 </v-card>
                             </v-dialog>
                             <div class="container-fluid">
                                 <div class="row">
                                     <div class="col-3">
-                                        <b-btn v-if="nstep > '1'" variant="warning" @click="nstep --">Voltar</b-btn>
+                                        <b-btn v-if="nstep > '1'" variant="warning" v-on:click="nstep --">Voltar</b-btn>
                                     </div>
                                     <div class="col-6">
                                         <v-layout justify-center>
-                                            <b-btn v-if="nstep < '3'" variant="primary" @click="nstep ++">Proximo</b-btn>
+                                            <b-btn v-if="nstep < '3'" variant="primary" v-on:click="nstep ++">Proximo</b-btn>
                                             <b-btn v-if="nstep == '3'" variant="success" >Confirmar</b-btn>
                                         </v-layout>
                                     </div>

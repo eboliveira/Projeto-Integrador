@@ -11,7 +11,7 @@
                       <b-form-input placeholder="Digite o filtro da busca" v-model="filter">
                       </b-form-input>
                       <b-input-group-append>
-                        <b-button variant="primary" @click="filter=''">Limpar</b-button>
+                        <b-button variant="primary" v-on:click="filter=''">Limpar</b-button>
                       </b-input-group-append>
                   </b-input-group>
                   <b-table striped hover fixed responsive head-variant="dark" :filter="filter"

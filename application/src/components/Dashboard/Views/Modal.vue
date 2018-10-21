@@ -14,7 +14,7 @@
 
         <v-card-actions>
           <v-spacer></v-spacer>
-          <v-btn color="primary" flat @click="dialog = false">
+          <v-btn color="primary" flat v-on:click="dialog = false">
             I accept
           </v-btn>
         </v-card-actions>
