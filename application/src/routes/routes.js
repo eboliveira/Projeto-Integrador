@@ -12,6 +12,7 @@ import Classes from 'src/components/Dashboard/Views/Classes.vue'
 import Equipments from 'src/components/Dashboard/Views/Equipment.vue'
 import ReserveEquipment from 'src/components/ReserveEquipment/Equipment.vue'
 import Pendents from 'src/components/Dashboard/Views/Pendents.vue'
+import Reports from 'src/components/Dashboard/Views/Reports.vue'
 
 
 const routes = [
@@ -78,6 +79,11 @@ const routes = [
         path: 'pendents',
         name: 'pendentsReserves',
         component: Pendents
+      },
+      {
+        path: 'reports',
+        name: 'Reports',
+        component: Reports
       },
     ]
   },
