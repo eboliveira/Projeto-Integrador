@@ -34,7 +34,7 @@
 <script>
 	import Card from 'src/components/UIComponents/Cards/Card.vue'
 	import moment from "moment";
-	
+	import axios from 'axios';
 	methods: {
 	}
 	
@@ -47,7 +47,6 @@
 			.format();
 		items.push({ room: room, date: data });
 	}
-	
 	export default {
 		components: {
             Card

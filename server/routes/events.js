@@ -20,6 +20,18 @@ router.get('/all', (req, res) => {
   })
 })
 
+router.get('/pendents', (req, res) => {
+  EventCalendar.getEventsPendents(function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
 router.get('/responsable/:responsable', (req, res) => {
   EventCalendar.getEventsByResponsable(req.params.responsable, function (err, evnt){
     if(err){
@@ -127,6 +139,7 @@ router.get('/:id', (req, res) => {
     }
   })
 })
+
 
 router.post('/post', (req, res) =>{
   let new_event = {}

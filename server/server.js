@@ -25,6 +25,7 @@ db.once("open", function(callback){
 });
 function format_csv(csv){
     csv = csv.split("\n");
+    db.db.dropCollection('lesson')
     csv.forEach(item => {
         formated_item = item.split(";").map(function(val){
             return val
