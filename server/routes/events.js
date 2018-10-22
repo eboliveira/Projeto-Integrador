@@ -1,8 +1,8 @@
 const express = require('express')
 const mongoose = require('mongoose');
 const EventCalendar = require('../models/events')
-
 const router = express.Router();
+const moment = require('moment')
 
 mongoose.connect('mongodb://localhost:27017/JEED');
 var db = mongoose.connection;
@@ -145,12 +145,13 @@ router.post('/post', (req, res) =>{
   let new_event = {}
   new_event.title = req.body.title;
   new_event.description = req.body.description;
-  new_event.room = req.body.room;
+  new_event.room = req.body.room.toUpperCase();
   new_event.startDate = req.body.startDate;
   new_event.finalDate = req.body.finalDate;
   new_event.responsable = req.body.responsable;
   new_event.repeat = req.body.repeat;
   new_event.status = "undefined";
+  new_event.timestamp = moment().subtract(3, 'hours').format()
   EventCalendar.addEvent(new_event, function (err, evnt) {
     if (err) {
       console.log(err)

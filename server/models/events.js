@@ -9,7 +9,8 @@ var EventCalendar = new Schema({
   finalDate: Date,
   responsable : String,
   status : String,
-  repeat : String
+  repeat : String,
+  timestamp: Date
 }, { versionKey: false })
 
 
