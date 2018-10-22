@@ -90,7 +90,7 @@
         </div>
       </div>
       <div class="text-center">
-        <button type="submit" class="btn btn-info btn-fill float-right" @click.prevent="updateProfile">
+        <button type="submit" class="btn btn-info btn-fill float-right" v-on:click.prevent="updateProfile">
           Update Profile
         </button>
       </div>

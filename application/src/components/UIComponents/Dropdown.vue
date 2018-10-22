@@ -4,7 +4,7 @@
       :class="{show: isOpen}"
       aria-haspopup="true"
       :aria-expanded="isOpen"
-      @click="toggleDropDown"
+      v-on:click="toggleDropDown"
       v-click-outside="closeDropDown">
 
     <a class="nav-link dropdown-toggle"

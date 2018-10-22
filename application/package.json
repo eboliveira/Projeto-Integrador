@@ -29,6 +29,7 @@
     "v-suggest": "^1.0.4",
     "v-tooltip": "^2.0.0-rc.33",
     "vue": "^2.5.2",
+    "vue-bootstrap-datetimepicker": "^5.0.1",
     "vue-button-effect": "0.0.3",
     "vue-clickaway": "^2.1.0",
     "vue-full-calendar": "^2.6.1",

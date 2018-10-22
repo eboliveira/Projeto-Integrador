@@ -1,6 +1,6 @@
 <template>
   <component :is="tag"
-             @click.native="hideSidebar"
+             v-on:click.native="hideSidebar"
              v-bind="$attrs"
              tag="li">
     <a class="nav-link">

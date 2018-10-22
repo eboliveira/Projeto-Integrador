@@ -8,7 +8,7 @@
 						<b-input-group style="margin-bottom:15px;">
 							<b-form-input placeholder="Digite o filtro da busca" v-model="filter"></b-form-input>
 							<b-input-group-append>
-								<b-button variant="primary" @click="filter=''">Limpar</b-button>
+								<b-button variant="primary" v-on:click="filter=''">Limpar</b-button>
 							</b-input-group-append>
 						</b-input-group>
 						<b-table striped hover fixed responsive :filter="filter" :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="isDesc">
@@ -34,10 +34,9 @@
 <script>
 	import Card from 'src/components/UIComponents/Cards/Card.vue'
 	import moment from "moment";
-	import axios from 'axios';
 	methods: {
 	}
-	
+
 	let items = [];
 	for (var i = 0; i < 100; i++) {
 		const room = "room" + i;
