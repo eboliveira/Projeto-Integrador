@@ -26,11 +26,15 @@
         <i class="nc-icon nc-bullet-list-67"></i>
         <p>Reservas pendentes</p>
       </sidebar-link>
+      <sidebar-link to="/admin/reports">
+        <i class="nc-icon nc-paper-2"></i>
+        <p>Reservas pendentes</p>
+      </sidebar-link>
     </side-bar>
     <div class="main-panel">
       <top-navbar></top-navbar>
 
-      <dashboard-content @click="toggleSidebar">
+      <dashboard-content v-on:click="toggleSidebar">
 
       </dashboard-content>
     </div>

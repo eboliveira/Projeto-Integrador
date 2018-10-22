@@ -1,7 +1,7 @@
-import {DB} from './Api'
+import {actions} from './Api'
 
 export async function checkConflicts(reservationStart, reservationEnd, periodStart, periodEnd) {
-  return await DB.get('actions/checkConflicts/p1/' + reservationStart + '/' + reservationEnd + '/p2/' + periodStart + '/' + periodEnd).then((res) => {
+  return await actions.get('checkConflicts/p1/' + reservationStart + '/' + reservationEnd + '/p2/' + periodStart + '/' + periodEnd).then((res) => {
     return res.data
   })
 }

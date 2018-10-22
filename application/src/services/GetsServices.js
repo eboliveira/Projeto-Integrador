@@ -1,6 +1,5 @@
 import moment from 'moment'
 
-import {DB} from './Api'
 import * as utils from './utils';
 import * as rooms from './roomQuerys'
 import * as events from './eventQuerys'
