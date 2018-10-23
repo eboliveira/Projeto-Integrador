@@ -3,14 +3,14 @@
         <div class="row">
             <div class="col-12">
                 <form>
-                    <!--<v-btn icon="false" class="back" to="/admin/overview">
+                    <!-- <v-btn icon="false" class="back" to="/admin/overview">
                         <font-awesome-icon icon="chevron-left"/>
-                    </v-btn>-->
+                    </v-btn> -->
                     <v-stepper v-model="nstep">
                         <v-stepper-header>
-                            <v-stepper-step :complete="nstep > 1" step="1">Selecionar Horários Livres</v-stepper-step>
+                            <v-stepper-step :complete-icon="'fa fa-check'" :complete="nstep > 1" step="1">Selecionar Horários Livres</v-stepper-step>
                             <v-divider></v-divider>
-                            <v-stepper-step :complete="nstep > 2" step="2">Registrar Responsável </v-stepper-step>
+                            <v-stepper-step :complete-icon="'fa fa-check'" :complete="nstep > 2" step="2">Registrar Responsável </v-stepper-step>
                             <v-divider></v-divider>
                             <v-stepper-step step="3">Confirmação</v-stepper-step>
                         </v-stepper-header>
@@ -76,7 +76,8 @@ export default {
     return {
       nstep: 0,
       dialog: false,
-      cancel: false
+      cancel: false,
+      isValid:false
     };
   }
 };

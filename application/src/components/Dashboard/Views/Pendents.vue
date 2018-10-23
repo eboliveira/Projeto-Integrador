@@ -68,7 +68,7 @@
 				},
 				{
 					key: "date",
-					label: "Data",
+					label: "Data da requisição",
 					sortable: true
 				},
 				{

@@ -1,29 +1,38 @@
 <template>
     <div class="container-fluid" style="padding-left: 5px; padding-right: 5px;">
         <div class="row">
-            <div class="col-6">
+            <div class="col-7">
                 <card>
-                    <h4 slot="header" class="card-title">Registrar Responsável</h4>
+                    <h4 slot="header" class="card-title">Complete o registro do evento</h4>
                     <div class="container-fluid">
                         <div class="row">
+                          <div class="col-12">
+                            <fg-input type="text" label="Título do evento" v-model='title'></fg-input>
+                          </div>
                             <div class="col-12">
-                                <fg-input type="text" label="Nome"></fg-input>
+                                <fg-input type="text" label="Nome do responsável" v-model='responsable'></fg-input>
                             </div>
                             <div class="col-12">
                                 <label>Motivo</label>
-                                <textarea class="form-control border-input"></textarea>
+                                <textarea class="form-control border-input" v-model='description'></textarea>
                             </div>
+                            <b-form-group label="Escolha a repetição" style='margin-left:20px;margin-top:15px;'>
+                              <b-form-radio-group id="radios1"
+                                                  v-model="selected"
+                                                  :options="options"
+                                                  name="radiosDefault" />
+                            </b-form-group>
                         </div>
                     </div>
                 </card>
             </div>
-            <div class="col-6">
+            <div class="col-5">
                 <card>
-                    <h4 slot="header" class="card-title">Horários Selecionados</h4>
+                    <h4 slot="header" class="card-title" style='margin-left:80px'>Horários Selecionados</h4>
                     <v-layout justify-center>
                         <light-timeline :items='items'></light-timeline>
                     </v-layout>
-                </card>      
+                </card>
             </div>
         </div>
     </div>
@@ -42,36 +51,17 @@ export default {
     },
     data () {
         return {
-            value_day: [],
-            value_time: [],
-                day: [
-                    { day: 'Segunda'},
-                    { day: 'Terça'},
-                    { day: 'Quarta'},
-                    { day: 'Quinta'},
-                    { day: 'Sexta'},
-                ],
-                time: [
-                    { time: 'M1'},
-                    { time: 'M2'},
-                    { time: 'M3'},
-                    { time: 'M4'},
-                    { time: 'M5'},
-                    { time: 'M6'},
-                    { time: 'T1'},
-                    { time: 'T2'},
-                    { time: 'T3'},
-                    { time: 'T4'},
-                    { time: 'T5'},
-                    { time: 'T6'},
-                    { time: 'N1'},
-                    { time: 'N2'},
-                    { time: 'N3'},
-                    { time: 'N4'},
-                    { time: 'N5'},
-                ],
-            
-            items: [                
+          selected: '',
+          title: '',
+          description: '',
+          responsable: '',
+          options:[
+              { text: 'Sem repetição', value: '' },
+              { text: 'Diariamente', value: 'daily' },
+              { text: 'Semanalmente', value: 'weekly' },
+              { text: 'Mensalmente', value: 'monthly' }
+            ],
+            items: [
                 {
                     tag: '27/09/2018 M1, M2, M3',
                     color: '#dcdcdc',
@@ -96,8 +86,16 @@ export default {
                     type: 'circle',
                     content: 'C104'
                 }
-            ]
+            ],
         }
+  },
+  methods:{
+    validate:function(){
+      if(validate && responsable && description){
+        this.$parent.isValid = true
+      }
+      this.$parent.isValid=false
+    }
   }
 }
 
