@@ -1,43 +1,58 @@
 <template>
-    <div class="container-fluid" style="padding-left: 5px; padding-right: 5px;">
-        <div class="row">
-            <div class="col-6" style="padding-left: 5px; padding-right: 5px;">
-              <card>
-                  <h4 slot="header" class="card-title">Reservar Horários</h4>
-                  <b-table responsive hover :items="dia" :bordered="true">
-                      <b-form-checkbox slot="Segunda" slot-scope="row" value="orange"></b-form-checkbox>
-                  </b-table>
-              </card>
-            </div>
-            <div class="col-6" style="padding-left: 5px; padding-right: 5px;">
-              <card>
-                <div class="container-fluid">
-                  <div class="row">
-                    <div class="col-3">
-                      <b-form-select v-model="selected" :options="bloco"/>
+    <div class="container-fluid" style="padding-left: 0px; padding-right: 0px;">
+        <div class="row" style="margin-left: 0px; margin-right: 0px;">
+            <h4 slot="header" class="card-title">Reservar Horários</h4>
+            <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
+        </div>
+             <div class="row table">
+              <div class="col-12">
+                <card>
+                  <div class="container-fluid">
+                    <div class="row table-head">
+                      <div class="col-3">
+                        <b-form-select v-model="selected" :options="bloco"/>
+                      </div>
+                      <div class="col-3">
+                        <b-form-select v-model="selected" :options="tipoSala"/>
+                      </div>
+                      <div class="col-5" style="margin-right: 15px;">
+                        <b-form-select v-model="selected" :options="sala"/>
+                      </div>
+                        <button class="btn btn-success font-icon-detail">
+                          <i class="nc-icon nc-refresh-02"></i>
+                        </button>
                     </div>
-                    <div class="col-4">
-                      <b-form-select v-model="selected" :options="tipoSala"/>
-                    </div>
-                    <div class="col-3">
-                      <b-form-select v-model="selected" :options="sala"/>
-                    </div>
-                      <button class="btn btn-success font-icon-detail">
-                        <i class="nc-icon nc-refresh-02"></i>
-                      </button>
+                    <b-table striped hover :items="items">
+                      <b-form-checkbox></b-form-checkbox>
+                    </b-table>
                   </div>
-                  <b-table striped hover :items="items">
-                    <b-form-checkbox></b-form-checkbox>
-                  </b-table>
-                </div>
-              </card>
+                </card>
+              </div>
             </div>
         </div>
-    </div>
 </template>
+
+<style>
+  @import "~fullcalendar/dist/fullcalendar.css";
+  #app {
+    font-family: "Avenir", Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-align: center;
+}
+  .table {
+    margin-top: 26px;
+    margin-left: 0px;
+  }
+
+  .table-head {
+    margin-top: 20px;
+  }
+</style>
 
 <script>
 import Card from "src/components/UIComponents/Cards/Card.vue";
+
 
 const items = [
   { bloco: 'H', tipo_Sala: 'Teórica', codigo_sala: 'H102'},
@@ -55,15 +70,20 @@ export default {
       selected: null,
       bloco: [
         { value: null, text: 'Bloco', disabled: true },
-        { value: 'a', text: 'This is First option' },
-        { value: 'b', text: 'Selected Option' },
-        { value: 'c', text: 'Third Option' }
+        { value: 'A', text: 'A' },
+        { value: 'B', text: 'B' },
+        { value: 'C', text: 'C' },
+        { value: 'D', text: 'D' },
+        { value: 'E', text: 'E' },
+        { value: 'F', text: 'F' },
+        { value: 'G', text: 'G' },
+        { value: 'H', text: 'H' }
       ],
       tipoSala: [
         { value: null, text: 'Tipo da Sala', disabled: true },
-        { value: 'a', text: 'This is First option' },
-        { value: 'b', text: 'Selected Option' },
-        { value: 'c', text: 'Third Option' }
+        { value: 'Laboratório', text: 'Laboratório' },
+        { value: 'Teórica', text: 'Teórica' },
+        { value: 'Desenho', text: 'Desenho' }
       ],
       sala: [
         { value: null, text: 'Código Sala', disabled: true },
@@ -74,102 +94,6 @@ export default {
       
       fields: [ 'first_name', 'last_name', 'show_details' ],
       items: items,
-      
-      dia: [
-        {
-          Segunda: "2",
-          Terça: "",
-          Quarta: "",
-          Quinta: "",
-          Sexta: "",
-          Sábado: "",
-          Domingo: "",
-          _cellVariants: {
-            Segunda: "",
-            Terça: "",
-            Quarta: "",
-            Quinta: "",
-            Sexta: "",
-            Sabado: "",
-            Domingo: ""
-          }
-        },
-        {
-          Segunda: "2",
-          Terça: "",
-          Quarta: "",
-          Quinta: "",
-          Sexta: "",
-          Sábado: "",
-          Domingo: "",
-          _cellVariants: {
-            Segunda: "",
-            Terça: "",
-            Quarta: "",
-            Quinta: "",
-            Sexta: "",
-            Sabado: "",
-            Domingo: ""
-          }
-        },
-        {
-          Segunda: "2",
-          Terça: "",
-          Quarta: "",
-          Quinta: "",
-          Sexta: "",
-          Sábado: "",
-          Domingo: "",
-          _cellVariants: {
-            Segunda: "",
-            Terça: "",
-            Quarta: "",
-            Quinta: "",
-            Sexta: "",
-            Sabado: "",
-            Domingo: ""
-          }
-        },
-        {
-          Segunda: "2",
-          Terça: "",
-          Quarta: "",
-          Quinta: "",
-          Sexta: "",
-          Sábado: "",
-          Domingo: "",
-          _cellVariants: {
-            Segunda: "",
-            Terça: "",
-            Quarta: "",
-            Quinta: "",
-            Sexta: "",
-            Sabado: "",
-            Domingo: ""
-          }
-        }
-      ],
-      horario: [
-        {
-          m1: "",
-          m2: "",
-          m3: "",
-          m4: "",
-          m5: "",
-          m6: "",
-          t1: "",
-          t2: "",
-          t3: "",
-          t4: "",
-          t5: "",
-          t6: "",
-          n1: "",
-          n2: "",
-          n3: "",
-          n4: "",
-          n5: ""
-        }
-      ]
     };
   },
   methods: {}
