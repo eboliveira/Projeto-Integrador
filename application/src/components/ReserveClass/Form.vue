@@ -49,7 +49,7 @@
                                         </v-layout>
                                     </div>
                                     <div class="col-3">
-                                        <b-btn slot="activator" class="float-right" variant="danger">Cancelar</b-btn>
+                                        <b-btn slot="activator" class="float-right" variant="danger" v-on:click="dialog = true">Cancelar</b-btn>
                                     </div>
                                 </div>
                             </div>
