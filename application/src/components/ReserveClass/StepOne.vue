@@ -1,8 +1,21 @@
 <template>
     <div class="container-fluid" style="padding-left: 0px; padding-right: 0px;">
+        <v-layout row justify-center>
+          <v-dialog v-model="dialog" persistent max-width="290">
+            <v-card>
+              <v-card-title class="headline">Selecionando Horário de Evento</v-card-title>
+              <v-card-text>Tem certeza que deseja selecionar esse horário para o evento?</v-card-text>
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="red darken-1" @click.native="dialog = false">Cancelar</v-btn>
+                <v-btn color="green lighten-1" @click.native="select">Confirmar</v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
+        </v-layout>
         <div class="row" style="margin-left: 0px; margin-right: 0px;">
             <h4 slot="header" class="card-title">Reservar Horários</h4>
-            <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
+            <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" :config="config"></full-calendar>
         </div>
              <div class="row table">
               <div class="col-12">
@@ -10,13 +23,13 @@
                   <div class="container-fluid">
                     <div class="row table-head">
                       <div class="col-3">
-                        <b-form-select v-model="selected" :options="bloco"/>
+                        <b-form-select v-model="selected_down" :options="bloco"/>
                       </div>
                       <div class="col-3">
-                        <b-form-select v-model="selected" :options="tipoSala"/>
+                        <b-form-select v-model="selected_down" :options="tipoSala"/>
                       </div>
                       <div class="col-5" style="margin-right: 15px;">
-                        <b-form-select v-model="selected" :options="sala"/>
+                        <b-form-select v-model="selected_down" :options="sala"/>
                       </div>
                         <button class="btn btn-success font-icon-detail">
                           <i class="nc-icon nc-refresh-02"></i>
@@ -67,7 +80,36 @@ export default {
   },
   data() {
     return {
-      selected: null,
+      selected_down: null,
+      dialog: false,
+      confirm: null,
+      events: [
+        {title: 'Conference',
+          start: '2018-03-11',
+          end: '2018-03-13'}
+      ],
+       config: {
+          eventClick: event => {
+            this.selected = event;
+          },
+          selectable: true,
+          selectHelper: true,
+          select: (start, end) => {
+              this.dialog = true;
+              if(this.confirm == true) {
+                var eventData = {
+                  title: 'Selecionado',
+                  start: start,
+                  end: end
+                }
+            return eventData
+          }
+        },
+        renderEvent: (select, sick) => {
+          sick = true;
+        }
+      },
+      selected: {},
       bloco: [
         { value: null, text: 'Bloco', disabled: true },
         { value: 'A', text: 'A' },
@@ -96,7 +138,15 @@ export default {
       items: items,
     };
   },
-  methods: {}
+  methods: {
+     eventSelected(event) {
+      this.selected = event;
+    },
+    select(){
+      this.confirm = true;
+      this.dialog = false;
+    }
+  }
 };
 
 </script>
