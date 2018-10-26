@@ -82,32 +82,20 @@ export default {
     return {
       selected_down: null,
       dialog: false,
-      confirm: null,
+      confirm: false,
+      start: null,
+      end: null,
       events: [
-        {title: 'Conference',
-          start: '2018-03-11',
-          end: '2018-03-13'}
       ],
        config: {
           eventClick: event => {
             this.selected = event;
           },
-          selectable: true,
-          selectHelper: true,
           select: (start, end) => {
               this.dialog = true;
-              if(this.confirm == true) {
-                var eventData = {
-                  title: 'Selecionado',
-                  start: start,
-                  end: end
-                }
-            return eventData
-          }
-        },
-        renderEvent: (select, sick) => {
-          sick = true;
-        }
+              this.start = start;
+              this.end = end;
+          },
       },
       selected: {},
       bloco: [
@@ -144,7 +132,16 @@ export default {
     },
     select(){
       this.confirm = true;
+      var eventData = {
+          title: 'Selecionado',
+          start: this.start,
+          end: this.end
+      }
+      $('#calendar').fullCalendar('renderEvent', eventData, true)
       this.dialog = false;
+    },
+    renderEvent(dataEnv, stick){
+      stick = true;
     }
   }
 };
