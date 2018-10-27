@@ -38,3 +38,23 @@ module.exports.updateEqui = function (updateEqui, callback){
         }
     })
 }
+
+module.exports.updateOrCreate = function(evnt, callback){
+    Equi.findOneAndUpdate(
+      { patrimonio:evnt.patrimonio },
+      {
+        $set:
+        {
+          patrimonio:evnt.patrimonio,
+          nome:evnt.nome,
+          marca:evnt.marca,
+          modelo:evnt.modelo
+        }
+      },
+      {
+        upsert: true,
+        new: true
+      },
+      callback
+    )
+  }

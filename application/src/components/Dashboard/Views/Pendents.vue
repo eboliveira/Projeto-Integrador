@@ -34,20 +34,20 @@
 <script>
 	import Card from 'src/components/UIComponents/Cards/Card.vue'
 	import moment from "moment";
-
+	import {pendents} from './../../../services/eventQuerys';
 	methods: {
 	}
 
 	let items = [];
-	for (var i = 0; i < 100; i++) {
-		const room = "room" + i;
-		const data = moment()
-			.add(i, "day")
-			.utc()
-			.format();
-		items.push({ room: room, date: data });
-	}
-
+	pendents().then(res =>{
+    res.forEach(item =>{
+      const room = item['room']
+      const responsable = item['responsable']
+      let formattedDate = item['timestamp']
+      formattedDate = moment(formattedDate).format('DD/MM/YYYY-HH:mm:ss')
+      items.push({ room: room, responsable: responsable, date:formattedDate });
+    })
+  })
 	export default {
 		components: {
             Card
@@ -68,7 +68,7 @@
 				},
 				{
 					key: "date",
-					label: "Data",
+					label: "Data da requisição",
 					sortable: true
 				},
 				{
@@ -79,7 +79,7 @@
 			],
 				items: items,
 				perPage: 10,
-				isDesc: true,
+				isDesc: false,
 				sortBy: "date"
 			};
 		}

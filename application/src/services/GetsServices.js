@@ -4,7 +4,6 @@ import * as utils from './utils';
 import * as rooms from './roomQuerys'
 import * as events from './eventQuerys'
 import * as lessons from './lessonQuerys'
-import * as equipments from './equipmentsQuery'
 import * as actions from './actionsRequests'
 
 export async function findRoom(room){
@@ -48,8 +47,4 @@ export async function freeRooms(schedule, startDate, finalDate){
   }
 
   return freeRooms
-}
-
-export async function allEquipments(){
-    return await equipments.all()
 }

@@ -9,7 +9,8 @@ var EventCalendar = new Schema({
   finalDate: Date,
   responsable : String,
   status : String,
-  repeat : String
+  repeat : String,
+  timestamp: Date
 }, { versionKey: false })
 
 
@@ -35,6 +36,10 @@ module.exports.getEventsAtInterval = function (startDate, finalDate, callback){
 
 module.exports.getEventsAtRoom = function (roomSearch, callback){
   Evnt.find({room: roomSearch}, callback).sort({title:'asc'})
+}
+
+module.exports.getEventsPendents = function (callback){
+  Evnt.find({status: "undefined"}, callback)
 }
 
 module.exports.getEventsAtRoomAtSchedule = function (roomSearch, schedule, callback){

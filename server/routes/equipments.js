@@ -16,20 +16,15 @@ router.get('/all', (req, res) => {
     })
 })
 
-router.put('/:id', (req, res) => {
-    let updatedEquipments = {}
-    updatedEquipments.patrimonio = req.body.title
-    updatedEquipments.npme       = req.body.description
-    updatedEquipments.marca      = req.body.responsable
-    updatedEquipments.modelo     = req.body.startDate
-    updatedEquipments.id         = req.params.id
-    
-    Equipments.updateEvent(updatedEquipments, function (err, todo) {
-        if (err) {
+router.put('/set', (req, res) => {
+    Equipments.updateOrCreate(req.body.equipment, function (err, evnt){
+        if(err){
             console.log(err)
             return res.status(400).send('server could not understand the request')
         }
-        res.status(200).json(todo)
+        else{
+            res.status(200).send(evnt);
+        }
     })
 })
 
