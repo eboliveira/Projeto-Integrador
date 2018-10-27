@@ -12,7 +12,7 @@
       <b-col md="6" class="my-1">
         <b-row>
           <b-col md="12" class="my-1">
-            <b-form-group horizontal label="Buscar por:" class="mb-0">
+            <b-form-group horizontal label="Buscar por:" label-text-align="right" class="mb-0">
               <b-input-group>
                 <b-form-select v-model="searchData.objectOfSearch">
                   <option :value="null">Aulas e Eventos</option>
@@ -24,15 +24,25 @@
             </b-form-group>
           </b-col>
           <b-col md="12" class="my-1">
-            <b-form-group horizontal label="Aplicar filtro:" class="mb-0">
+            <b-form-group v-if="searchData.objectOfSearch !== 'free'" horizontal label="Aplicar filtro:" label-text-align="right" class="mb-0">
               <b-input-group>
                 <b-form-select v-model="searchData.filter.type" :options="searchData.filter.options" slot="prepend">
                   <option :value="null" >Filtro desativado</option>
                   <option value="room" >Sala</option>
-                  <option v-if="searchData.objectOfSearch !== 'free'" value="responsable">Responsável</option>
+                  <option value="responsable">Responsável</option>
                   <option v-if="searchData.objectOfSearch === 'lessons'" value="discipline_cod">Código da disciplina</option>
                 </b-form-select>
                 <b-form-input v-if="searchData.filter.type" v-model="searchData.filter.value" :placeholder="filterPlaceholder"/>
+              </b-input-group>
+            </b-form-group>
+            <b-form-group v-if="searchData.objectOfSearch === 'free'" horizontal label="Aplicar filtro:" label-text-align="right" class="mb-0">
+              <b-input-group>
+                <b-form-select v-model="searchData.filter.type" :options="searchData.filter.options">
+                  <option :value="null">Todas as salas livres</option>
+                  <option value="morning">Salas livres durante a manhã</option>
+                  <option value="evening">Salas livres durante a tarde</option>
+                  <option value="night">Salas livres durante a noite</option>
+                </b-form-select>
               </b-input-group>
             </b-form-group>
           </b-col>
@@ -42,9 +52,9 @@
     <hr />
     <b-row>
       <b-col md="6" class="my-1">
-        <b-form-group horizontal label="Buscar" class="mb-0">
+        <b-form-group horizontal label="Buscar" label-text-align="right" class="mb-0">
           <b-input-group>
-            <b-form-input v-model="filter" :placeholder="'Realizar uma busca por ' + fields[0].label" />
+            <b-form-input v-model="filter" :placeholder="'Realize uma busca por ' + fields[0].label" />
             <b-input-group-append>
               <b-btn :disabled="!filter" v-on:click="filter = ''">Clear</b-btn>
             </b-input-group-append>
@@ -52,7 +62,7 @@
         </b-form-group>
       </b-col>
       <b-col md="6" class="my-1">
-        <b-form-group horizontal label="Por página:" class="mb-0">
+        <b-form-group horizontal label="Itens por página:" label-text-align="right" class="mb-0">
           <b-form-select :options="pageOptions" v-model="perPage" />
         </b-form-group>
       </b-col>
