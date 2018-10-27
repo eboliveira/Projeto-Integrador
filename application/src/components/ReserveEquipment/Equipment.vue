@@ -9,10 +9,10 @@
                     </h4>
                     <b-collapse id="cadastroEquipamento" accordion="collapse" role="tabpanel">
                         <b-form inline @submit="onSubmit" @reset="onReset" v-if="show">
-                            <b-input class="mr-sm-2 mb-sm-0" id="patrimonio" placeholder="Patrimônio" v-model="form.patrimonio" required/>
-                            <b-input class="mr-sm-2 mb-sm-0" id="tipoEquipamento" placeholder="Tipo Equipamento" v-model="form.tipoEquipamento" required/>
-                            <b-input class="mr-sm-2 mb-sm-0" id="marca" placeholder="Marca" v-model="form.marca" required/>
-                            <b-input class="mr-sm-2 mb-sm-0" id="modelo" placeholder="Modelo" v-model="form.modelo" required/>
+                            <b-input class="mr-sm-2 mb-sm-0" id="patrimonio" placeholder="Patrimônio" v-model="equipment.patrimonio" required/>
+                            <b-input class="mr-sm-2 mb-sm-0" id="tipoEquipamento" placeholder="Tipo Equipamento" v-model="equipment.nome" required/>
+                            <b-input class="mr-sm-2 mb-sm-0" id="marca" placeholder="Marca" v-model="equipment.marca" required/>
+                            <b-input class="mr-sm-2 mb-sm-0" id="modelo" placeholder="Modelo" v-model="equipment.modelo" required/>
                             <b-button type="submit" variant="success">Save</b-button>
                         </b-form>
                     </b-collapse>
@@ -38,7 +38,7 @@
 
 <script>
     import Card from 'src/components/UIComponents/Cards/Card.vue'
-    import {allEquipments} from 'src/services/GetsServices.js'
+    import * as equipments from '../../services/equipmentsQuery.js'
 
 
     export default {
@@ -56,9 +56,9 @@
                 ],
                 items : [],
 
-                form: {
+                equipment: {
                     patrimonio: '',
-                    tipoEquipamento: '',
+                    nome: '',
                     marca: '',
                     modelo: '',
                 },
@@ -69,27 +69,34 @@
         methods: {
             onSubmit (evt) {
                 evt.preventDefault();
-                alert(JSON.stringify(this.form));
+                equipments.set({"equipment":this.equipment}).then(res =>{
+                    console.log(res)
+                    this.getAllEquipments()
+                })
+                
             },
             onReset (evt) {
                 evt.preventDefault();
                 /* Reset our form values */
                 this.form.patrimonio = '';
-                this.form.tipoEquipamento = '';
+                this.form.nome = '';
                 this.form.marca = '';
                 this.form.modelo = '';
                 /* Trick to reset/clear native browser form validation state */
                 this.show = false;
                 this.$nextTick(() => { this.show = true });
+            },
+            getAllEquipments(){
+                equipments.all().then(res =>{
+                    this.items = []
+                    res.forEach(element => {
+                        this.items.push({ codigo: element.patrimonio, tipo_equipamento: element.nome, marca: element.marca, modelo: element.modelo, quantidade_total: element.quantidade_total})
+                    });
+                })
             }
         },
         mounted(){
-            allEquipments().then(res =>{
-                this.items = []
-                res.forEach(element => {
-                    this.items.push({ codigo: element.patrimonio, tipo_equipamento: element.nome, marca: element.marca, modelo: element.modelo, quantidade_total: element.quantidade_total})
-                });
-            })
+           this.getAllEquipments()
         }
     }
 </script>
