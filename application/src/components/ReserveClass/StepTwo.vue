@@ -7,22 +7,25 @@
                     <div class="container-fluid">
                         <div class="row">
                           <div class="col-12">
-                            <fg-input type="text" label="Título do evento" v-model='title'></fg-input>
-                          </div>
-                            <div class="col-12">
-                                <fg-input type="text" label="Nome do responsável" v-model='responsable'></fg-input>
-                            </div>
-                            <div class="col-12">
-                                <label>Motivo</label>
-                                <textarea class="form-control border-input" v-model='description'></textarea>
-                            </div>
-                            <b-form-group label="Escolha a repetição" style='margin-left:20px;margin-top:15px;'>
-                              <b-form-radio-group id="radios1"
-                                                  v-model="selected"
-                                                  :options="options"
-                                                  name="radiosDefault" />
-                            </b-form-group>
+                              <b-input-group>
+                                  <div class="col-12" style="padding-bottom:20px;">
+                                    <b-form-input  placeholder="Título do evento" v-model='title'></b-form-input>
+                                  </div>
+                                    <div class="col-12" style="padding-bottom:20px;">
+                                        <b-input placeholder="Nome do responsável" v-model='responsable'></b-input>
+                                    </div>
+                                    <div class="col-12">
+                                        <b-textarea placeholder="Digite o motivo" v-model='description' :rows=3 required></b-textarea>
+                                    </div>
+                                    <b-form-group label="Escolha a repetição" style='margin-left:20px;margin-top:15px;'>
+                                    <b-form-radio-group id="radios1"
+                                                        v-model="selected"
+                                                        :options="options"
+                                                        name="radiosDefault" />
+                                    </b-form-group>
+                              </b-input-group>
                         </div>
+                    </div>
                     </div>
                 </card>
             </div>
