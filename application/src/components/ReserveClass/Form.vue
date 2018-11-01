@@ -1,30 +1,29 @@
 <template>
-    <div class="container-fluid" style="margin-top: 10px;">
-        <div class="row">
-            <div class="col-12">
+    <b-container fluid>
+        <b-row>
+            <b-col md="12">
                 <form>
-                    <!-- <v-btn icon="false" class="back" to="/admin/overview">
-                        <font-awesome-icon icon="chevron-left"/>
-                    </v-btn> -->
                     <v-stepper v-model="nstep">
-                        <v-stepper-header>
+                        <v-stepper-header style="margin-bottom: 15px;">
                             <v-stepper-step :complete-icon="'fa fa-check'" :complete="nstep > 1" step="1">Selecionar Horários Livres</v-stepper-step>
                             <v-divider></v-divider>
                             <v-stepper-step :complete-icon="'fa fa-check'" :complete="nstep > 2" step="2">Registrar Responsável </v-stepper-step>
                             <v-divider></v-divider>
                             <v-stepper-step step="3">Confirmação</v-stepper-step>
                         </v-stepper-header>
+                        
                         <v-stepper-items>
-                            <v-stepper-content step="1">
+                            <v-stepper-content step="1" style="padding: 0px;">
                                 <step-one></step-one>
                             </v-stepper-content>
-                            <v-stepper-content step="2">
+                            <v-stepper-content step="2" style="padding: 0px;">
                                 <step-two></step-two>
                             </v-stepper-content>
-                            <v-stepper-content step="3">
+                            <v-stepper-content step="3" style="padding: 0px;">
                                 <step-three></step-three>
                             </v-stepper-content>
                         </v-stepper-items>
+                        
                         <v-layout justify-center style="margin-bottom: 10px;">
                             <v-dialog v-model="dialog" persistent>
                                 <v-card>
@@ -37,28 +36,29 @@
                                     </v-card-actions>
                                 </v-card>
                             </v-dialog>
-                            <div class="container-fluid">
-                                <div class="row">
-                                    <div class="col-3">
-                                        <b-btn v-if="nstep > '1'" variant="warning" v-on:click="nstep --">Voltar</b-btn>
-                                    </div>
-                                    <div class="col-6">
-                                        <v-layout justify-center>
-                                            <b-btn v-if="nstep < '3'" variant="primary" v-on:click="nstep ++">Proximo</b-btn>
-                                            <b-btn v-if="nstep == '3'" variant="success" >Confirmar</b-btn>
-                                        </v-layout>
-                                    </div>
-                                    <div class="col-3">
-                                        <b-btn slot="activator" class="float-right" variant="danger" v-on:click="dialog = true">Cancelar</b-btn>
-                                    </div>
-                                </div>
-                            </div>
                         </v-layout>
+                        
+                        <b-container fluid>
+                            <b-row>
+                                <b-col md="3">
+                                    <b-btn v-if="nstep > '1'" variant="warning" v-on:click="nstep --">Voltar</b-btn>
+                                </b-col>
+                                <b-col md="6">
+                                    <v-layout justify-center>
+                                        <b-btn v-if="nstep < '3'" variant="primary" v-on:click="nstep ++">Proximo</b-btn>
+                                        <b-btn v-if="nstep == '3'" variant="success" >Confirmar</b-btn>
+                                    </v-layout>
+                                </b-col>
+                                <b-col md="3">
+                                    <b-btn slot="activator" class="float-right" variant="danger" v-on:click="dialog = true">Cancelar</b-btn>
+                                </b-col>
+                            </b-row>
+                        </b-container>
                     </v-stepper>
                 </form>
-            </div>
-        </div>
-    </div>
+            </b-col>
+        </b-row>
+    </b-container>
 </template>
 
 <script>
