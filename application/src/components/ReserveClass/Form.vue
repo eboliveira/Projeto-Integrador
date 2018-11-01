@@ -79,6 +79,8 @@ export default {
       cancel: false,
       isValid:false
     };
+  },
+  methods:{
   }
 };
 </script>
