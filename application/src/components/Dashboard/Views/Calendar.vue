@@ -1,14 +1,8 @@
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <div id="app">
-          <router-view/><router-view name = "calendarView"/>
-          <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div id="app">
+		<router-view/><router-view name = "calendarView"/>
+		<full-calendar ref="calendar" :events="events" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
+	</div>
 </template>
 
 <style>
