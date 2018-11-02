@@ -65,6 +65,7 @@
 
 <script>
 import Card from "src/components/UIComponents/Cards/Card.vue";
+import moment from "moment";
 
 
 const items = [
@@ -85,6 +86,8 @@ export default {
       confirm: false,
       start: null,
       end: null,
+      eventsData:[
+      ],
       events: [
       ],
        config: {
@@ -93,9 +96,11 @@ export default {
           },
           select: (start, end) => {
               this.dialog = true;
-              this.start = start;
-              this.end = end;
+              this.start = moment(start._d).utc().format();
+              this.end = moment(end._d).utc().format();
           },
+          editable:true,
+          
       },
       selected: {},
       bloco: [
@@ -137,9 +142,11 @@ export default {
           start: this.start,
           end: this.end
       }
+      this.eventsData.push(eventData)
       $('#calendar').fullCalendar('renderEvent', eventData, true)
       this.dialog = false;
     },
+  
     renderEvent(dataEnv, stick){
       stick = true;
     }
