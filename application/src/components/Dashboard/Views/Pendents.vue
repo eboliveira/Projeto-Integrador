@@ -13,10 +13,10 @@
                         </b-input-group>
                         <b-table striped hover fixed responsive :filter="filter" :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="isDesc">
                             <template slot="options" slot-scope="row">
-                                <button type="button" class="btn-simple btn btn-sm btn-success" v-on:click.stop="handleStatus('confirmed',row.item, $event.target)" v-b-tooltip.hover title="Aprovar reserva">
+                                <button type="button" class="btn-simple btn btn-sm btn-success" v-on:click.stop="handleAcept(row.item)" v-b-tooltip.hover title="Aprovar reserva">
                                     <i class="fa fa-check"></i>
                                 </button>
-                                <button type="button" class="btn-simple btn btn-sm btn-danger" v-on:click.stop="handleStatus('refused',row.item, $event.target)" v-b-tooltip.hover title="Rejeitar reserva">
+                                <button type="button" class="btn-simple btn btn-sm btn-danger" v-on:click.stop="showModalReason(row.item)" v-b-tooltip.hover title="Rejeitar reserva">
                                     <i class="fa fa-times"></i>
                                 </button>
                                 <button type="button" class="btn-simple btn btn-sm btn-info" v-b-tooltip.hover title="Visualizar mais informações" v-on:click.stop="showModal(row.item, $event.target)">
@@ -53,6 +53,9 @@
                                 <label>Data da requisição: {{this.modal_timestamp}}</label>
                             </div>
                         </b-modal>
+                        <b-modal id="modalReason" cancel-variant="danger" cancel-title="Cancelar" title="Rejeitar reserva" @ok="handleRefuse(refuseReason)" :ok-disabled="isReasonEmpty()">
+                            <b-textarea rows=3 placeholder='Digite o motivo pelo qual está rejeitando' v-model='refuseReason'></b-textarea>
+                        </b-modal>
                     </div>
                 </card>
             </b-col>
@@ -87,17 +90,44 @@ export default {
             })
             this.$root.$emit('bv::show::modal','modalInfo', button)
         },
-        handleStatus(status ,item, target){
+        handleAcept(item){
+            this.handleChangeStatus(item, 'confirmed');
+            this.sendEmailConfirm(item)
+        },
+        handleRefuse(reason){
+            this.handleChangeStatus(this.clickedItem, 'refused')
+            this.sendEmailRefuse(reason)
+        },
+        handleChangeStatus(item, status){
+            const i = this.findItem(item);
+            this.items.splice(i,1)
+            changeStatus(item.id, status)
+        },
+        showModalReason(item){
+            this.$root.$emit('bv::show::modal','modalReason')
+            this.clickedItem = item
+            this.refuseReason=''
+        },
+        findItem(item){
             var i;
             for (i=0; i<this.items.length; i++){
-                if (this.items[i].id == item.id){
-                    this.items.splice(i,1)
-                    changeStatus(item.id, status)
-                    if(status == 'refused'){
-                        // sendEmail()
-                    }
+                if(this.items[i].id == item.id){
+                    return i;
                 }
             }
+            return false;
+        },
+        sendEmailConfirm(item){
+            console.log(item)
+        },
+        sendEmailRefuse(refuseReason, item){
+            console.log(refuseReason)
+        },
+        isReasonEmpty(){
+            if(this.refuseReason == ''){
+                return true
+            }
+            return false
         }
     },
     created:function(){
@@ -107,7 +137,7 @@ export default {
                 const room = item['room']
                 const responsable = item['responsable']
                 let formattedDate = item['timestamp']
-                formattedDate = moment(formattedDate).format('DD/MM/YYYY-HH:mm:ss')
+                formattedDate = moment(formattedDate).add(3,'h').format('DD/MM/YYYY-HH:mm:ss')
                 const id = item['_id']
                 this.items.push({ room: room, responsable: responsable, date:formattedDate, id:id });
                 this.allItems.push(item)
@@ -117,7 +147,9 @@ export default {
     data() {
         return {
             allItems:[],
+            clickedItem:{},
             filter: "",
+            refuseReason:"",
             modal_room:"",
             modal_title:"",
             modal_description:"",
