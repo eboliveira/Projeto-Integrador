@@ -42,65 +42,62 @@
 </template>
 
 <script>
-
-import Card from 'src/components/UIComponents/Cards/Card.vue'
-import Multiselect from 'vue-multiselect'
-const theme = 'red';
+import Card from "src/components/UIComponents/Cards/Card.vue";
+import Multiselect from "vue-multiselect";
+const theme = "red";
 
 export default {
-    components: {
-      Card,
-      Multiselect
-    },
-    data () {
-        return {
-          selected: '',
-          title: '',
-          description: '',
-          responsable: '',
-          options:[
-              { text: 'Sem repetição', value: '' },
-              { text: 'Diariamente', value: 'daily' },
-              { text: 'Semanalmente', value: 'weekly' },
-              { text: 'Mensalmente', value: 'monthly' }
-            ],
-            items: [
-                {
-                    tag: '27/09/2018 M1, M2, M3',
-                    color: '#dcdcdc',
-                    type: 'circle',
-                    content: 'E001'
-                },
-                {
-                    tag: '27/09/2018 T1, T2',
-                    color: '#dcdcdc',
-                    type: 'circle',
-                    content: 'F100'
-                },
-                {
-                    tag: '27/09/2018 N2, N3',
-                    color: '#dcdcdc',
-                    type: 'circle',
-                    content: 'H004'
-                },
-                {
-                    tag: '27/09/2018 M1, M2, M3',
-                    color: '#dcdcdc',
-                    type: 'circle',
-                    content: 'C104'
-                }
-            ],
-        }
+  components: {
+    Card,
+    Multiselect
   },
-  methods:{
-    validate:function(){
-      if(validate && responsable && description){
-        this.$parent.isValid = true
+  data() {
+    return {
+      selected: "",
+      title: "",
+      description: "",
+      responsable: "",
+      options: [
+        { text: "Sem repetição", value: "" },
+        { text: "Diariamente", value: "daily" },
+        { text: "Semanalmente", value: "weekly" },
+        { text: "Mensalmente", value: "monthly" }
+      ],
+      items: [
+        {
+          tag: "27/09/2018 M1, M2, M3",
+          color: "#dcdcdc",
+          type: "circle",
+          content: "E001"
+        },
+        {
+          tag: "27/09/2018 T1, T2",
+          color: "#dcdcdc",
+          type: "circle",
+          content: "F100"
+        },
+        {
+          tag: "27/09/2018 N2, N3",
+          color: "#dcdcdc",
+          type: "circle",
+          content: "H004"
+        },
+        {
+          tag: "27/09/2018 M1, M2, M3",
+          color: "#dcdcdc",
+          type: "circle",
+          content: "C104"
+        }
+      ]
+    };
+  },
+  methods: {
+    validate: function() {
+      if (validate && responsable && description) {
+        this.$parent.isValid = true;
       }
-      this.$parent.isValid=false
+      this.$parent.isValid = false;
     }
   }
-}
-
-
+};
 </script>
