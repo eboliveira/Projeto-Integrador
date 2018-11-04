@@ -54,6 +54,12 @@ export async function byResponsable(responsable){
   })
 }
 
+export async function byResponsableAtSchedule(responsable, schedule){
+  return await lessons.post('responsable/' + responsable, schedule).then((res) => {
+    return res.data
+  })
+}
+
 export async function byId(id){
   return await lessons.get(id).then((res) => {
     return res.data
