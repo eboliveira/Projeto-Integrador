@@ -3,14 +3,14 @@
         <b-row>
             <b-col md="12">
                 <card style="padding: 15px;">
-                    <h4 slot="header" class="card-title">Nome da Página(que ainda não sei)</h4>
+                    <h4 slot="header" class="card-title">Relatórios</h4>
                     <b-row>
                         <b-col md="4" class="my-1">
                             <card>
                                 <b-row>
                                     <b-col md="12">
                                         <h5 slot="header" class="card-title text-center">Escolha uma data inicial</h5>
-                                        <date-picker id="stardDate" v-model="searchData.datetimeInterval.start" :config="startDatetimeOptions"></date-picker>
+                                        <date-picker id="stardDate" v-model="searchData.datetimeInterval.start" :config="datetimeOptions"></date-picker>
                                     </b-col>
                                 </b-row>
                             </card>
@@ -20,7 +20,7 @@
                                 <b-row>
                                     <b-col md="12">
                                         <h5 slot="header" class="card-title text-center">Escolha uma data final</h5>
-                                        <date-picker id="endDate" v-model="searchData.datetimeInterval.end" :config="startDatetimeOptions"></date-picker>
+                                        <date-picker id="endDate" v-model="searchData.datetimeInterval.end" :config="datetimeOptions"></date-picker>
                                     </b-col>
                                 </b-row>
                             </card>
@@ -43,8 +43,8 @@
                                     <b-form-group v-if="searchData.objectOfSearch !== 'free'" horizontal label="Aplicar filtro:" label-text-align="right" class="mb-0">
                                         <b-input-group>
                                             <b-form-select v-model="searchData.filter.type" :options="searchData.filter.options" slot="prepend">
-                                                <option :value="null" >Filtro desativado</option>
-                                                <option value="room" >Sala</option>
+                                                <option :value="null">Filtro desativado</option>
+                                                <option value="room">Sala</option>
                                                 <option value="responsable">Responsável</option>
                                                 <option v-if="searchData.objectOfSearch === 'lessons'" value="discipline_cod">Código da disciplina</option>
                                             </b-form-select>
@@ -63,7 +63,7 @@
                                         </b-input-group>
                                     </b-form-group>
                                     <br>
-                                    <b-form-group v-if="searchData.filter.type === 'custom'" label="[ Ctrl + Click ] para selecionar multiplos valores">
+                                    <b-form-group v-if="searchData.filter.type === 'custom'" label="[ Ctrl + Click ] para selecionar múltiplos valores">
                                         <b-input-group>
                                             <b-form-select multiple :select-size="17" v-model="searchData.filter.schedules.monday" class="mb-3">
                                                 <option value="2m1">2 M1</option>
@@ -183,6 +183,7 @@
                                     </b-form-group>
 
                                 </b-col>
+                                <button v-on:click="search()" class="btn btn-primary btn-block position-relative" type="button">Realizar busca</button>
                             </b-row>
                         </b-col>
                     </b-row>
@@ -207,17 +208,38 @@
 
                     <!-- Main table element -->
                     <b-table show-empty stacked="md" :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" @filtered="onFiltered">
-                        <template slot="title" slot-scope="row">{{row.value.first}} {{row.value.last}}</template>
-                        <template slot="isActive" slot-scope="row">{{row.value?'Yes :)':'No :('}}</template>
+                        <template v-if="!searchData.objectOfSearch" slot="title" slot-scope="row">
+                            <span v-for="item in row.value">{{item}}<span v-if="row.value.length > 1 "> - </span></span>
+                        </template>
+                        <template v-if="!searchData.objectOfSearch" slot="room" slot-scope="row">
+                            <span v-for="item in row.value">{{item}}<span v-if="row.value.length > 1 "> - </span></span>
+                        </template>
+                        <template v-if="!searchData.objectOfSearch" slot="interval" slot-scope="row">{{row.value.start}} - {{row.value.end}}</template>
                         <template slot="actions" slot-scope="row">
-                            <!-- We use @click.stop here to prevent a 'row-clicked' event from also happening -->
-                            <b-button size="sm" @click.stop="info(row.item, row.index, $event.target)" class="mr-1">Info modal</b-button>
-                            <b-button size="sm" @click.stop="row.toggleDetails">{{ row.detailsShowing ? 'Hide' : 'Show' }} Details</b-button>
+                            <!-- <b-button size="sm" @click.stop="info(row.item, row.index, $event.target)" class="mr-1">Info modal</b-button> -->
+                            <!-- <b-button size="sm" @click.stop="row.toggleDetails">{{ row.detailsShowing ? 'Hide' : 'Show' }} Details</b-button> -->
+                            <button v-if="row.item.isActive == true" type="button" class="btn-simple btn btn-sm btn-success" v-b-tooltip.hover title="Aprovar reserva">
+                                <i class="fa fa-check"></i>
+                            </button>
+                            <button v-else type="button" class="btn-simple btn btn-sm" disabled>
+                                <i class="fa fa-check"></i>
+                            </button>
+                            <button v-if="row.item.isActive == true" type="button" class="btn-simple btn btn-sm btn-danger" v-b-tooltip.hover title="Rejeitar reserva">
+                                <i class="fa fa-times"></i>
+                            </button>
+                            <button v-else type="button" class="btn-simple btn btn-sm" disabled>
+                                <i class="fa fa-times"></i>
+                            </button>
+                            <button type="button" class="btn-simple btn btn-sm btn-info" v-b-tooltip.hover title="Visualizar mais informações" v-on:click.stop="row.toggleDetails">
+                                <i class="fa fa-eye"></i>
+                            </button>
                         </template>
                         <template slot="row-details" slot-scope="row">
                             <b-card>
                                 <ul>
-                                    <li v-for="(value, key) in row.item" :key="key">{{ key }}: {{ value}}</li>
+                                    <li v-for="(value, key) in row.item" :key="key" v-if="checkDetails(key)">
+                                        {{ value.label }}: <span v-for="item in value.item">{{item.toUpperCase()}}<span v-if="value.item.length > 1 "> - </span></span>
+                                    </li>
                                 </ul>
                             </b-card>
                         </template>
@@ -229,10 +251,9 @@
                         </b-col>
                     </b-row>
 
-                    <!-- Info modal -->
-                    <b-modal id="modalInfo" @hide="resetModal" :title="modalInfo.title" ok-only>
+                    <!-- <b-modal id="modalInfo" @hide="resetModal" :title="modalInfo.title" ok-only>
                         <pre>{{ modalInfo.content }}</pre>
-                    </b-modal>
+                    </b-modal> -->
                 </card>
             </b-col>
         </b-row>
@@ -240,22 +261,14 @@
 </template>
 
 <script>
+import moment from 'moment'
 import Card from 'src/components/UIComponents/Cards/Card.vue'
 
-const items = [
-    { isActive: true,  age: 40, title: { first: "Dickerson", last: "Macdonald" } },
-    { isActive: false, age: 21, title: { first: "Larsen",    last: "Shaw" } },
-    { isActive: false, age: 9,  title: { first: "Mini",      last: "Navarro" }, _rowVariant: "success"},
-    { isActive: false, age: 89, title: { first: "Geneva",    last: "Wilson" } },
-    { isActive: true,  age: 38, title: { first: "Jami",      last: "Carney" } },
-    { isActive: false, age: 27, title: { first: "Essie",     last: "Dunlap" } },
-    { isActive: true,  age: 40, title: { first: "Thor",      last: "Macdonald" } },
-    { isActive: true,  age: 87, title: { first: "Larsen",    last: "Shaw" }, _cellVariants: { age: "danger", isActive: "warning" } },
-    { isActive: false, age: 26, title: { first: "Mitzi",     last: "Navarro" } },
-    { isActive: false, age: 22, title: { first: "Genevieve", last: "Wilson" } },
-    { isActive: true,  age: 38, title: { first: "John",      last: "Carney" } },
-    { isActive: false, age: 29, title: { first: "Dick",      last: "Dunlap" } }
-];
+import {getTime, parseHourToSchedule, sortSchedule} from '../../../services/utils'
+import {freeRooms} from '../../../services/GetsServices'
+import * as events from '../../../services/eventQuerys'
+import * as lessons from '../../../services/lessonQuerys'
+import * as rooms from '../../../services/roomQuerys'
 
 export default {
     components:{
@@ -263,34 +276,10 @@ export default {
     },
     data() {
         return {
-            items: items,
-            fields: [
-                {
-                    key: "title",
-                    label: "Título",
-                    sortable: true,
-                    sortDirection: "asc"
-                },
-                {
-                    key: "responsable",
-                    label: "Resposável",
-                    sortable: true,
-                    sortDirection: "asc"
-                },
-                {
-                    key: "interval",
-                    label: "Período",
-                    sortable: true,
-                    sortDirection: "asc"
-                },
-                {
-                    key: "actions",
-                    label: "Ações"
-                }
-            ],
+            items: [],
             currentPage: 1,
             perPage: 10,
-            totalRows: items.length,
+            totalRows: null,
             pageOptions: [10, 25, 50, 100],
             sortBy: null,
             sortDesc: false,
@@ -318,7 +307,7 @@ export default {
                     end: null
                 }
             },
-            startDatetimeOptions: {
+            datetimeOptions: {
                 format: "MM/DD/YYYY HH:mm",
                 disabledHours: [0, 1, 2, 3, 4, 5, 6, 23],
                 stepping: 10,
@@ -326,12 +315,147 @@ export default {
                 useCurrent: true,
                 sideBySide: false,
                 defaultDate: null,
+                // minDate: null,
+                // maxDate: null,
                 locale: "pt-br",
                 inline: true
             }
         };
     },
-    computed: {},
+    computed: {
+        fields () {
+            var new_fields = []
+            if (!this.searchData.objectOfSearch) {
+                new_fields.push(
+                    {
+                        key: "title",
+                        label: "Título",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "responsable",
+                        label: "Resposável",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "room",
+                        label: "Sala",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "interval",
+                        label: "Período"
+                    },
+                    {
+                        key: "actions",
+                        label: "Ações"
+                    }
+                )
+
+            } else if (this.searchData.objectOfSearch == 'lessons') {
+                new_fields.push(
+                    {
+                        key: "discipline_name",
+                        label: "Nome da disciplina",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "discipline_cod",
+                        label: "Código da disciplina",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "responsable",
+                        label: "Resposável",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "room",
+                        label: "Sala",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "schedule",
+                        label: "Horários",
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "actions",
+                        label: "Ações"
+                    }
+                )
+            } else if (this.searchData.objectOfSearch == 'events') {
+                new_fields.push(
+                    {
+                        key: "title",
+                        label: "Título",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "responsable",
+                        label: "Resposável",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "status",
+                        label: "Status",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "room",
+                        label: "Sala",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "interval",
+                        label: "Período"
+                    },
+                    {
+                        key: "actions",
+                        label: "Ações"
+                    }
+                )
+            } else if (this.searchData.objectOfSearch == 'free') {
+                new_fields.push(
+                    {
+                        key: "room",
+                        label: "Sala",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "type_room",
+                        label: "Tipo da sala",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "capacity",
+                        label: "Capacidade",
+                        sortable: true,
+                        sortDirection: "asc"
+                    },
+                    {
+                        key: "actions",
+                        label: "Ações"
+                    }
+                )
+            }
+
+            return new_fields
+        }
+    },
     watch: {
         "searchData.filter.type": function() {
             if (this.searchData.filter.type == "room") {
@@ -339,39 +463,145 @@ export default {
                 return;
             }
             if (this.searchData.filter.type == "responsable") {
-                this.filterPlaceholder = "Ex: Igor";
+                this.filterPlaceholder = "Ex: I. WIESE";
                 return;
             }
+        },
+        "searchData.objectOfSearch": function() {
+            this.searchData.filter.type = null
+            this.items = []
         }
     },
     created: function() {
-        console.log("teste");
+        // getTime().then((value) => {
+        //     this.datetimeOptions.minDate = moment(value)
+        //     let maxDate = moment(value).set({hour:23,minute:0,second:0,millisecond:0})
+        //     maxDate = maxDate.get('month') < 7 ? maxDate : maxDate.set({'date': 31, 'month': 11})
+        //     this.datetimeOptions.maxDate = moment(maxDate)
+        // })
     },
     methods: {
-        info(item, index, button) {
-            this.modalInfo.title = `Row index: ${index}`;
-            this.modalInfo.content = JSON.stringify(item, null, 2);
-            this.$root.$emit("bv::show::modal", "modalInfo", button);
-        },
-        resetModal() {
-            this.modalInfo.title = "";
-            this.modalInfo.content = "";
-        },
+        // info(item, index, button) {
+        //     this.modalInfo.title = `Row index: ${index}`;
+        //     this.modalInfo.content = JSON.stringify(item, null, 2);
+        //     this.$root.$emit("bv::show::modal", "modalInfo", button);
+        // },
+        // resetModal() {
+        //     this.modalInfo.title = "";
+        //     this.modalInfo.content = "";
+        // },
         onFiltered(filteredItems) {
             // Trigger pagination to update the number of buttons/pages due to filtering
             this.totalRows = filteredItems.length;
             this.currentPage = 1;
         },
-        setPlaceholder() {
-            // if(this.searchData.filter.type == 'room') {
-            //   this.filterPlaceholder = 'Ex: F101'
-            //   console.log('kkkkk');
-            //   return
-            // }
-            // if(this.searchData.filter.type == 'responsable') {
-            //   this.filterPlaceholder = 'Ex: Igor'
-            //   return
-            // }
+        checkDetails(key){
+            if (key.toString().substring(0,1) == '_') {
+                return false
+            }
+            for (var field in this.fields) {
+                if (this.fields.hasOwnProperty(field)) {
+                    if (this.fields[field].key == key) {
+                        return false
+                    }
+                }
+            }
+
+            return true
+        },
+        search() {
+            this.items = []
+            var startDate = moment(new Date(this.searchData.datetimeInterval.start)).format()
+            var endDate = moment(new Date(this.searchData.datetimeInterval.end)).format()
+            if (! this.searchData.objectOfSearch) {
+                const setLessons = (lesson) => {
+                    for (var i = 0; i < lesson.length; i++) {
+                        var scheduleSorted = sortSchedule(lesson[i].schedule)
+                        this.items.push({
+                            title: lesson[i].discipline_name,
+                            responsable: lesson[i].responsable,
+                            room: lesson[i].room,
+                            interval: {
+                                start: scheduleSorted[0].toUpperCase(),
+                                end: scheduleSorted[(scheduleSorted.length)-1].toUpperCase()
+                            },
+                            discipline_cod: {
+                                label: 'Código da disciplina',
+                                item: lesson[i].discipline_cod
+                            },
+                            allSchedule: {
+                                label: 'Horários',
+                                item: scheduleSorted
+                            }
+                        })
+                    }
+                }
+                const setEvents = (evnts) => {
+                    for (var i = 0; i < evnts.length; i++) {
+                        console.log(evnts[i]);
+                        this.items.push({
+                            title: evnts[i].title,
+                            responsable: evnts[i].responsable,
+                            room: evnts[i].room,
+                            interval: {
+                                start:moment(evnts[i].stardDate).utc().format('DD/MM/YY HH:mm'),
+                                end:moment(evnts[i].finalDate).utc().format('DD/MM/YY HH:mm')
+                            },
+                            description: {
+                                label: 'Descrição',
+                                item: evnts[i].description
+                            },
+                            status: {
+                                label: 'Status',
+                                item: evnts[i].status
+                            },
+                            repeat:{
+                                label: 'Repetição',
+                                item:  evnts[i].repeat
+                            },
+                            created: {
+                                label: 'Criado em',
+                                item: evnts[i].timestamp
+                            }
+                        })
+                    }
+                }
+                if (! this.searchData.filter.type) {
+                    events.atInterval(startDate, endDate).then((evnts) => {
+                        setEvents(evnts)
+                    })
+                    var schedule = parseHourToSchedule(this.searchData.datetimeInterval.start,this.searchData.datetimeInterval.end)
+                    lessons.bySchedule({"schedule":schedule}).then((lessons) => {
+                        setLessons(lessons)
+                    })
+                } else if (this.searchData.filter.type == 'room') {
+                    var room = this.searchData.filter.value.toUpperCase()
+                    events.atRoomAtInterval(room, startDate, endDate).then((evnts) => {
+                        setEvents(evnts)
+                    })
+                    var schedule = parseHourToSchedule(this.searchData.datetimeInterval.start, this.searchData.datetimeInterval.end)
+                    lessons.atRoomAtSchedule(room, {"schedule":schedule}).then((lessons) => {
+                        setLessons(lessons)
+                    })
+                } else if (this.searchData.filter.type == 'responsable') {
+                    var responsable = this.searchData.filter.value.toUpperCase()
+                    events.byResponsableAtInterval(responsable, startDate, endDate).then((evnts) => {
+                        setEvents(evnts)
+                    })
+                    var schedule = parseHourToSchedule(this.searchData.datetimeInterval.start, this.searchData.datetimeInterval.end)
+                    lessons.byResponsableAtSchedule(responsable, {"schedule":schedule}).then((lessons) => {
+                        setLessons(lessons)
+                    })
+                }
+            } else if (true) {
+
+            } else if (true) {
+
+            } else if (true) {
+
+            }
+
+            this.totalRows = this.items.length
         }
     }
 };
