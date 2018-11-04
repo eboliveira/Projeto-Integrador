@@ -69,6 +69,18 @@ router.get('/responsable/:responsable', (req, res) => {
   })
 })
 
+router.post('/responsable/:responsable', (req, res) => {
+  LessonCalendar.getLessonsByResponsableAtSchedule(req.params.responsable, req.body.schedule, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
 router.get('/discipline/code/:cod/class/:classroom', (req, res) => {
   LessonCalendar.getLessonsByDisciplineCodAtClassCod(req.params.cod, req.params.classroom, function (err, evnt){
     if(err){
