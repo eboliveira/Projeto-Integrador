@@ -61,8 +61,9 @@ module.exports.getEventsAtRoom = function (roomSearch, callback){
     Evnt.find({room: roomSearch}, callback).sort({title:'asc'})
 }
 
-module.exports.getEventsPendents = function (callback){
-    Evnt.find({status: "undefined"}, callback)
+
+module.exports.getEventsByStatus = function (status, callback){
+  Evnt.find({status:status}, callback)
 }
 
 module.exports.getEventsAtRoomAtSchedule = function (roomSearch, schedule, callback){
@@ -170,6 +171,18 @@ module.exports.getEventById = function (id, callback){
     Evnt.findOne({
         _id : id
     }, callback)
+}
+
+module.exports.updateStatus = function(id, status, callback){
+    Evnt.getEventById(id, (err,event) =>{
+        if(event){
+            event.status = status;
+            event.save(callback)
+        }
+        else{
+            callback(true, null);
+        }
+    })
 }
 
 module.exports.updateEvent = function (updateEvent, callback){
