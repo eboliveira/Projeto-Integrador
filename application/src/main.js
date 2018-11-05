@@ -17,12 +17,14 @@ import LightBootstrap from './light-bootstrap-main'
 import 'vuetify/dist/vuetify.min.css'
 import 'bootstrap/dist/css/bootstrap.css'
 import 'bootstrap-vue/dist/bootstrap-vue.css'
+import '@mdi/font/css/materialdesignicons.min.css'
 import BootstrapVue from 'bootstrap-vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faChevronLeft } from '@fortawesome/free-solid-svg-icons'
 
 library.add(faChevronLeft)
+
 
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 

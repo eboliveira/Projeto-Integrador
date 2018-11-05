@@ -12,10 +12,41 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
+          <v-dialog v-model="info" width="500" backdrop='static'>
+           
+      <v-card>
+          <v-card-title class="headline grey lighten-2" primary-title>Selecionando Horário</v-card-title>
+              <v-card-text>
+                  Para Selecionar um horário basta clicar no espaço vazio no calendário correspondente ao início do evento
+                  e arrastar até o período final do evento.
+              </v-card-text>
+              <v-card-text>
+                  Para deletar um horário marcado basta clicar no calendário no horário desejado
+              </v-card-text>
+              <v-card-text>
+                  É possivel arrastar e redimensionar o tamanho dos horários.
+              </v-card-text>
+              <v-spacer></v-spacer>
+              <v-layout justify-center>
+                <v-btn color="green lighten-1" v-on:click="info=false">OK</v-btn>
+              </v-layout>
+          </v-card>
+    </v-dialog>
         </v-layout>
         <div class="row" style="margin-left: 0px; margin-right: 0px;">
-            <h4 slot="header" class="card-title">Reservar Horários</h4>
+              <h4 slot="header" class="card-title">Reservar Horários</h4>
             <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" :config="config"></full-calendar>
+        <div class="col">
+            <div class="row" style="margin-top: 20px">
+                <div class="col">
+                    <v-layout justify-center>
+                      <b-btn variant="success" style="margin-left: 10px;">Procurar Salas<i class="fa fa-search"></i></b-btn>
+                       <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar"><i class="nc-icon nc-refresh-02"></i></b-btn>
+                       <b-btn variant="info" style="width: 48px; height: 39px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
+                    </v-layout>
+              </div>
+            </div>
+        </div>   
         </div>
              <div class="row table">
               <div class="col-12">
@@ -31,7 +62,7 @@
                       <div class="col-5" style="margin-right: 15px;">
                         <b-form-select v-model="selected_down" :options="sala"/>
                       </div>
-                        <button class="btn btn-success font-icon-detail">
+                        <button class="btn btn-primary font-icon-detail">
                           <i class="nc-icon nc-refresh-02"></i>
                         </button>
                     </div>
@@ -83,7 +114,7 @@ export default {
     return {
       selected_down: null,
       dialog: false,
-      confirm: false,
+      info: false,
       id: 0,
       start: null,
       end: null,
@@ -153,11 +184,12 @@ export default {
       var index = this.eventsData.findIndex(x => x.id === newEvent.id)
       this.eventsData[index].start = moment(newEvent.start._d).utc().format()
       this.eventsData[index].end = moment(newEvent.end._d).utc().format()
-      console.log(this.eventsData[index].start)
-      console.log(this.eventsData[index].end)
     },
     renderEvent(dataEnv, stick){
       stick = true;
+    },
+    cleanCalendar(){
+      $('#calendar').fullCalendar('removeEvents');
     }
   }
 };

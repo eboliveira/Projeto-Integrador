@@ -3,9 +3,6 @@
         <div class="row">
             <div class="col-12">
                 <form>
-                    <!-- <v-btn icon="false" class="back" to="/admin/overview">
-                        <font-awesome-icon icon="chevron-left"/>
-                    </v-btn> -->
                     <v-stepper v-model="nstep">
                         <v-stepper-header>
                             <v-stepper-step :complete-icon="'fa fa-check'" :complete="nstep > 1" step="1">Selecionar Horários Livres</v-stepper-step>
@@ -49,7 +46,7 @@
                                         </v-layout>
                                     </div>
                                     <div class="col-3">
-                                        <b-btn slot="activator" class="float-right" variant="danger" v-on:click="dialog = true">Cancelar</b-btn>
+                                        <b-btn class="float-right" variant="danger" v-on:click="dialog = true">Cancelar</b-btn>
                                     </div>
                                 </div>
                             </div>
