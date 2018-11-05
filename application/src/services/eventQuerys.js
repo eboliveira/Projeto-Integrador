@@ -24,12 +24,12 @@ export async function atRoom(room){
   })
 }
 
-export async function pendents(){
-  return await events.get('pendents/').then((res) => {
+export async function byStatus(status){
+  return await events.get('status/'+status).then((res) => {
     return res.data
   })
-}
 
+}
 export async function atRoomAtSchedule(room, schedule){
   return await events.post('room/' + room, schedule).then((res) => {
     return res.data
