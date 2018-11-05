@@ -28,7 +28,7 @@
       </sidebar-link>
       <sidebar-link to="/admin/reports">
         <i class="nc-icon nc-paper-2"></i>
-        <p>Reservas pendentes</p>
+        <p>Relatórios</p>
       </sidebar-link>
     </side-bar>
     <div class="main-panel">

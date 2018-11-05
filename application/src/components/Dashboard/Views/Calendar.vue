@@ -1,14 +1,8 @@
 <template>
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-12">
-        <div id="app">
-          <router-view/><router-view name = "calendarView"/>
-          <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div id="app">
+		<router-view/><router-view name = "calendarView"/>
+		<full-calendar ref="calendar" :events="events" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
+	</div>
 </template>
 
 <style>
@@ -49,24 +43,26 @@ export default {
       res.forEach(item => {
         let new_event = {};
         if (item['description']){       //se é um evento
-            if(item['repeat']){         //se tem repetição
-                let events_list = []
-                if(item['repeat'] == "daily"){ //se é diariamente
-                    events_list = controllers.repeat(item, 'day')
+            if(item['status'] == 'confirmed'){
+                if(item['repeat']){         //se tem repetição
+                    let events_list = []
+                    if(item['repeat'] == "daily"){ //se é diariamente
+                        events_list = controllers.repeat(item, 'day')
+                    }
+                    else if(item['repeat'] == "weekly"){ //se é semanalmente
+                        events_list = controllers.repeat(item, 'week')
+                    }
+                    else if(item['repeat'] == "monthly"){ //se é semanalmente
+                        events_list = controllers.repeat(item, 'month')
+                    }
+                    events_list.forEach(item =>{
+                        this.events.push(item)
+                    })
                 }
-                else if(item['repeat'] == "weekly"){ //se é semanalmente
-                    events_list = controllers.repeat(item, 'week')
+                else{
+                    new_event = controllers.createEvent(item)
+                    this.events.push(new_event)
                 }
-                else if(item['repeat'] == "monthly"){ //se é semanalmente
-                    events_list = controllers.repeat(item, 'month')
-                }
-                events_list.forEach(item =>{
-                    this.events.push(item)
-                })
-            }
-            else{
-                new_event = controllers.createEvent(item)
-                this.events.push(new_event)
             }
         }
         else{

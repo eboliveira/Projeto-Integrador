@@ -20,8 +20,20 @@ router.get('/all', (req, res) => {
   })
 })
 
-router.get('/pendents', (req, res) => {
-  EventCalendar.getEventsPendents(function (err, evnt){
+router.put('/status/:id',(req, res) => {
+    EventCalendar.updateStatus(req.params.id, req.body.status, function (err, evnt){
+        if(err){
+            console.log(err)
+            return res.status(400).send('server could not understand the request')
+        }
+        else{
+            res.status(200).send(evnt);
+        }
+    })
+})
+
+router.get('/status/:status', (req, res) => {
+  EventCalendar.getEventsByStatus(req.params.status, function (err, evnt){
     if(err){
       console.log(err)
       return res.status(400).send('server could not understand the request')

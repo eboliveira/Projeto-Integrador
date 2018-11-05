@@ -5,14 +5,14 @@
                 <card style="padding: 15px;">
                     <h4 slot="header" class="card-title">
                         Equipamentos
-                        <b-btn class="float-right" v-b-toggle.cadastroEquipamento href="#" variant="primary">Cadastrar</b-btn>
+                        <b-btn class="float-right" v-on:click="toggleCadastro()" variant="primary">Cadastrar</b-btn>
                     </h4>
                     <b-collapse id="cadastroEquipamento" accordion="collapse" role="tabpanel">
-                        <b-form inline @submit="onSubmit" @reset="onReset" v-if="show">
-                            <b-input class="mr-sm-2 mb-sm-0" id="patrimonio" placeholder="Patrimônio" v-model="form.patrimonio" required/>
-                            <b-input class="mr-sm-2 mb-sm-0" id="tipoEquipamento" placeholder="Tipo Equipamento" v-model="form.tipoEquipamento" required/>
-                            <b-input class="mr-sm-2 mb-sm-0" id="marca" placeholder="Marca" v-model="form.marca" required/>
-                            <b-input class="mr-sm-2 mb-sm-0" id="modelo" placeholder="Modelo" v-model="form.modelo" required/>
+                        <b-form inline v-on:submit.prevent="onSubmit">
+                            <b-input type="number" class="mr-sm-2 mb-sm-0" id="patrimonio" placeholder="Patrimônio" v-model="equipment.patrimonio" required/>
+                            <b-input class="mr-sm-2 mb-sm-0" id="tipoEquipamento" placeholder="Tipo Equipamento" v-model="equipment.nome" required/>
+                            <b-input class="mr-sm-2 mb-sm-0" id="marca" placeholder="Marca" v-model="equipment.marca" required/>
+                            <b-input class="mr-sm-2 mb-sm-0" id="modelo" placeholder="Modelo" v-model="equipment.modelo" required/>
                             <b-button type="submit" variant="success">Save</b-button>
                         </b-form>
                     </b-collapse>
@@ -20,7 +20,7 @@
                         <b-row>
                             <b-table striped hover stacked="md" :items="items" :fields="fields">
                                 <template slot="settings" slot-scope="row">
-                                    <button type="button" class="btn-simple btn btn-xs btn-warning">
+                                    <button type="button" class="btn-simple btn btn-xs btn-warning" v-on:click="onEdit(row.item)">
                                         <i class="fa fa-edit"></i>
                                     </button>
                                     <button type="button" class="btn-simple btn btn-xs btn-danger" style="margin-left: 5px;">
@@ -38,8 +38,7 @@
 
 <script>
     import Card from 'src/components/UIComponents/Cards/Card.vue'
-    import {allEquipments} from 'src/services/GetsServices.js'
-
+    import * as equipments from '../../services/equipmentsQuery.js'
 
     export default {
         components: {
@@ -56,40 +55,54 @@
                 ],
                 items : [],
 
-                form: {
+                equipment: {
                     patrimonio: '',
-                    tipoEquipamento: '',
+                    nome: '',
                     marca: '',
                     modelo: '',
                 },
 
-                show: true
+                equipFormToggled : true
             }
         },
         methods: {
             onSubmit (evt) {
                 evt.preventDefault();
-                alert(JSON.stringify(this.form));
+                equipments.set({"equipment":this.equipment}).then(res =>{
+                    this.getAllEquipments()
+                    this.onReset();
+                })
             },
-            onReset (evt) {
-                evt.preventDefault();
-                /* Reset our form values */
-                this.form.patrimonio = '';
-                this.form.tipoEquipamento = '';
-                this.form.marca = '';
-                this.form.modelo = '';
-                /* Trick to reset/clear native browser form validation state */
-                this.show = false;
-                this.$nextTick(() => { this.show = true });
+            onReset () {
+                this.equipment.patrimonio = '';
+                this.equipment.nome = '';
+                this.equipment.marca = '';
+                this.equipment.modelo = '';
+            },
+            onEdit(item){
+                if (this.equipFormToggled) {
+                    this.toggleCadastro()
+                }
+                this.equipment.patrimonio = item.codigo;
+                this.equipment.nome = item.tipo_equipamento;
+                this.equipment.marca = item.marca;
+                this.equipment.modelo = item.modelo;
+            },
+            toggleCadastro(){
+                this.$root.$emit('bv::toggle::collapse', 'cadastroEquipamento')
+                this.equipFormToggled = !this.equipFormToggled
+            },
+            getAllEquipments(){
+                equipments.all().then(res =>{
+                    this.items = []
+                    res.forEach(element => {
+                        this.items.push({ codigo: element.patrimonio, tipo_equipamento: element.nome, marca: element.marca, modelo: element.modelo})
+                    });
+                })
             }
         },
         mounted(){
-            allEquipments().then(res =>{
-                this.items = []
-                res.forEach(element => {
-                    this.items.push({ codigo: element.patrimonio, tipo_equipamento: element.nome, marca: element.marca, modelo: element.modelo, quantidade_total: element.quantidade_total})
-                });
-            })
+           this.getAllEquipments()
         }
     }
 </script>

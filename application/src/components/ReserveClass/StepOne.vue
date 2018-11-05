@@ -1,5 +1,5 @@
 <template>
-    <div class="container-fluid" style="padding-left: 0px; padding-right: 0px;">
+    <b-container fluid>
         <v-layout row justify-center>
           <v-dialog v-model="dialog" persistent max-width="290">
             <v-card>
@@ -33,47 +33,42 @@
           </v-card>
     </v-dialog>
         </v-layout>
-        <div class="row" style="margin-left: 0px; margin-right: 0px;">
+        <b-row>
+          <b-col md="12">
+				  <card style="padding: 15px;">
               <h4 slot="header" class="card-title">Reservar Horários</h4>
-            <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" :config="config"></full-calendar>
-        <div class="col">
-            <div class="row" style="margin-top: 20px">
-                <div class="col">
-                    <v-layout justify-center>
-                      <b-btn variant="success" style="margin-left: 10px;">Procurar Salas<i class="fa fa-search"></i></b-btn>
-                       <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar"><i class="nc-icon nc-refresh-02"></i></b-btn>
-                       <b-btn variant="info" style="width: 48px; height: 39px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
-                    </v-layout>
-              </div>
-            </div>
-        </div>   
-        </div>
-             <div class="row table">
-              <div class="col-12">
-                <card>
-                  <div class="container-fluid">
-                    <div class="row table-head">
-                      <div class="col-3">
-                        <b-form-select v-model="selected_down" :options="bloco"/>
-                      </div>
-                      <div class="col-3">
-                        <b-form-select v-model="selected_down" :options="tipoSala"/>
-                      </div>
-                      <div class="col-5" style="margin-right: 15px;">
-                        <b-form-select v-model="selected_down" :options="sala"/>
-                      </div>
-                        <button class="btn btn-primary font-icon-detail">
-                          <i class="nc-icon nc-refresh-02"></i>
-                        </button>
-                    </div>
-                    <b-table striped hover :items="items">
-                      <b-form-checkbox></b-form-checkbox>
-                    </b-table>
-                  </div>
-                </card>
-              </div>
-            </div>
-        </div>
+              <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" :config="config"></full-calendar>
+             
+          </card>
+        <v-layout justify-center style="margin-top: 20px; margin-bottom: 20px">
+                  <b-btn variant="success" style="margin-left: 10px;">Procurar Salas<i class="fa fa-search"></i></b-btn>
+                  <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar"><i class="nc-icon nc-refresh-02"></i></b-btn>
+                  <b-btn variant="info" style="width: 48px; height: 39px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
+              </v-layout>
+                <card style="padding: 15px;">
+					        <b-row>
+                    <b-col md="3">
+                      <b-form-select v-model="selected" :options="bloco"/>
+                    </b-col>
+                    <b-col md="3">
+                      <b-form-select v-model="selected" :options="tipoSala"/>
+                    </b-col>
+                    <b-col md="5">
+                      <b-form-select v-model="selected" :options="sala"/>
+                    </b-col>
+                    <b-col md="1">
+                      <button class="btn btn-success font-icon-detail">
+                        <i class="nc-icon nc-refresh-02"></i>
+                      </button>
+                    </b-col>
+                  </b-row>
+                   	<b-table striped hover :items="items">
+						<b-form-checkbox></b-form-checkbox>
+					</b-table>
+				</card>
+            </b-col>
+        </b-row>
+	</b-container>
 </template>
 
 <style>
