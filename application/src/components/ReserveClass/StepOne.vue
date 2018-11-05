@@ -84,23 +84,37 @@ export default {
       selected_down: null,
       dialog: false,
       confirm: false,
+      id: 0,
       start: null,
       end: null,
       eventsData:[
       ],
       events: [
       ],
-       config: {
+      config: {
           eventClick: event => {
-            this.selected = event;
+            $('#calendar').fullCalendar('removeEvents',[event._id]);
           },
           select: (start, end) => {
-              this.dialog = true;
-              this.start = moment(start._d).utc().format();
-              this.end = moment(end._d).utc().format();
+              var eventData = {
+                title: 'Selecionado',
+                start: moment(start._d).utc().format(),
+                end: moment(end._d).utc().format(),
+                id: this.id,
+              }
+              $('#calendar').fullCalendar('renderEvent', eventData, true)
+              this.eventsData.push(eventData)
+              this.id++;
+              $('#calendar').fullCalendar('unselect');
           },
+          eventResize: (delta) => {
+            this.edit(delta)
+          },
+          eventDrop: (delta) => {
+            this.edit(delta)
+          },
+
           editable:true,
-          
       },
       selected: {},
       bloco: [
@@ -135,18 +149,13 @@ export default {
      eventSelected(event) {
       this.selected = event;
     },
-    select(){
-      this.confirm = true;
-      var eventData = {
-          title: 'Selecionado',
-          start: this.start,
-          end: this.end
-      }
-      this.eventsData.push(eventData)
-      $('#calendar').fullCalendar('renderEvent', eventData, true)
-      this.dialog = false;
+    edit(newEvent){
+      var index = this.eventsData.findIndex(x => x.id === newEvent.id)
+      this.eventsData[index].start = moment(newEvent.start._d).utc().format()
+      this.eventsData[index].end = moment(newEvent.end._d).utc().format()
+      console.log(this.eventsData[index].start)
+      console.log(this.eventsData[index].end)
     },
-  
     renderEvent(dataEnv, stick){
       stick = true;
     }
