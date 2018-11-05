@@ -1,5 +1,5 @@
 <template>
-    <b-container fluid>
+    <b-container fluid style="margin-top: 10px; margin-bottom: 10px">
         <b-row>
             <b-col md="12">
                 <form>
@@ -38,7 +38,7 @@
                             </v-dialog>
                         </v-layout>
                         
-                        <b-container fluid>
+                        <b-container fluid style="margin-bottom: 10px">
                             <b-row>
                                 <b-col md="3">
                                     <b-btn v-if="nstep > '1'" variant="warning" v-on:click="nstep --">Voltar</b-btn>

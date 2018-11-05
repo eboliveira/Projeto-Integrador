@@ -57,7 +57,7 @@
 								<b-input-group>
 									<b-form-input v-model="filter" :placeholder="'Realizar uma busca por ' + fields[0].label" />
 									<b-input-group-append>
-									<b-btn :disabled="!filter" v-on:click="filter = ''">Clear</b-btn>
+										<b-btn :disabled="!filter" v-on:click="filter = ''">Clear</b-btn>
 									</b-input-group-append>
 								</b-input-group>
 							</b-form-group>
