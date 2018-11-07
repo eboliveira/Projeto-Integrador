@@ -24,49 +24,63 @@
                                 </button>
                             </template>
                         </b-table>
-                        <b-modal ok-only header-bg-variant="primary" ok-title="Fechar" id="modalInfo" :title="modal_room">
-                            <div class="row">
-                                <label>Titulo: {{this.modal_title}}</label>
-                            </div>
-                            <div class="row">
-                                <label>Descrição: {{this.modal_description}}</label>
-                            </div>
-                            <div class="row">
-                                <label>Sala: {{this.modal_room}}</label>
-                            </div>
-                            <div class="row">
-                                <label>Data inicial: {{this.modal_startDate}}</label>
-                            </div>
-                            <div class="row">
-                                <label>Data final: {{this.modal_finalDate}}</label>
-                            </div>
-                            <div class="row">
-                                <label>Responsável: {{this.modal_responsable}}</label>
-                            </div>
-                            <div class="row">
-                                <label>Estado: {{this.modal_status}}</label>
-                            </div>
-                            <div class="row">
-                                <label>Repetição: {{this.modal_repeat}}</label>
-                            </div>
-                            <div class="row">
-                                <label>Data da requisição: {{this.modal_timestamp}}</label>
-                            </div>
-                        </b-modal>
-                        <b-modal id="modalReason" cancel-variant="danger" cancel-title="Cancelar" title="Rejeitar reserva" @ok="handleRefuse(refuseReason)" :ok-disabled="isReasonEmpty()">
-                            <b-textarea rows=3 placeholder='Digite o motivo pelo qual está rejeitando' v-model='refuseReason'></b-textarea>
-                        </b-modal>
                     </div>
                 </card>
             </b-col>
         </b-row>
+        <b-modal @click="show=true" header-bg-variant="primary" header-text-variant="light" ok-title="Fechar" id="modalInfo" :title="modal_room">
+            <b-container fluid>
+                <b-row>
+                    <b-col md=12>
+                        <b>Descrição:</b> {{this.modal_description}}
+                    </b-col>
+                    <b-col md=12>
+                        <b>Sala:</b> {{this.modal_room}}
+                    </b-col>
+                    <b-col md=12>
+                        <b>Data inicial:</b> {{this.modal_startDate}}
+                    </b-col>
+                    <b-col md=12> 
+                        <b>Data final:</b> {{this.modal_finalDate}}
+                    </b-col>
+                    <b-col md=12>
+                        <b>Responsável:</b> {{this.modal_responsable}}
+                    </b-col>
+                    <b-col md=12>
+                       <b>Estado:</b> {{this.modal_status}}
+                    </b-col>
+                    <b-col md=12>
+                        <b>Repetição:</b> {{this.modal_repeat}}
+                    </b-col>
+                    <b-col md=12>
+                        <b>Data da requisição:</b> {{this.modal_timestamp}}
+                    </b-col>
+                </b-row>
+            </b-container>
+
+            <div slot="modal-footer" class="w-100">
+                <b-btn size="md" class="float-right" variant="primary" @click="show=false">Fechar</b-btn>
+            </div>
+        </b-modal>
+        <b-modal header-bg-variant="danger" header-text-variant="light" ok-title="Fechar" @click="show=true" id="modalReason" title="Rejeitar reserva" @ok="handleRefuse(refuseReason)" :ok-disabled="isReasonEmpty()">
+            <b-container fluid>
+                <b-row>
+                    <b-col md=12>
+                        <b-textarea rows="4" placeholder='Digite o motivo pelo qual está rejeitando' v-model='refuseReason'></b-textarea>
+                    </b-col>
+                </b-row>
+            </b-container>
+            <div slot="modal-footer" class="w-100">
+                <b-btn size="md" class="float-right" variant="danger" @click="show=false">Cancelar</b-btn>
+            </div>
+        </b-modal>
     </b-container>
 </template>
 
 <script>
 import Card from 'src/components/UIComponents/Cards/Card.vue'
-import moment from "moment";
-import {byStatus} from './../../../services/eventQuerys';
+import moment from "moment"
+import {byStatus} from './../../../services/eventQuerys'
 import {changeStatus} from './../../../services/eventsRequests'
 export default {
     components: {
@@ -77,15 +91,15 @@ export default {
         showModal(item ,button){
             this.allItems.forEach(iterator => {
                 if(item.room==iterator.room){
-                    this.modal_title = iterator.title,
+                    this.modal_title       = iterator.title,
                     this.modal_description = iterator.description,
-                    this.modal_room = iterator.room,
-                    this.modal_startDate = iterator.startDate,
-                    this.modal_finalDate = iterator.finalDate,
+                    this.modal_room        = iterator.room,
+                    this.modal_startDate   = iterator.startDate,
+                    this.modal_finalDate   = iterator.finalDate,
                     this.modal_responsable = iterator.responsable,
-                    this.modal_status = iterator.status,
-                    this.modal_repeat = iterator.repeat,
-                    this.modal_timestamp = iterator.timestamp
+                    this.modal_status      = iterator.status,
+                    this.modal_repeat      = iterator.repeat,
+                    this.modal_timestamp   = iterator.timestamp
                 }
             })
             this.$root.$emit('bv::show::modal','modalInfo', button)
@@ -146,6 +160,8 @@ export default {
     },
     data() {
         return {
+            show: false,
+
             allItems:[],
             clickedItem:{},
             filter: "",

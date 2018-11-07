@@ -2,56 +2,50 @@
     <b-container fluid>
         <b-row>
             <b-col md="12">
-                <card style="padding: 15px;">
+                <card style="padding: 10px;">
                     <h4 slot="header" class="card-title">Relatórios</h4>
                     <b-row>
                         <b-col md="4" class="my-1">
-                            <card>
+                            <b-card border-variant="info" header-bg-variant="info" header="Escolha uma data inicial" class="text-center" header-text-variant="white">
                                 <b-row>
                                     <b-col md="12">
-                                        <h5 slot="header" class="card-title text-center">Escolha uma data inicial</h5>
                                         <date-picker id="stardDate" v-model="searchData.datetimeInterval.start" :config="datetimeOptions"></date-picker>
                                     </b-col>
                                 </b-row>
-                            </card>
+                            </b-card>
                         </b-col>
                         <b-col md="4" class="my-1">
-                            <card>
+                            <b-card border-variant="info" header-bg-variant="info" header="Escolha uma data final" class="text-center" header-text-variant="white">
                                 <b-row>
                                     <b-col md="12">
-                                        <h5 slot="header" class="card-title text-center">Escolha uma data final</h5>
                                         <date-picker id="endDate" v-model="searchData.datetimeInterval.end" :config="datetimeOptions"></date-picker>
                                     </b-col>
                                 </b-row>
-                            </card>
+                            </b-card>
                         </b-col>
                         <b-col md="4" class="my-1">
                             <b-row>
                                 <b-col md="12" class="my-1">
-                                    <b-form-group horizontal label="Buscar por:" label-text-align="right" class="mb-0">
-                                        <b-input-group>
-                                            <b-form-select v-model="searchData.objectOfSearch">
-                                                <option :value="null">Aulas e Eventos</option>
-                                                <option value="lessons">Apenas Aulas</option>
-                                                <option value="events">Apenas Eventos</option>
-                                                <option value="free">Salas livres</option>
-                                            </b-form-select>
-                                        </b-input-group>
+                                    <b-form-group vertical label="Buscar por:" class="mb-0">
+                                        <b-form-select v-model="searchData.objectOfSearch">
+                                            <option :value="null">Aulas e Eventos</option>
+                                            <option value="lessons">Apenas Aulas</option>
+                                            <option value="events">Apenas Eventos</option>
+                                            <option value="free">Salas livres</option>
+                                        </b-form-select>
                                     </b-form-group>
                                 </b-col>
                                 <b-col md="12" class="my-1">
-                                    <b-form-group v-if="searchData.objectOfSearch !== 'free'" horizontal label="Aplicar filtro:" label-text-align="right" class="mb-0">
-                                        <b-input-group>
-                                            <b-form-select v-model="searchData.filter.type" :options="searchData.filter.options" slot="prepend">
-                                                <option :value="null">Filtro desativado</option>
-                                                <option value="room">Sala</option>
-                                                <option value="responsable">Responsável</option>
-                                                <option v-if="searchData.objectOfSearch === 'lessons'" value="discipline_cod">Código da disciplina</option>
-                                            </b-form-select>
-                                            <b-form-input v-if="searchData.filter.type" v-model="searchData.filter.value" :placeholder="filterPlaceholder"/>
-                                        </b-input-group>
+                                    <b-form-group v-if="searchData.objectOfSearch !== 'free'" vertical label="Aplicar filtro:">
+                                        <b-form-select v-model="searchData.filter.type" :options="searchData.filter.options">
+                                            <option :value="null">Sem Filtro</option>
+                                            <option value="room">Sala</option>
+                                            <option value="responsable">Responsável</option>
+                                            <option v-if="searchData.objectOfSearch === 'lessons'" value="discipline_cod">Código da disciplina</option>
+                                        </b-form-select>
+                                        <b-form-input v-if="searchData.filter.type" v-model="searchData.filter.value" :placeholder="filterPlaceholder"/>
                                     </b-form-group>
-                                    <b-form-group v-if="searchData.objectOfSearch === 'free'" horizontal label="Aplicar filtro:" label-text-align="right" class="mb-0">
+                                    <b-form-group v-if="searchData.objectOfSearch === 'free'" vertical label="Aplicar filtro:">
                                         <b-input-group>
                                             <b-form-select v-model="searchData.filter.type" :options="searchData.filter.options">
                                                 <option :value="null">Todas as salas livres</option>
@@ -62,7 +56,6 @@
                                             </b-form-select>
                                         </b-input-group>
                                     </b-form-group>
-                                    <br>
                                     <b-form-group v-if="searchData.filter.type === 'custom'" label="[ Ctrl + Click ] para selecionar múltiplos valores">
                                         <b-input-group>
                                             <b-form-select multiple :select-size="17" v-model="searchData.filter.schedules.monday" class="mb-3">
@@ -183,7 +176,9 @@
                                     </b-form-group>
 
                                 </b-col>
-                                <button v-on:click="search()" class="btn btn-primary btn-block position-relative" type="button">Realizar busca</button>
+                                <b-col mb="12">
+                                    <button v-on:click="search()" class="btn btn-primary btn-block" type="button">Realizar busca</button>
+                                </b-col>
                             </b-row>
                         </b-col>
                     </b-row>

@@ -1,7 +1,9 @@
 <template>
 	<div id="app">
-		<router-view/><router-view name = "calendarView"/>
-		<full-calendar ref="calendar" :events="events" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
+    <card style="padding: 10px">
+      <router-view/><router-view name = "calendarView"/>
+      <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" @event-created="eventCreated" :config="config"></full-calendar>
+    </card>
 	</div>
 </template>
 
@@ -18,6 +20,7 @@
 <script>
 import {parseScheduleToDate} from "./../../../services/utils"
 import controllers from "./../../../services/eventsFullCalendar"
+import Card from 'src/components/UIComponents/Cards/Card.vue'
 
 export default {
   name: "app",
@@ -32,6 +35,9 @@ export default {
       },
       selected: {}
     };
+  },
+  components:{
+    Card
   },
   methods: {
     refreshEvents(res) {
