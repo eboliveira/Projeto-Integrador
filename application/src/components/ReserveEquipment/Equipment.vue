@@ -13,17 +13,17 @@
                             <b-input class="mr-sm-2 mb-sm-0" id="tipoEquipamento" placeholder="Tipo Equipamento" v-model="equipment.nome" required/>
                             <b-input class="mr-sm-2 mb-sm-0" id="marca" placeholder="Marca" v-model="equipment.marca" required/>
                             <b-input class="mr-sm-2 mb-sm-0" id="modelo" placeholder="Modelo" v-model="equipment.modelo" required/>
-                            <b-button type="submit" variant="success">Save</b-button>
+                            <button type="submit" class="btn-simple btn btn-ms btn-success">Salvar</button>
                         </b-form>
                     </b-collapse>
                     <b-container fluid>
                         <b-row>
                             <b-table striped hover stacked="md" :items="items" :fields="fields">
                                 <template slot="settings" slot-scope="row">
-                                    <button type="button" class="btn-simple btn btn-xs btn-warning" v-on:click="onEdit(row.item)">
+                                    <button type="button" class="btn-simple btn btn-sm btn-warning" v-on:click="onEdit(row.item)">
                                         <i class="fa fa-edit"></i>
                                     </button>
-                                    <button type="button" class="btn-simple btn btn-xs btn-danger" style="margin-left: 5px;">
+                                    <button type="button" class="btn-simple btn btn-sm btn-danger" style="margin-left: 5px;">
                                         <i class="fa fa-times"></i>
                                     </button>
                                 </template>
