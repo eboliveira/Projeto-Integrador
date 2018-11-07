@@ -4,11 +4,11 @@
           <v-dialog v-model="dialog" persistent max-width="290">
             <v-card>
               <v-card-title class="headline">Selecionando Horário de Evento</v-card-title>
-              <v-card-text>Tem certeza que deseja selecionar esse horário para o evento?</v-card-text>
+              <v-card-text>Tem certeza que deseja confirmar a seleção?</v-card-text>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="red darken-1" @click.native="dialog = false">Cancelar</v-btn>
-                <v-btn color="green lighten-1" @click.native="select">Confirmar</v-btn>
+                <v-btn color="green lighten-1" @click.native="search">Confirmar</v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
@@ -41,11 +41,12 @@
              
           </card>
         <v-layout justify-center style="margin-top: 20px; margin-bottom: 20px">
-                  <b-btn variant="success" style="margin-left: 10px;">Procurar Salas<i class="fa fa-search"></i></b-btn>
+                  <b-btn variant="success" style="margin-left: 10px;" v-on:click="dialog = true">Procurar Salas<i class="fa fa-search"></i></b-btn>
                   <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar"><i class="nc-icon nc-refresh-02"></i></b-btn>
                   <b-btn variant="info" style="width: 48px; height: 39px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
               </v-layout>
                 <card style="padding: 15px;">
+                  <h4 slot="header" class="card-title">Selecionar Salas</h4>
 					        <b-row>
                     <b-col md="3">
                       <b-form-select v-model="selected" :options="bloco"/>
@@ -62,7 +63,7 @@
                       </button>
                     </b-col>
                   </b-row>
-                   	<b-table striped hover :items="items">
+                   	<b-table striped hover :items="rooms">
 						<b-form-checkbox></b-form-checkbox>
 					</b-table>
 				</card>
@@ -91,15 +92,10 @@
 
 <script>
 import Card from "src/components/UIComponents/Cards/Card.vue";
+import {freeRooms} from '../../services/GetsServices.js'
+import * as utils from '../../services/utils.js'
 import moment from "moment";
 
-
-const items = [
-  { bloco: 'H', tipo_Sala: 'Teórica', codigo_sala: 'H102'},
-  { bloco: 'B', tipo_Sala: 'Teórica', codigo_sala: 'B005' },
-  { bloco: 'E', tipo_Sala: 'Lab. Informática', codigo_sala: 'E105' },
-  { bloco: 'C', tipo_Sala: 'Lab. Alimentos', codigo_sala: 'C001' }
-]
 
 export default {
   components: {
@@ -117,9 +113,11 @@ export default {
       ],
       events: [
       ],
+      rooms: [],
       config: {
           eventClick: event => {
             $('#calendar').fullCalendar('removeEvents',[event._id]);
+            this.eventsData.splice(this.eventsData.findIndex(x => x.id === event.id), 1)
           },
           select: (start, end) => {
               var eventData = {
@@ -141,6 +139,7 @@ export default {
           },
 
           editable:true,
+          slotDuration: '00:10:00'
       },
       selected: {},
       bloco: [
@@ -168,7 +167,6 @@ export default {
       ],
       
       fields: [ 'first_name', 'last_name', 'show_details' ],
-      items: items,
     };
   },
   methods: {
@@ -185,6 +183,33 @@ export default {
     },
     cleanCalendar(){
       $('#calendar').fullCalendar('removeEvents');
+    },
+    search() {
+      var start = moment(this.eventsData[0].start).utc().format('YYYY-MM-DDTHH:mm:ss.sss')
+      var end = moment(this.eventsData[0].end).utc().format('YYYY-MM-DDTHH:mm:ss.sss')
+      var schedule = utils.parseHourToSchedule(start, end)
+
+      freeRooms({"schedule": schedule}, start, end).then((res)=>{
+        for(var room of res){
+          var searchRoom = {
+            bloco: room._id.substr(0,1),
+            tipo_Sala: room.type_room ,
+            codigo_sala: room._id,
+          }
+            this.rooms.push(searchRoom)
+        }
+        this.rooms = this.rooms.sort(function (a, b) {
+          if (a.bloco > b.bloco) {
+            return 1;
+          }
+          if (a.bloco < b.bloco) {
+            return -1;
+          }
+          return 0;
+          })
+      })
+
+      this.dialog = false
     }
   }
 };
