@@ -42,29 +42,56 @@
           </card>
         <v-layout justify-center style="margin-top: 20px; margin-bottom: 20px">
                   <b-btn variant="success" style="margin-left: 10px;" v-on:click="dialog = true">Procurar Salas<i class="fa fa-search"></i></b-btn>
-                  <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar"><i class="nc-icon nc-refresh-02"></i></b-btn>
+                  <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar" v-b-tooltip.hover id="Refresh1"><i class="nc-icon nc-refresh-02"></i></b-btn>
                   <b-btn variant="info" style="width: 48px; height: 39px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
+                  <b-tooltip target="Refresh1" title="Refresh" placement="bottom"></b-tooltip>
               </v-layout>
                 <card style="padding: 15px;">
                   <h4 slot="header" class="card-title">Selecionar Salas</h4>
 					        <b-row>
                     <b-col md="3">
-                      <b-form-select v-model="selected" :options="bloco"/>
+                      <b-form-select v-model="selectedBlock" :options="bloco" slot="block">
+                        <option slot="bloco" :value="null">Bloco</option>
+                        </b-form-select>
                     </b-col>
                     <b-col md="3">
-                      <b-form-select v-model="selected" :options="tipoSala"/>
+                      <b-form-select v-model="selectedroomType" :options="tipoSala" slot="roomType"/>
                     </b-col>
-                    <b-col md="5">
-                      <b-form-select v-model="selected" :options="sala"/>
+                    <b-col md="4">
+                      <b-form-select v-model="selectedroom" :options="sala" slot="roomCode"/>
                     </b-col>
                     <b-col md="1">
-                      <button class="btn btn-success font-icon-detail" v-on:click="refreshTable">
+                      <button id="check" class="btn btn-success font-icon-detail" v-on:click="filterTable" v-b-tooltip.hover>
+                        <i class="nc-icon nc-check-2"></i>
+                      </button>
+                      <b-tooltip target="check" title="Aplicar Filtro" placement="bottom"></b-tooltip>
+                    </b-col>
+                     <b-col md="1">
+                      <button id="Refresh" class="btn btn-success font-icon-detail" v-on:click="refreshTable" v-b-tooltip.hover>
                         <i class="nc-icon nc-refresh-02"></i>
                       </button>
+                      <b-tooltip target="Refresh" title="Refresh" placement="bottom"></b-tooltip>
                     </b-col>
                   </b-row>
-                   	<b-table striped hover :items="rooms">
+                   	<b-table show-empty striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" @filtered="onFiltered" :sort-by.sync="sortBy">
+                       <template slot="bloco" slot-scope="row">
+                         <span v-for="item in row.value">{{item}}</span>
+                       </template>
+                       <template slot="tipo_Sala" slot-scope="row">
+                         <span v-for="item in row.value">{{item}}</span>
+                       </template>
+                       <template slot="codigo_Sala" slot-scope="row">
+                         <span v-for="item in row.value">{{item}}</span>
+                          <b-form-checkbox @click.native.stop v-model="row.detailsShowing"></b-form-checkbox>
+                       </template>
 					          </b-table>
+                  <v-layout justify-center>
+                     <b-row>
+                        <b-col md="2" >
+                            <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+                        </b-col>
+                    </b-row>
+                  </v-layout>
 				          </card>
             </b-col>
         </b-row>
@@ -102,17 +129,19 @@ export default {
   },
   data() {
     return {
-      selected_down: null,
+      //Modal
       dialog: false,
       info: false,
+      //FullCalendar
       id: 0,
       start: null,
       end: null,
+      selected: {},
+      editable:true,
       eventsData:[
       ],
       events: [
       ],
-      rooms: [],
       config: {
           eventClick: event => {
             $('#calendar').fullCalendar('removeEvents',[event._id]);
@@ -136,13 +165,22 @@ export default {
           eventDrop: (delta) => {
             this.edit(delta)
           },
-
-          editable:true,
-          slotDuration: '00:10:00'
+          slotDuration: '00:10:00',
       },
-      selected: {},
+      //Table
+      items: [],
+      refresh: [],
+      currentPage: 1,
+      perPage: 10,
+      totalRows: null,
+      sortBy: null,
+      sortDesc: false,
+      sortDirection: "asc",
+      filter: null,
+      selectedBlock: null,
+      selectedroomType: null,
+      selectedroom: null,
       bloco: [
-        { value: null, text: 'Bloco', disabled: true },
         { value: 'A', text: 'A' },
         { value: 'B', text: 'B' },
         { value: 'C', text: 'C' },
@@ -159,17 +197,15 @@ export default {
         { value: 'Desenho', text: 'Desenho' }
       ],
       sala: [
-        { value: null, text: 'Código Sala', disabled: true },
+        { value: null, text: 'Código da Sala', disabled: true },
         { value: 'a', text: 'This is First option' },
         { value: 'b', text: 'Selected Option' },
         { value: 'c', text: 'Third Option' }
-      ],
-      
-      fields: [ 'first_name', 'last_name', 'show_details' ],
+      ]
     };
   },
   methods: {
-     eventSelected(event) {
+    eventSelected(event) {
       this.selected = event;
     },
     edit(newEvent){
@@ -178,7 +214,7 @@ export default {
       this.eventsData[index].end = moment(newEvent.end._d).utc().format()
     },
     refreshTable() {
-      this.rooms = []
+      this.items = this.refresh
     },
     renderEvent(dataEnv, stick){
       stick = true;
@@ -190,7 +226,7 @@ export default {
       var start = moment(this.eventsData[0].start).utc().format('YYYY-MM-DDTHH:mm:ss.sss')
       var end = moment(this.eventsData[0].end).utc().format('YYYY-MM-DDTHH:mm:ss.sss')
       var schedule = utils.parseHourToSchedule(start, end)
-
+      
       freeRooms({"schedule": schedule}, start, end).then((res)=>{
         for(var room of res){
           var searchRoom = {
@@ -198,9 +234,9 @@ export default {
             tipo_Sala: room.type_room ,
             codigo_sala: room._id,
           }
-            this.rooms.push(searchRoom)
+            this.items.push(searchRoom)
         }
-        this.rooms = this.rooms.sort(function (a, b) {
+        this.items = this.items.sort(function (a, b) {
           if (a.bloco > b.bloco) {
             return 1;
           }
@@ -210,9 +246,106 @@ export default {
           return 0;
           })
       })
-
+      this.refresh = this.items
       this.dialog = false
-    }
+    },
+    onFiltered(filteredItems) {
+            this.totalRows = filteredItems.length;
+            this.currentPage = 1;
+    },
+    filterTable() {
+      console.log('oi')
+      var bloco = this.selectedBlock
+      var tipo_Sala = this.selectedroomType
+      var codigo_Sala = this.selectedroom
+      //  console.log(Object.values(this.items[0]))
+        var searchData = []
+        if(bloco){
+            if(searchData != null){
+              for(var search of this.items){
+                  var exist = Object.values(search)
+                  if(exist.find(x => x == bloco)){
+                      searchData.push(search)
+                  }
+              }
+            }
+        }
+        if(tipo_Sala){
+            if(searchData != null){
+              for(var search of this.items){
+                  var exist = Object.values(search)
+                  if(exist.find(x => x == tipo_Sala)){
+                      searchData.push(search)
+                  }
+              }
+            }
+            else{
+              var searchDatat = []
+              for(var search of searchDatat){
+                  var exist = Object.values(search)
+                  if(exist.find(x => x == tipo_Sala)){
+                      searchDatat.push(search)
+                  }
+              }
+              searchData = searchDatat
+            }
+        }
+        if(codigo_sala){
+            if(searchData != null){
+              for(var search of this.items){
+                  var exist = Object.values(search)
+                  if(exist.find(x => x == codigo_sala)){
+                      searchData.push(search)
+                  }
+              }
+            }
+            else{
+              var searchDatat = []
+              for(var search of searchDatat){
+                  var exist = Object.values(search)
+                  if(exist.find(x => x == codigo_sala)){
+                      searchDatat.push(search)
+                  }
+              }
+              searchData = searchDatat
+            }
+        }
+        console.log(searchData)
+        this.items = searchData
+      }
+  },
+  computed: {
+    fields() {
+      var fields = []
+      fields.push(
+          {
+              key: "bloco",
+              label: "Bloco",
+              sortable: true,
+              sortDirection: "asc"
+          },
+          {
+              key: "tipo_Sala",
+              label: "Tipo da Sala",
+              sortable: true,
+              sortDirection: "asc"
+          },
+          {
+              key: "codigo_sala",
+              label: "Código da Sala",
+              sortable: true,
+              sortDirection: "asc"
+          },
+        )
+        return fields
+    },
+    sortOptions () {
+      // Create an options list from our fields
+      return this.fields
+        .filter(f => f.sortable)
+        .map(f => { return { text: f.label, value: f.key } })
+    },
+    
   }
 };
 
