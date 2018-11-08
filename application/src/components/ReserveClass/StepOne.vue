@@ -58,15 +58,14 @@
                       <b-form-select v-model="selected" :options="sala"/>
                     </b-col>
                     <b-col md="1">
-                      <button class="btn btn-success font-icon-detail">
+                      <button class="btn btn-success font-icon-detail" v-on:click="refreshTable">
                         <i class="nc-icon nc-refresh-02"></i>
                       </button>
                     </b-col>
                   </b-row>
                    	<b-table striped hover :items="rooms">
-						<b-form-checkbox></b-form-checkbox>
-					</b-table>
-				</card>
+					          </b-table>
+				          </card>
             </b-col>
         </b-row>
 	</b-container>
@@ -177,6 +176,9 @@ export default {
       var index = this.eventsData.findIndex(x => x.id === newEvent.id)
       this.eventsData[index].start = moment(newEvent.start._d).utc().format()
       this.eventsData[index].end = moment(newEvent.end._d).utc().format()
+    },
+    refreshTable() {
+      this.rooms = []
     },
     renderEvent(dataEnv, stick){
       stick = true;
