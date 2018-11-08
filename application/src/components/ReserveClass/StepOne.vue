@@ -99,21 +99,21 @@
 </template>
 
 <style>
-  @import "~fullcalendar/dist/fullcalendar.css";
-  #app {
-    font-family: "Avenir", Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
+@import "~fullcalendar/dist/fullcalendar.css";
+#app {
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
 }
-  .table {
-    margin-top: 26px;
-    margin-left: 0px;
-  }
+.table {
+  margin-top: 26px;
+  margin-left: 0px;
+}
 
-  .table-head {
-    margin-top: 20px;
-  }
+.table-head {
+  margin-top: 20px;
+}
 </style>
 
 <script>
@@ -181,20 +181,21 @@ export default {
       selectedroomType: null,
       selectedroom: null,
       bloco: [
-        { value: 'A', text: 'A' },
-        { value: 'B', text: 'B' },
-        { value: 'C', text: 'C' },
-        { value: 'D', text: 'D' },
-        { value: 'E', text: 'E' },
-        { value: 'F', text: 'F' },
-        { value: 'G', text: 'G' },
-        { value: 'H', text: 'H' }
+        { value: null, text: "Bloco", disabled: true },
+        { value: "A", text: "A" },
+        { value: "B", text: "B" },
+        { value: "C", text: "C" },
+        { value: "D", text: "D" },
+        { value: "E", text: "E" },
+        { value: "F", text: "F" },
+        { value: "G", text: "G" },
+        { value: "H", text: "H" }
       ],
       tipoSala: [
-        { value: null, text: 'Tipo da Sala', disabled: true },
-        { value: 'Laboratório', text: 'Laboratório' },
-        { value: 'Teórica', text: 'Teórica' },
-        { value: 'Desenho', text: 'Desenho' }
+        { value: null, text: "Tipo da Sala", disabled: true },
+        { value: "Laboratório", text: "Laboratório" },
+        { value: "Teórica", text: "Teórica" },
+        { value: "Desenho", text: "Desenho" }
       ],
       sala: [
         { value: null, text: 'Código da Sala', disabled: true },
@@ -208,10 +209,14 @@ export default {
     eventSelected(event) {
       this.selected = event;
     },
-    edit(newEvent){
-      var index = this.eventsData.findIndex(x => x.id === newEvent.id)
-      this.eventsData[index].start = moment(newEvent.start._d).utc().format()
-      this.eventsData[index].end = moment(newEvent.end._d).utc().format()
+    edit(newEvent) {
+      var index = this.eventsData.findIndex(x => x.id === newEvent.id);
+      this.eventsData[index].start = moment(newEvent.start._d)
+        .utc()
+        .format();
+      this.eventsData[index].end = moment(newEvent.end._d)
+        .utc()
+        .format();
     },
     refreshTable() {
       this.items = this.refresh
@@ -348,5 +353,4 @@ export default {
     
   }
 };
-
 </script>

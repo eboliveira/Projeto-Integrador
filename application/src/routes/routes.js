@@ -3,17 +3,16 @@ import DashboardLayout from '../components/Dashboard/Layout/DashboardLayout.vue'
 import NotFound from '../components/GeneralViews/NotFoundPage.vue'
 
 // Admin pages
-import Overview from 'src/components/Dashboard/Views/Overview.vue'
-import UserProfile from 'src/components/Dashboard/Views/UserProfile.vue'
-import Calendar from 'src/components/Dashboard/Views/Calendar.vue'
-import Form from 'src/components/ReserveClass/Form.vue'
-import Reserve from 'src/components/Dashboard/Views/Reserve/Reserve.vue'
-import Classes from 'src/components/Dashboard/Views/Classes.vue'
-import Equipments from 'src/components/Dashboard/Views/Equipment.vue'
+import Overview         from 'src/components/Dashboard/Views/Overview.vue'
+import UserProfile      from 'src/components/Dashboard/Views/UserProfile.vue'
+import Calendar         from 'src/components/Dashboard/Views/Calendar.vue'
+import Reserve          from 'src/components/Dashboard/Views/Reserve/Reserve.vue'
+import Classes          from 'src/components/Dashboard/Views/Classes.vue'
+import Equipments       from 'src/components/Dashboard/Views/Equipment.vue'
+import Pendents         from 'src/components/Dashboard/Views/Pendents.vue'
+import Reports          from 'src/components/Dashboard/Views/Reports.vue'
+import Form             from 'src/components/ReserveClass/Form.vue'
 import ReserveEquipment from 'src/components/ReserveEquipment/Equipment.vue'
-import Pendents from 'src/components/Dashboard/Views/Pendents.vue'
-import Reports from 'src/components/Dashboard/Views/Reports.vue'
-
 
 const routes = [
   {
