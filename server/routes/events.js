@@ -44,6 +44,18 @@ router.get('/status/:status', (req, res) => {
   })
 })
 
+router.get('/status/:status/:startDate/:finalDate', (req, res) => {
+  EventCalendar.getEventsByStatusAtInterval(req.params.status, req.params.startDate, req.params.finalDate, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
 router.get('/responsable/:responsable', (req, res) => {
   EventCalendar.getEventsByResponsable(req.params.responsable, function (err, evnt){
     if(err){

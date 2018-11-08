@@ -18,8 +18,8 @@ export async function byDisciplineCodAtClass(cod, classroom){
   })
 }
 
-export async function byDisciplineCodAtSchedule(cod){
-  return await lessons.get('discipline/code/' + cod).then((res) => {
+export async function byDisciplineCodAtSchedule(cod, schedule){
+  return await lessons.post('discipline/code/' + cod, schedule).then((res) => {
     return res.data
   })
 }

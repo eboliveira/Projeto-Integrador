@@ -127,6 +127,29 @@ module.exports.getLessonsByResponsableAtSchedule = function (responsable, schedu
     ],callback)
 }
 
+module.exports.getLessonsByDisciplineCodAtSchedule = function (discipline_cod, schedule, callback){
+    Lesson.aggregate([
+        {$match:
+            {$and:[
+                {discipline_cod: new RegExp(discipline_cod, "i")},
+                {schedule: {$in:schedule}}
+            ]}
+        },
+        {$unwind:"$schedule"},
+        {$group:
+            {
+                _id: "$discipline_cod",
+                discipline_name: {$addToSet: "$discipline_name"},
+                discipline_cod: {$addToSet: "$discipline_cod"},
+                responsable: {$addToSet: "$responsable"},
+                schedule: {$addToSet:"$schedule"},
+                room: {$addToSet:"$room"}
+            }
+        },
+        {$sort: {_id: 1 }}
+    ],callback)
+}
+
 module.exports.getLessonById = function (id, callback){
     Lesson.findOne({
         _id : id
