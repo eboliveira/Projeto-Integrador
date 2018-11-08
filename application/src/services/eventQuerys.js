@@ -25,11 +25,17 @@ export async function atRoom(room){
 }
 
 export async function byStatus(status){
-  return await events.get('status/'+status).then((res) => {
+  return await events.get('status/' + status).then((res) => {
     return res.data
   })
-
 }
+
+export async function byStatusAtInterval(status,  startDate, finalDate){
+  return await events.get('status/' + status + '/' + startDate + '/' + finalDate).then((res) => {
+    return res.data
+  })
+}
+
 export async function atRoomAtSchedule(room, schedule){
   return await events.post('room/' + room, schedule).then((res) => {
     return res.data

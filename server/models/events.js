@@ -66,6 +66,38 @@ module.exports.getEventsByStatus = function (status, callback){
   Evnt.find({status:status}, callback)
 }
 
+module.exports.getEventsByStatusAtInterval = function (status, callback){
+  // Evnt.find({$and:[
+  //     {startDate:{$lte:new Date(finalDate).toISOString()}},
+  //     {finalDate:{$gte:new Date(startDate).toISOString()}},
+  //     {status:status}
+  // ]}, callback)
+  Evnt.aggregate([
+      {$match:
+          {$and:[
+              {startDate:{$lte:new Date(finalDate)}},
+              {finalDate:{$gte:new Date(startDate)}},
+              {status:status}
+          ]}
+      },
+      {$group:
+          {
+              _id: "$_id",
+              title: {$addToSet: "$title"},
+              description: {$addToSet: "$description"},
+              responsable: {$addToSet: "$responsable"},
+              status: {$addToSet: "$status"},
+              room: {$addToSet: "$room"},
+              startDate: {$first: "$startDate"},
+              finalDate: {$first: "$finalDate"},
+              repeat: {$addToSet: "$repeat"},
+              timestamp: {$addToSet: "$timestamp"}
+          }
+      },
+      {$sort: {room: 1 }}
+  ], callback)
+}
+
 module.exports.getEventsAtRoomAtSchedule = function (roomSearch, schedule, callback){
     Evnt.find(
         {$and:[
@@ -151,10 +183,10 @@ module.exports.getEventsByResponsableAtInterval = function (responsable, startDa
         },
         {$group:
             {
-                _id: "$responsable",
+                _id: "$_id",
                 title: {$addToSet: "$title"},
                 description: {$addToSet: "$description"},
-                responsable: {$first: "$responsable"},
+                responsable: {$addToSet: "$responsable"},
                 status: {$addToSet: "$status"},
                 room: {$addToSet: "$room"},
                 startDate: {$first: "$startDate"},

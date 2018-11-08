@@ -42,8 +42,14 @@
                                             <option value="room">Sala</option>
                                             <option value="responsable">Responsável</option>
                                             <option v-if="searchData.objectOfSearch === 'lessons'" value="discipline_cod">Código da disciplina</option>
+                                            <option v-if="searchData.objectOfSearch === 'events'" value="status">Status</option>
                                         </b-form-select>
-                                        <b-form-input v-if="searchData.filter.type" v-model="searchData.filter.value" :placeholder="filterPlaceholder"/>
+                                        <b-form-input v-if="searchData.filter.type !== 'status'" v-model="searchData.filter.value" :placeholder="filterPlaceholder"/>
+                                        <b-form-select v-if="searchData.filter.type === 'status'" v-model="searchData.filter.value" :options="searchData.filter.options">
+                                            <option :value="null">Todos</option>
+                                            <option value="undefined">Pendentes</option>
+                                            <option value="Aprovada">Aprovadas</option>
+                                        </b-form-select>
                                     </b-form-group>
                                     <b-form-group v-if="searchData.objectOfSearch === 'free'" vertical label="Aplicar filtro:">
                                         <b-input-group>
@@ -203,56 +209,62 @@
 
                     <!-- Main table element -->
                     <b-table show-empty stacked="md" :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" @filtered="onFiltered">
-                        <template v-if="!searchData.objectOfSearch" slot="title" slot-scope="row">
+                        <template v-if="searchData.objectOfSearch !== 'free'" slot="title" slot-scope="row">
                             <span v-for="item in row.value">{{item}}<span v-if="row.value.length > 1 "> - </span></span>
                         </template>
-                        <template v-if="!searchData.objectOfSearch" slot="room" slot-scope="row">
+                        <template v-if="searchData.objectOfSearch !== 'free'" slot="responsable" slot-scope="row">
                             <span v-for="item in row.value">{{item}}<span v-if="row.value.length > 1 "> - </span></span>
                         </template>
-                        <template v-if="!searchData.objectOfSearch" slot="interval" slot-scope="row">{{row.value.start}} - {{row.value.end}}</template>
-                        <template slot="actions" slot-scope="row">
-                            <!-- <b-button size="sm" @click.stop="info(row.item, row.index, $event.target)" class="mr-1">Info modal</b-button> -->
-                            <!-- <b-button size="sm" @click.stop="row.toggleDetails">{{ row.detailsShowing ? 'Hide' : 'Show' }} Details</b-button> -->
-                            <button v-if="row.item.isActive == true" type="button" class="btn-simple btn btn-sm btn-success" v-b-tooltip.hover title="Aprovar reserva">
-                                <i class="fa fa-check"></i>
-                            </button>
-                            <button v-else type="button" class="btn-simple btn btn-sm" disabled>
-                                <i class="fa fa-check"></i>
-                            </button>
-                            <button v-if="row.item.isActive == true" type="button" class="btn-simple btn btn-sm btn-danger" v-b-tooltip.hover title="Rejeitar reserva">
-                                <i class="fa fa-times"></i>
-                            </button>
-                            <button v-else type="button" class="btn-simple btn btn-sm" disabled>
-                                <i class="fa fa-times"></i>
-                            </button>
-                            <button type="button" class="btn-simple btn btn-sm btn-info" v-b-tooltip.hover title="Visualizar mais informações" v-on:click.stop="row.toggleDetails">
-                                <i class="fa fa-eye"></i>
-                            </button>
-                        </template>
-                        <template slot="row-details" slot-scope="row">
-                            <b-card>
-                                <ul>
-                                    <li v-for="(value, key) in row.item" :key="key" v-if="checkDetails(key)">
-                                        {{ value.label }}: <span v-for="item in value.item">{{item.toUpperCase()}}<span v-if="value.item.length > 1 "> - </span></span>
-                                    </li>
-                                </ul>
-                            </b-card>
-                        </template>
-                    </b-table>
+                        <!-- <template v-if="searchData.objectOfSearch === 'events'" slot="status" slot-scope="row">
+                        <span>{{row.value}}</span>
+                    </template> -->
+                    <template slot="room" slot-scope="row">
+                        <span v-for="item in row.value">{{item}}<span v-if="row.value.length > 1 "> - </span></span>
+                    </template>
+                    <template v-if="searchData.objectOfSearch !== 'free'" slot="interval" slot-scope="row">{{row.value.start}} - {{row.value.end}}</template>
+                    <template slot="actions" slot-scope="row">
+                        <!-- <b-button size="sm" @click.stop="info(row.item, row.index, $event.target)" class="mr-1">Info modal</b-button> -->
+                        <!-- <b-button size="sm" @click.stop="row.toggleDetails">{{ row.detailsShowing ? 'Hide' : 'Show' }} Details</b-button> -->
+                        <button v-if="row.item.isActive == true" type="button" class="btn-simple btn btn-sm btn-success" v-b-tooltip.hover title="Aprovar reserva">
+                            <i class="fa fa-check"></i>
+                        </button>
+                        <button v-else type="button" class="btn-simple btn btn-sm" disabled>
+                            <i class="fa fa-check"></i>
+                        </button>
+                        <button v-if="row.item.isActive == true" type="button" class="btn-simple btn btn-sm btn-danger" v-b-tooltip.hover title="Rejeitar reserva">
+                            <i class="fa fa-times"></i>
+                        </button>
+                        <button v-else type="button" class="btn-simple btn btn-sm" disabled>
+                            <i class="fa fa-times"></i>
+                        </button>
+                        <button type="button" class="btn-simple btn btn-sm btn-info" v-b-tooltip.hover title="Visualizar mais informações" v-on:click.stop="row.toggleDetails">
+                            <i class="fa fa-eye"></i>
+                        </button>
+                    </template>
+                    <template slot="row-details" slot-scope="row">
+                        <b-card>
+                            <ul>
+                                <li v-for="(value, key) in row.item" :key="key" v-if="checkDetails(key)">
+                                    {{ value.label }}: <span v-for="item in value.item">{{item.toUpperCase()}}<span v-if="value.item.length > 1 "> - </span></span>
+                                </li>
+                            </ul>
+                        </b-card>
+                    </template>
+                </b-table>
 
-                    <b-row>
-                        <b-col md="6" class="my-1">
-                            <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
-                        </b-col>
-                    </b-row>
+                <b-row>
+                    <b-col md="6" class="my-1">
+                        <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
+                    </b-col>
+                </b-row>
 
-                    <!-- <b-modal id="modalInfo" @hide="resetModal" :title="modalInfo.title" ok-only>
-                        <pre>{{ modalInfo.content }}</pre>
-                    </b-modal> -->
-                </card>
-            </b-col>
-        </b-row>
-    </b-container>
+                <!-- <b-modal id="modalInfo" @hide="resetModal" :title="modalInfo.title" ok-only>
+                <pre>{{ modalInfo.content }}</pre>
+            </b-modal> -->
+        </card>
+    </b-col>
+</b-row>
+</b-container>
 </template>
 
 <script>
@@ -353,14 +365,14 @@ export default {
             } else if (this.searchData.objectOfSearch == 'lessons') {
                 new_fields.push(
                     {
-                        key: "discipline_name",
-                        label: "Nome da disciplina",
+                        key: "title",
+                        label: "Código da disciplina",
                         sortable: true,
                         sortDirection: "asc"
                     },
                     {
-                        key: "discipline_cod",
-                        label: "Código da disciplina",
+                        key: "discipline_name",
+                        label: "Nome da disciplina",
                         sortable: true,
                         sortDirection: "asc"
                     },
@@ -377,8 +389,8 @@ export default {
                         sortDirection: "asc"
                     },
                     {
-                        key: "schedule",
-                        label: "Horários",
+                        key: "interval",
+                        label: "Intervalo",
                         sortDirection: "asc"
                     },
                     {
@@ -508,6 +520,7 @@ export default {
             this.items = []
             var startDate = moment(new Date(this.searchData.datetimeInterval.start)).format()
             var endDate = moment(new Date(this.searchData.datetimeInterval.end)).format()
+            var schedule = parseHourToSchedule(this.searchData.datetimeInterval.start, this.searchData.datetimeInterval.end)
             if (! this.searchData.objectOfSearch) {
                 const setLessons = (lesson) => {
                     for (var i = 0; i < lesson.length; i++) {
@@ -565,7 +578,6 @@ export default {
                     events.atInterval(startDate, endDate).then((evnts) => {
                         setEvents(evnts)
                     })
-                    var schedule = parseHourToSchedule(this.searchData.datetimeInterval.start,this.searchData.datetimeInterval.end)
                     lessons.bySchedule({"schedule":schedule}).then((lessons) => {
                         setLessons(lessons)
                     })
@@ -574,7 +586,6 @@ export default {
                     events.atRoomAtInterval(room, startDate, endDate).then((evnts) => {
                         setEvents(evnts)
                     })
-                    var schedule = parseHourToSchedule(this.searchData.datetimeInterval.start, this.searchData.datetimeInterval.end)
                     lessons.atRoomAtSchedule(room, {"schedule":schedule}).then((lessons) => {
                         setLessons(lessons)
                     })
@@ -583,14 +594,99 @@ export default {
                     events.byResponsableAtInterval(responsable, startDate, endDate).then((evnts) => {
                         setEvents(evnts)
                     })
-                    var schedule = parseHourToSchedule(this.searchData.datetimeInterval.start, this.searchData.datetimeInterval.end)
                     lessons.byResponsableAtSchedule(responsable, {"schedule":schedule}).then((lessons) => {
                         setLessons(lessons)
                     })
                 }
-            } else if (true) {
-
-            } else if (true) {
+            } else if (this.searchData.objectOfSearch == 'lessons') {
+                const setLessons = (lesson) => {
+                    for (var i = 0; i < lesson.length; i++) {
+                        var scheduleSorted = sortSchedule(lesson[i].schedule)
+                        this.items.push({
+                            title: lesson[i].discipline_cod,
+                            discipline_name: lesson[i].discipline_name,
+                            responsable: lesson[i].responsable,
+                            room: lesson[i].room,
+                            interval: {
+                                start: scheduleSorted[0].toUpperCase(),
+                                end: scheduleSorted[(scheduleSorted.length)-1].toUpperCase()
+                            },
+                            allSchedule: {
+                                label: 'Horários',
+                                item: scheduleSorted
+                            }
+                        })
+                    }
+                }
+                if (! this.searchData.filter.type) {
+                    lessons.bySchedule({"schedule":schedule}).then((lessons) => {
+                        setLessons(lessons)
+                    })
+                } else if (this.searchData.filter.type == 'room') {
+                    var room = this.searchData.filter.value.toUpperCase()
+                    lessons.atRoomAtSchedule(room, {"schedule":schedule}).then((lessons) => {
+                        setLessons(lessons)
+                    })
+                } else if (this.searchData.filter.type == 'responsable') {
+                    var responsable = this.searchData.filter.value.toUpperCase()
+                    lessons.byResponsableAtSchedule(responsable, {"schedule":schedule}).then((lessons) => {
+                        setLessons(lessons)
+                    })
+                } else if (this.searchData.filter.type == 'discipline_cod') {
+                    var discipline_cod = this.searchData.filter.value.toUpperCase()
+                    lessons.byDisciplineCodAtSchedule(discipline_cod, {"schedule":schedule}).then((lessons) => {
+                        console.log(lessons);
+                        setLessons(lessons)
+                    })
+                }
+            } else if (this.searchData.objectOfSearch == 'events') {
+                const setEvents = (evnts) => {
+                    for (var i = 0; i < evnts.length; i++) {
+                        console.log(evnts[i]);
+                        this.items.push({
+                            title: evnts[i].title,
+                            responsable: evnts[i].responsable,
+                            room: evnts[i].room,
+                            interval: {
+                                start:moment(evnts[i].stardDate).utc().format('DD/MM/YY HH:mm'),
+                                end:moment(evnts[i].finalDate).utc().format('DD/MM/YY HH:mm')
+                            },
+                            description: {
+                                label: 'Descrição',
+                                item: evnts[i].description
+                            },
+                            status: evnts[i].status,
+                            repeat:{
+                                label: 'Repetição',
+                                item:  evnts[i].repeat
+                            },
+                            created: {
+                                label: 'Criado em',
+                                item: evnts[i].timestamp
+                            }
+                        })
+                    }
+                }
+                if (! this.searchData.filter.type) {
+                    events.atInterval(startDate, endDate).then((evnts) => {
+                        setEvents(evnts)
+                    })
+                } else if (this.searchData.filter.type == 'room') {
+                    var room = this.searchData.filter.value.toUpperCase()
+                    events.atRoomAtInterval(room, startDate, endDate).then((evnts) => {
+                        setEvents(evnts)
+                    })
+                } else if (this.searchData.filter.type == 'responsable') {
+                    var responsable = this.searchData.filter.value.toUpperCase()
+                    events.byResponsableAtInterval(responsable, startDate, endDate).then((evnts) => {
+                        setEvents(evnts)
+                    })
+                } else if (this.searchData.filter.type == 'status') {
+                    var status = this.searchData.filter.value
+                    events.byStatus(status, startDate, endDate).then((evnts) => {
+                        setEvents(evnts)
+                    })
+                }
 
             } else if (true) {
 

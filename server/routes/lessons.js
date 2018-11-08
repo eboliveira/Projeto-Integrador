@@ -117,6 +117,18 @@ router.get('/discipline/code/:cod', (req, res) => {
   })
 })
 
+router.post('/discipline/code/:cod', (req, res) => {
+  LessonCalendar.getLessonsByDisciplineCodAtSchedule(req.params.cod, req.body.schedule, function (err, evnt){
+    if(err){
+      console.log(err)
+      return res.status(400).send('server could not understand the request')
+    }
+    else{
+      res.status(200).send(evnt);
+    }
+  })
+})
+
 router.get('/discipline/name/:disciplineName', (req, res) => {
   LessonCalendar.getLessonsByDisciplineName(req.params.disciplineName, function (err, evnt){
     if(err){
