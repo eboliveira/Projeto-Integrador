@@ -208,13 +208,16 @@
 
                     <!-- Main table element -->
                     <b-table show-empty stacked="md" :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" @filtered="onFiltered">
-                        <template v-if="!searchData.objectOfSearch" slot="title" slot-scope="row">
+                        <template v-if="searchData.objectOfSearch !== 'free'" slot="title" slot-scope="row">
                             <span v-for="item in row.value">{{item}}<span v-if="row.value.length > 1 "> - </span></span>
                         </template>
-                        <template v-if="!searchData.objectOfSearch" slot="room" slot-scope="row">
+                        <template v-if="searchData.objectOfSearch !== 'free'" slot="responsable" slot-scope="row">
                             <span v-for="item in row.value">{{item}}<span v-if="row.value.length > 1 "> - </span></span>
                         </template>
-                        <template v-if="!searchData.objectOfSearch" slot="interval" slot-scope="row">{{row.value.start}} - {{row.value.end}}</template>
+                        <template slot="room" slot-scope="row">
+                            <span v-for="item in row.value">{{item}}<span v-if="row.value.length > 1 "> - </span></span>
+                        </template>
+                        <template v-if="searchData.objectOfSearch !== 'free'" slot="interval" slot-scope="row">{{row.value.start}} - {{row.value.end}}</template>
                         <template slot="actions" slot-scope="row">
                             <!-- <b-button size="sm" @click.stop="info(row.item, row.index, $event.target)" class="mr-1">Info modal</b-button> -->
                             <!-- <b-button size="sm" @click.stop="row.toggleDetails">{{ row.detailsShowing ? 'Hide' : 'Show' }} Details</b-button> -->
@@ -252,12 +255,12 @@
                     </b-row>
 
                     <!-- <b-modal id="modalInfo" @hide="resetModal" :title="modalInfo.title" ok-only>
-                        <pre>{{ modalInfo.content }}</pre>
-                    </b-modal> -->
-                </card>
-            </b-col>
-        </b-row>
-    </b-container>
+                    <pre>{{ modalInfo.content }}</pre>
+                </b-modal> -->
+            </card>
+        </b-col>
+    </b-row>
+</b-container>
 </template>
 
 <script>
@@ -358,14 +361,14 @@ export default {
             } else if (this.searchData.objectOfSearch == 'lessons') {
                 new_fields.push(
                     {
-                        key: "discipline_name",
-                        label: "Nome da disciplina",
+                        key: "title",
+                        label: "Código da disciplina",
                         sortable: true,
                         sortDirection: "asc"
                     },
                     {
-                        key: "discipline_cod",
-                        label: "Código da disciplina",
+                        key: "discipline_name",
+                        label: "Nome da disciplina",
                         sortable: true,
                         sortDirection: "asc"
                     },
@@ -382,8 +385,8 @@ export default {
                         sortDirection: "asc"
                     },
                     {
-                        key: "schedule",
-                        label: "Horários",
+                        key: "interval",
+                        label: "Intervalo",
                         sortDirection: "asc"
                     },
                     {
@@ -513,6 +516,7 @@ export default {
             this.items = []
             var startDate = moment(new Date(this.searchData.datetimeInterval.start)).format()
             var endDate = moment(new Date(this.searchData.datetimeInterval.end)).format()
+            var schedule = parseHourToSchedule(this.searchData.datetimeInterval.start, this.searchData.datetimeInterval.end)
             if (! this.searchData.objectOfSearch) {
                 const setLessons = (lesson) => {
                     for (var i = 0; i < lesson.length; i++) {
@@ -570,7 +574,6 @@ export default {
                     events.atInterval(startDate, endDate).then((evnts) => {
                         setEvents(evnts)
                     })
-                    var schedule = parseHourToSchedule(this.searchData.datetimeInterval.start,this.searchData.datetimeInterval.end)
                     lessons.bySchedule({"schedule":schedule}).then((lessons) => {
                         setLessons(lessons)
                     })
@@ -579,7 +582,6 @@ export default {
                     events.atRoomAtInterval(room, startDate, endDate).then((evnts) => {
                         setEvents(evnts)
                     })
-                    var schedule = parseHourToSchedule(this.searchData.datetimeInterval.start, this.searchData.datetimeInterval.end)
                     lessons.atRoomAtSchedule(room, {"schedule":schedule}).then((lessons) => {
                         setLessons(lessons)
                     })
@@ -588,13 +590,50 @@ export default {
                     events.byResponsableAtInterval(responsable, startDate, endDate).then((evnts) => {
                         setEvents(evnts)
                     })
-                    var schedule = parseHourToSchedule(this.searchData.datetimeInterval.start, this.searchData.datetimeInterval.end)
                     lessons.byResponsableAtSchedule(responsable, {"schedule":schedule}).then((lessons) => {
                         setLessons(lessons)
                     })
                 }
-            } else if (true) {
-
+            } else if (this.searchData.objectOfSearch == 'lessons') {
+                const setLessons = (lesson) => {
+                    for (var i = 0; i < lesson.length; i++) {
+                        var scheduleSorted = sortSchedule(lesson[i].schedule)
+                        this.items.push({
+                            title: lesson[i].discipline_cod,
+                            discipline_name: lesson[i].discipline_name,
+                            responsable: lesson[i].responsable,
+                            room: lesson[i].room,
+                            interval: {
+                                start: scheduleSorted[0].toUpperCase(),
+                                end: scheduleSorted[(scheduleSorted.length)-1].toUpperCase()
+                            },
+                            allSchedule: {
+                                label: 'Horários',
+                                item: scheduleSorted
+                            }
+                        })
+                    }
+                }
+                if (! this.searchData.filter.type) {
+                    lessons.bySchedule({"schedule":schedule}).then((lessons) => {
+                        setLessons(lessons)
+                    })
+                } else if (this.searchData.filter.type == 'room') {
+                    var room = this.searchData.filter.value.toUpperCase()
+                    lessons.atRoomAtSchedule(room, {"schedule":schedule}).then((lessons) => {
+                        setLessons(lessons)
+                    })
+                } else if (this.searchData.filter.type == 'responsable') {
+                    var responsable = this.searchData.filter.value.toUpperCase()
+                    lessons.byResponsableAtSchedule(responsable, {"schedule":schedule}).then((lessons) => {
+                        setLessons(lessons)
+                    })
+                } else if (this.searchData.filter.type == 'discipline_cod') {
+                    // var discipline_cod = this.searchData.filter.value.toUpperCase()
+                    // lessons.byDisciplineCodAtSchedule(discipline_cod, {"schedule":schedule}).then((lessons) => {
+                    //     setLessons(lessons)
+                    // })
+                }
             } else if (true) {
 
             } else if (true) {

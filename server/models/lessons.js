@@ -118,7 +118,7 @@ module.exports.getLessonsByResponsableAtSchedule = function (responsable, schedu
                 _id: "$responsable",
                 discipline_name: {$addToSet: "$discipline_name"},
                 discipline_cod: {$addToSet: "$discipline_cod"},
-                responsable: {$first: "$responsable"},
+                responsable: {$addToSet: "$responsable"},
                 schedule: {$addToSet:"$schedule"},
                 room: {$addToSet:"$room"}
             }
