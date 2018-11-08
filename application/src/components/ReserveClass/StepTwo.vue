@@ -1,44 +1,33 @@
 <template>
-    <div class="container-fluid" style="padding-left: 5px; padding-right: 5px;">
-        <div class="row">
-            <div class="col-7">
+	<b-container fluid style="margin-top: 10px; margin-bottom: 10px">
+        <b-row>
+            <b-col md="7">
                 <card>
                     <h4 slot="header" class="card-title">Complete o registro do evento</h4>
-                    <div class="container-fluid">
-                        <div class="row">
-                          <div class="col-12">
-                              <b-input-group>
-                                  <div class="col-12" style="padding-bottom:20px;">
-                                    <b-form-input  placeholder="Título do evento" v-model='title'></b-form-input>
-                                  </div>
-                                    <div class="col-12" style="padding-bottom:20px;">
-                                        <b-input placeholder="Nome do responsável" v-model='responsable'></b-input>
-                                    </div>
-                                    <div class="col-12">
-                                        <b-textarea placeholder="Digite o motivo" v-model='description' :rows=3 required></b-textarea>
-                                    </div>
-                                    <b-form-group label="Escolha a repetição" style='margin-left:20px;margin-top:15px;'>
-                                    <b-form-radio-group id="radios1"
-                                                        v-model="selected"
-                                                        :options="options"
-                                                        name="radiosDefault" />
-                                    </b-form-group>
-                              </b-input-group>
-                        </div>
-                    </div>
-                    </div>
+					<b-row>
+						<b-col md="12">
+							<b-form-group vertical>
+								<b-form-input placeholder="Título do evento" class="mb-2" v-model='title'></b-form-input>
+								<b-input placeholder="Nome do responsável" class="mb-2" v-model='responsable'></b-input>
+								<b-textarea placeholder="Digite o motivo" class="mb-2" v-model='description' :rows=3 required></b-textarea>
+							</b-form-group>
+							<b-form-group label="Escolha a repetição" style='margin-left:20px;margin-top:15px;'>
+								<b-form-radio-group id="radios1" v-model="selected" :options="options" name="radiosDefault"/>
+							</b-form-group>
+						</b-col>
+					</b-row>
                 </card>
-            </div>
-            <div class="col-5">
+            </b-col>
+            <b-col md="5">
                 <card>
                     <h4 slot="header" class="card-title" style='margin-left:80px'>Horários Selecionados</h4>
                     <v-layout justify-center>
                         <light-timeline :items='items'></light-timeline>
                     </v-layout>
                 </card>
-            </div>
-        </div>
-    </div>
+            </b-col>
+        </b-row>
+	</b-container>
 </template>
 
 <script>
