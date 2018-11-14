@@ -19,6 +19,9 @@ export default {
     components: {
       Card,
     },
+    props:{
+        steptwo: Array
+    },
     data () {
         return {
             value_day: [],

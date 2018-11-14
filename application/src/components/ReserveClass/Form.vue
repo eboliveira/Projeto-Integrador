@@ -14,10 +14,10 @@
                         
                         <v-stepper-items>
                             <v-stepper-content step="1" style="padding: 0px;">
-                                <step-one></step-one>
+                                <step-one @passTwo="passStepTwo"></step-one>
                             </v-stepper-content>
                             <v-stepper-content step="2" style="padding: 0px;">
-                                <step-two></step-two>
+                                <step-two :stepone="steptwo"></step-two>
                             </v-stepper-content>
                             <v-stepper-content step="3" style="padding: 0px;">
                                 <step-three></step-three>
@@ -45,7 +45,7 @@
                                 </b-col>
                                 <b-col md="6">
                                     <v-layout justify-center>
-                                        <b-btn v-if="nstep < '3'" variant="primary" v-on:click="nstep ++">Proximo</b-btn>
+                                        <b-btn v-if="nstep < '3'"  variant="primary" v-on:click="nstep ++">Proximo</b-btn>
                                         <b-btn v-if="nstep == '3'" variant="success" >Confirmar</b-btn>
                                     </v-layout>
                                 </b-col>
@@ -77,10 +77,18 @@ export default {
       nstep: 0,
       dialog: false,
       cancel: false,
-      isValid:false
+      isValid:false,
+      steptwo:[],
+      stepthree: []
     };
   },
   methods:{
+      passStepTwo(payload){
+          this.steptwo = payload
+      },
+      passStepThree(payload){
+          this.stepthree = payload
+      }
   }
 };
 </script>
