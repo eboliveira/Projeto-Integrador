@@ -102,8 +102,8 @@ export function parseScheduleToDate(schedule) {
 }
 
 export function parseHourToSchedule(dateTime_1, dateTime_2) {
-    var startDateTime = moment(dateTime_1).format('DD/MM/YY HH:mm').split(' ')
-    var endDateTime = moment(dateTime_2).format('DD/MM/YY HH:mm').split(' ')
+    var startDateTime = moment(dateTime_1).format('MM/DD/YY HH:mm').split(' ')
+    var endDateTime = moment(dateTime_2).format('MM/DD/YY HH:mm').split(' ')
     var schedules = []
 
     for (const schedule in classSchedules) {
