@@ -44,7 +44,7 @@
                                             <option v-if="searchData.objectOfSearch === 'lessons'" value="discipline_cod">Código da disciplina</option>
                                             <option v-if="searchData.objectOfSearch === 'events'" value="status">Status</option>
                                         </b-form-select>
-                                        <b-form-input v-if="searchData.filter.type !== 'status'" v-model="searchData.filter.value" :placeholder="filterPlaceholder"/>
+                                        <b-form-input v-if="searchData.filter.type !== 'status' && searchData.filter.type" v-model="searchData.filter.value" :placeholder="filterPlaceholder"/>
                                         <b-form-select v-if="searchData.filter.type === 'status'" v-model="searchData.filter.value" :options="searchData.filter.options">
                                             <option :value="null">Todos</option>
                                             <option value="undefined">Pendentes</option>
