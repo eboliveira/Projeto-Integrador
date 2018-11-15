@@ -55,14 +55,10 @@
                   <h4 slot="header" class="card-title">Selecionar Salas</h4>
 					        <b-row>
                     <b-col md="3">
-                      <b-form-select v-model="selectedroomType" :options="roomType">
-                        <option :value="null">Tipo da Sala</option>
-                      </b-form-select>
+                      <b-form-select v-model="selectedroomType" :options="roomType"/>
                     </b-col>
                     <b-col md="4">
-                      <b-form-select v-model="selectedcapacity" :options="capacity">
-                        <option :value="null">Capacidade de Acentos</option>
-                      </b-form-select>
+                      <b-form-select v-model="selectedcapacity" :options="capacity"/>
                     </b-col>
                     <b-col md="1">
                       <button id="check" class="btn btn-success font-icon-detail" v-on:click="filterTable" v-b-tooltip.hover>
@@ -139,8 +135,6 @@ import { FormCheckbox } from 'bootstrap-vue/es/components';
 export default {
   components: {
     Card,
-  },
-  props:{
   },
   data() {
     return {
@@ -241,11 +235,9 @@ export default {
     search() {
       for(var eventData of this.eventsData){
           var start = moment(eventData.start).utc().format()
-          console.log(start)
           var end = moment(eventData.end).utc().format()
           //var end = moment(eventData.end).utc().format('YYYY-MM-DDTHH:mm:ss.sss')
           var schedule = utils.parseHourToSchedule(start, end)
-          console.log(schedule)
           freeRooms({"schedule": schedule}, moment(start).utc().format('YYYY-MM-DDTHH:mm:ss.sss'), moment(end).utc().format('YYYY-MM-DDTHH:mm:ss.sss')).then((res)=>{
             for(var room of res){
               var searchRoom = {

@@ -17,10 +17,10 @@
                                 <step-one @passTwo="passStepTwo"></step-one>
                             </v-stepper-content>
                             <v-stepper-content step="2" style="padding: 0px;">
-                                <step-two :stepone="steptwo"></step-two>
+                                <step-two @passThree="passStepThree" :stepone="steptwo"></step-two>
                             </v-stepper-content>
                             <v-stepper-content step="3" style="padding: 0px;">
-                                <step-three></step-three>
+                                <step-three :result="stepthree" ></step-three>
                             </v-stepper-content>
                         </v-stepper-items>
                         
@@ -45,7 +45,7 @@
                                 </b-col>
                                 <b-col md="6">
                                     <v-layout justify-center>
-                                        <b-btn v-if="nstep < '3'"  variant="primary" v-on:click="nstep ++">Proximo</b-btn>
+                                        <b-btn :disabled = disabled v-if="nstep < '3'" variant="primary" v-on:click="nstep ++" name="positive">Proximo</b-btn>
                                         <b-btn v-if="nstep == '3'" variant="success" >Confirmar</b-btn>
                                     </v-layout>
                                 </b-col>
@@ -60,6 +60,12 @@
         </b-row>
     </b-container>
 </template>
+<style>
+    .btn:disabled, .btn[disabled], .btn.disabled{
+        background-color: #c9d0ff;
+        color: black;
+    }
+</style>
 
 <script>
 import StepOne from "./StepOne.vue";
@@ -78,8 +84,9 @@ export default {
       dialog: false,
       cancel: false,
       isValid:false,
-      steptwo:[],
-      stepthree: []
+      steptwo: null,
+      stepthree: [],
+      disabled: true
     };
   },
   methods:{
@@ -89,6 +96,13 @@ export default {
       passStepThree(payload){
           this.stepthree = payload
       }
+  },
+  watch: {
+      "steptwo": function() {
+          if(this.steptwo){
+              this.disabled = false
+          }
+      },
   }
 };
 </script>

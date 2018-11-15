@@ -6,7 +6,7 @@
                     <h4 slot="header" class="card-title">Complete o registro do evento</h4>
 					<b-row>
 						<b-col md="12">
-							<b-form-group vertical>
+							<b-form-group vertical :steptwo="result">
 								<b-form-input v-validate="'required|alpha'" placeholder="Título do evento" class="mb-2" v-model='title' name="title"></b-form-input>
                   <span v-show="errors.has('title')" class="help is-danger">{{ errors.first('title') }}</span>
 								  
@@ -17,7 +17,7 @@
                   <span v-show="errors.has('description')" class="help is-danger">{{ errors.first('description') }}</span>
 							</b-form-group>
 							<b-form-group label="Escolha a repetição" style='margin-left:20px;margin-top:15px;'>
-								<b-form-radio-group id="radios1" v-model="selected" :options="options" name="radiosDefault"/>
+								<b-form-radio-group id="radios1" v-model="selected" :options="options" name="radio"/>
 							</b-form-group>
 						</b-col>
 					</b-row>
@@ -27,31 +27,30 @@
                 <card>
                     <h4 slot="header" class="card-title" style='margin-left:80px'>Horários Selecionados</h4>
                     <v-layout justify-center>
-                        <light-timeline :items="itemS"></light-timeline>
+                        <light-timeline :items="timeline"></light-timeline>
                     </v-layout>
                 </card>
             </b-col>
-            <span>{{stepone}}</span>
         </b-row>
 	</b-container>
 </template>
 
 <style>
-  .help {
-    display: block;
-    font-size: 0.75rem;
-    margin-top: 0.15rem;
-  }
+.help {
+  display: block;
+  font-size: 0.75rem;
+  margin-top: 0.15rem;
+}
 
-  .help.is-danger {
-    color: #ff3860;
-  }
+.help.is-danger {
+  color: #ff3860;
+}
 </style>
 
 <script>
 import Card from "src/components/UIComponents/Cards/Card.vue";
 import Multiselect from "vue-multiselect";
-import * as utils from '../../services/utils.js'
+import * as utils from "../../services/utils.js";
 import moment from "moment";
 const theme = "red";
 
@@ -63,12 +62,19 @@ export default {
   props: {
     stepone: Array
   },
-  data() {
+  data: () => {
     return {
+      locale: "ar",
       selected: "",
       title: "",
       description: "",
       responsable: "",
+      steptwo:{
+        selected: null,
+        title: null,
+        description: null,
+        responsable: null
+      },
       options: [
         { text: "Sem repetição", value: "" },
         { text: "Diariamente", value: "daily" },
@@ -79,44 +85,80 @@ export default {
   },
   methods: {
     validate: function() {
-      if (validate && responsable && description) {
-        this.$parent.isValid = true;
-      }
-      this.$parent.isValid = false;
+     this.$validator.validateAll().then((result) => {
+        if(result){
+          console.log('ta certo')
+        }
+        console.log('ta errado')
+     });
     }
   },
   watch: {
-    "selectedRoom": function() {
-      this.$emit('passTwo',this.selectedRoom)
-    }
+    steptwo: function() {
+      this.$emit("passThree", this.steptwo);
+    },
+    selected: function() {
+      this.steptwo.selected = this.selected
+    },
+    title: function() {
+      this.steptwo.title = this.title
+    },
+    description: function() {
+      this.steptwo.description = this.description
+    },
+    responsable: function() {
+      this.steptwo.responsable = this.responsable
+    },
   },
-  computed:{
-     itemS() {
-      var lightTimeLine = []
-      var timeLine = this.stepone.sort(function (a, b){
-        if (a.start > b.start) {
-          return 1
-        }
-        if(a.start < b.start) {
-          return -1
-        }
-        
-        return 0
-      })
+  computed: {
+    timeline() {
+      if (this.stepone == null) {
+        var nul = [];
+        return nul;
+      } else {
+        var lightTimeLine = [];
+        var timeLine = this.stepone.sort(function(a, b) {
+          if (a.start > b.start) {
+            return 1;
+          }
+          if (a.start < b.start) {
+            return -1;
+          }
 
-      for(var item of timeLine){
-          var start = moment(item.start).utc().format('YYYY-MM-DDTHH:mm:ss.sss')
-          var end = moment(item.end).utc().format('YYYY-MM-DDTHH:mm:ss.sss')
-          var schedule = utils.parseHourToSchedule(start, end)
-        var timeRoom = {
-          tag: String(moment(item.start).utc().format('DD/MM/YYYY ')).concat(schedule),
-          color: "#dcdcdc",
-          type: "circle",
-          content: item.roomCode
+          return 0;
+        });
+
+        for (var item of timeLine) {
+          var start = moment(item.start)
+            .utc()
+            .format("YYYY-MM-DDTHH:mm:ss.sss");
+          var end = moment(item.end)
+            .utc()
+            .format("YYYY-MM-DDTHH:mm:ss.sss");
+          var schedule = utils.parseHourToSchedule(start, end);
+          var timeRoom = {
+            tag: String(
+              moment(item.start)
+                .utc()
+                .format("DD/MM/YYYY ")
+            ).concat(schedule),
+            color: "#dcdcdc",
+            type: "circle",
+            content: item.roomCode
+          };
+          lightTimeLine.push(timeRoom);
         }
-        lightTimeLine.push(timeRoom)
+        return lightTimeLine;
       }
-      return lightTimeLine
+    },
+    result() {
+      var steptwo = {
+        selected: this.selected,
+        title: this.title,
+        description: this.description,
+        responsable: this.responsable
+      }
+      return steptwo
     }
   }
 };
