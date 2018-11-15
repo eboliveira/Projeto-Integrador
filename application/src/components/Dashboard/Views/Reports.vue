@@ -9,7 +9,7 @@
                             <b-card border-variant="info" header-bg-variant="info" header="Escolha uma data inicial" class="text-center" header-text-variant="white">
                                 <b-row>
                                     <b-col md="12">
-                                        <date-picker id="stardDate" v-model="searchData.datetimeInterval.start" :config="datetimeOptions"></date-picker>
+                                        <date-picker id="stardDate" v-model="searchData.datetimeInterval.start" :config="datetimeOptions_start"></date-picker>
                                     </b-col>
                                 </b-row>
                             </b-card>
@@ -18,7 +18,7 @@
                             <b-card border-variant="info" header-bg-variant="info" header="Escolha uma data final" class="text-center" header-text-variant="white">
                                 <b-row>
                                     <b-col md="12">
-                                        <date-picker id="endDate" v-model="searchData.datetimeInterval.end" :config="datetimeOptions"></date-picker>
+                                        <date-picker id="endDate" v-model="searchData.datetimeInterval.end" :config="datetimeOptions_end"></date-picker>
                                     </b-col>
                                 </b-row>
                             </b-card>
@@ -31,7 +31,6 @@
                                             <option :value="null">Aulas e Eventos</option>
                                             <option value="lessons">Apenas Aulas</option>
                                             <option value="events">Apenas Eventos</option>
-                                            <option value="free">Salas livres</option>
                                         </b-form-select>
                                     </b-form-group>
                                 </b-col>
@@ -48,142 +47,12 @@
                                         <b-form-select v-if="searchData.filter.type === 'status'" v-model="searchData.filter.value" :options="searchData.filter.options">
                                             <option :value="null">Todos</option>
                                             <option value="undefined">Pendentes</option>
-                                            <option value="Aprovada">Aprovadas</option>
+                                            <option value="Aprovada">Aprovados</option>
                                         </b-form-select>
                                     </b-form-group>
-                                    <b-form-group v-if="searchData.objectOfSearch === 'free'" vertical label="Aplicar filtro:">
-                                        <b-input-group>
-                                            <b-form-select v-model="searchData.filter.type" :options="searchData.filter.options">
-                                                <option :value="null">Todas as salas livres</option>
-                                                <option value="morning">Salas livres durante a manhã</option>
-                                                <option value="evening">Salas livres durante a tarde</option>
-                                                <option value="night">Salas livres durante a noite</option>
-                                                <option value="custom">Selecionar horários</option>
-                                            </b-form-select>
-                                        </b-input-group>
-                                    </b-form-group>
-                                    <b-form-group v-if="searchData.filter.type === 'custom'" label="[ Ctrl + Click ] para selecionar múltiplos valores">
-                                        <b-input-group>
-                                            <b-form-select multiple :select-size="17" v-model="searchData.filter.schedules.monday" class="mb-3">
-                                                <option value="2m1">2 M1</option>
-                                                <option value="2m2">2 M2</option>
-                                                <option value="2m3">2 M3</option>
-                                                <option value="2m4">2 M4</option>
-                                                <option value="2m5">2 M5</option>
-                                                <option value="2m6">2 M6</option>
-                                                <option value="2t1">2 T1</option>
-                                                <option value="2t2">2 T2</option>
-                                                <option value="2t3">2 T3</option>
-                                                <option value="2t4">2 T4</option>
-                                                <option value="2t5">2 T5</option>
-                                                <option value="2t6">2 T6</option>
-                                                <option value="2n1">2 N1</option>
-                                                <option value="2n2">2 N2</option>
-                                                <option value="2n3">2 N3</option>
-                                                <option value="2n4">2 N4</option>
-                                                <option value="2n5">2 N5</option>
-                                            </b-form-select>
-                                            <b-form-select multiple :select-size="17" v-model="searchData.filter.schedules.tuesday" class="mb-3">
-                                                <option value="3m1">3 M1</option>
-                                                <option value="3m2">3 M2</option>
-                                                <option value="3m3">3 M3</option>
-                                                <option value="3m4">3 M4</option>
-                                                <option value="3m5">3 M5</option>
-                                                <option value="3m6">3 M6</option>
-                                                <option value="3t1">3 T1</option>
-                                                <option value="3t2">3 T2</option>
-                                                <option value="3t3">3 T3</option>
-                                                <option value="3t4">3 T4</option>
-                                                <option value="3t5">3 T5</option>
-                                                <option value="3t6">3 T6</option>
-                                                <option value="3n1">3 N1</option>
-                                                <option value="3n2">3 N2</option>
-                                                <option value="3n3">3 N3</option>
-                                                <option value="3n4">3 N4</option>
-                                                <option value="3n5">3 N5</option>
-                                            </b-form-select>
-                                            <b-form-select multiple :select-size="17" v-model="searchData.filter.schedules.wednesday" class="mb-3">
-                                                <option value="4m1">4 M1</option>
-                                                <option value="4m2">4 M2</option>
-                                                <option value="4m3">4 M3</option>
-                                                <option value="4m4">4 M4</option>
-                                                <option value="4m5">4 M5</option>
-                                                <option value="4m6">4 M6</option>
-                                                <option value="4t1">4 T1</option>
-                                                <option value="4t2">4 T2</option>
-                                                <option value="4t3">4 T3</option>
-                                                <option value="4t4">4 T4</option>
-                                                <option value="4t5">4 T5</option>
-                                                <option value="4t6">4 T6</option>
-                                                <option value="4n1">4 N1</option>
-                                                <option value="4n2">4 N2</option>
-                                                <option value="4n3">4 N3</option>
-                                                <option value="4n4">4 N4</option>
-                                                <option value="4n5">4 N5</option>
-                                            </b-form-select>
-                                            <b-form-select multiple :select-size="17" v-model="searchData.filter.schedules.thursday" class="mb-3">
-                                                <option value="5m1">5 M1</option>
-                                                <option value="5m2">5 M2</option>
-                                                <option value="5m3">5 M3</option>
-                                                <option value="5m4">5 M4</option>
-                                                <option value="5m5">5 M5</option>
-                                                <option value="5m6">5 M6</option>
-                                                <option value="5t1">5 T1</option>
-                                                <option value="5t2">5 T2</option>
-                                                <option value="5t3">5 T3</option>
-                                                <option value="5t4">5 T4</option>
-                                                <option value="5t5">5 T5</option>
-                                                <option value="5t6">5 T6</option>
-                                                <option value="5n1">5 N1</option>
-                                                <option value="5n2">5 N2</option>
-                                                <option value="5n3">5 N3</option>
-                                                <option value="5n4">5 N4</option>
-                                                <option value="5n5">5 N5</option>
-                                            </b-form-select>
-                                            <b-form-select multiple :select-size="17" v-model="searchData.filter.schedules.friday" class="mb-3">
-                                                <option value="6m1">6 M1</option>
-                                                <option value="6m2">6 M2</option>
-                                                <option value="6m3">6 M3</option>
-                                                <option value="6m4">6 M4</option>
-                                                <option value="6m5">6 M5</option>
-                                                <option value="6m6">6 M6</option>
-                                                <option value="6t1">6 T1</option>
-                                                <option value="6t2">6 T2</option>
-                                                <option value="6t3">6 T3</option>
-                                                <option value="6t4">6 T4</option>
-                                                <option value="6t5">6 T5</option>
-                                                <option value="6t6">6 T6</option>
-                                                <option value="6n1">6 N1</option>
-                                                <option value="6n2">6 N2</option>
-                                                <option value="6n3">6 N3</option>
-                                                <option value="6n4">6 N4</option>
-                                                <option value="6n5">6 N5</option>
-                                            </b-form-select>
-                                            <b-form-select multiple :select-size="17" v-model="searchData.filter.schedules.saturday" class="mb-3">
-                                                <option value="7m1">7 M1</option>
-                                                <option value="7m2">7 M2</option>
-                                                <option value="7m3">7 M3</option>
-                                                <option value="7m4">7 M4</option>
-                                                <option value="7m5">7 M5</option>
-                                                <option value="7m6">7 M6</option>
-                                                <option value="7t1">7 T1</option>
-                                                <option value="7t2">7 T2</option>
-                                                <option value="7t3">7 T3</option>
-                                                <option value="7t4">7 T4</option>
-                                                <option value="7t5">7 T5</option>
-                                                <option value="7t6">7 T6</option>
-                                                <option value="7n1">7 N1</option>
-                                                <option value="7n2">7 N2</option>
-                                                <option value="7n3">7 N3</option>
-                                                <option value="7n4">7 N4</option>
-                                                <option value="7n5">7 N5</option>
-                                            </b-form-select>
-                                        </b-input-group>
-                                    </b-form-group>
-
                                 </b-col>
                                 <b-col mb="12">
-                                    <button v-on:click="search()" class="btn btn-primary btn-block" type="button">Realizar busca</button>
+                                    <b-btn v-on:click="search()" variant="info" block>Realizar busca</b-btn>
                                 </b-col>
                             </b-row>
                         </b-col>
@@ -193,9 +62,9 @@
                         <b-col md="6" class="my-1">
                             <b-form-group horizontal label="Buscar" label-text-align="right" class="mb-0">
                                 <b-input-group>
-                                    <b-form-input v-model="filter" :placeholder="'Realize uma busca por ' + fields[0].label" />
+                                    <b-form-input v-model="filter" placeholder="Digite para realizar uma busca" />
                                     <b-input-group-append>
-                                        <b-btn :disabled="!filter" v-on:click="filter = ''">Clear</b-btn>
+                                        <b-btn variant="info" :disabled="!filter" v-on:click="filter = ''">Clear</b-btn>
                                     </b-input-group-append>
                                 </b-input-group>
                             </b-form-group>
@@ -314,16 +183,23 @@ export default {
                     end: null
                 }
             },
-            datetimeOptions: {
+            datetimeOptions_start: {
                 format: "MM/DD/YYYY HH:mm",
                 disabledHours: [0, 1, 2, 3, 4, 5, 6, 23],
                 stepping: 10,
-                disabledTimeIntervals: [],
                 useCurrent: true,
                 sideBySide: false,
                 defaultDate: null,
-                // minDate: null,
-                // maxDate: null,
+                locale: "pt-br",
+                inline: true
+            },
+            datetimeOptions_end: {
+                format: "MM/DD/YYYY HH:mm",
+                disabledHours: [0, 1, 2, 3, 4, 5, 6, 23],
+                stepping: 10,
+                useCurrent: true,
+                sideBySide: false,
+                defaultDate: null,
                 locale: "pt-br",
                 inline: true
             }
@@ -433,31 +309,6 @@ export default {
                         label: "Ações"
                     }
                 )
-            } else if (this.searchData.objectOfSearch == 'free') {
-                new_fields.push(
-                    {
-                        key: "room",
-                        label: "Sala",
-                        sortable: true,
-                        sortDirection: "asc"
-                    },
-                    {
-                        key: "type_room",
-                        label: "Tipo da sala",
-                        sortable: true,
-                        sortDirection: "asc"
-                    },
-                    {
-                        key: "capacity",
-                        label: "Capacidade",
-                        sortable: true,
-                        sortDirection: "asc"
-                    },
-                    {
-                        key: "actions",
-                        label: "Ações"
-                    }
-                )
             }
 
             return new_fields
@@ -480,12 +331,14 @@ export default {
         }
     },
     created: function() {
-        // getTime().then((value) => {
-        //     this.datetimeOptions.minDate = moment(value)
-        //     let maxDate = moment(value).set({hour:23,minute:0,second:0,millisecond:0})
-        //     maxDate = maxDate.get('month') < 7 ? maxDate : maxDate.set({'date': 31, 'month': 11})
-        //     this.datetimeOptions.maxDate = moment(maxDate)
-        // })
+        getTime().then((value) => {
+            let date_start = moment(value).set({hour:7,minute:0,second:0,millisecond:0})
+            this.datetimeOptions_start.defaultDate = moment(date_start)
+            let date_end = moment(value).set({hour:23,minute:0,second:0,millisecond:0})
+            this.datetimeOptions_end.defaultDate = moment(date_end)
+            console.log(date);
+            console.log(this.datetimeOptions.defaultDate);
+        })
     },
     methods: {
         // info(item, index, button) {
@@ -521,6 +374,8 @@ export default {
             var startDate = moment(new Date(this.searchData.datetimeInterval.start)).format()
             var endDate = moment(new Date(this.searchData.datetimeInterval.end)).format()
             var schedule = parseHourToSchedule(this.searchData.datetimeInterval.start, this.searchData.datetimeInterval.end)
+            console.log(this.searchData.datetimeInterval.start);
+            console.log(schedule);
             if (! this.searchData.objectOfSearch) {
                 const setLessons = (lesson) => {
                     for (var i = 0; i < lesson.length; i++) {
@@ -687,8 +542,6 @@ export default {
                         setEvents(evnts)
                     })
                 }
-
-            } else if (true) {
 
             }
 
