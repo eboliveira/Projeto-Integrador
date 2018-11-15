@@ -1,10 +1,15 @@
 <template>
     <b-container fluid>
         <v-layout row justify-center>
-          <v-dialog v-model="dialog" persistent max-width="290">
+          <v-dialog v-model="dialog" persistent width="500">
             <v-card>
               <v-card-title class="headline">Selecionando Horário de Evento</v-card-title>
               <v-card-text>Tem certeza que deseja confirmar a seleção?</v-card-text>
+              <span v-for="time in eventsData">
+                <v-layout>
+                  <p>Inicio: {{time.startBr}}   Fim: {{time.endBr}}</p>
+                </v-layout>
+              </span>
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="red darken-1" @click.native="dialog = false">Cancelar</v-btn>
@@ -41,24 +46,19 @@
              
           </card>
         <v-layout justify-center style="margin-top: 20px; margin-bottom: 20px">
-                  <b-btn variant="success" style="margin-left: 10px;" v-on:click="dialog = true">Procurar Salas<i class="fa fa-search"></i></b-btn>
-                  <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar" v-b-tooltip.hover id="Refresh1"><i class="nc-icon nc-refresh-02"></i></b-btn>
-                  <b-btn variant="info" style="width: 48px; height: 39px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
-                  <b-tooltip target="Refresh1" title="Refresh" placement="bottom"></b-tooltip>
+                  <b-btn variant="success" style="margin-left: 10px;" v-on:click="dialog = true"><i class="fa fa-search"></i></b-btn>
+                  <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar" v-b-tooltip.hover id="Refresh1"><v-icon style="position: center">mdi-cancel</v-icon></b-btn>
+                  <b-btn variant="info" style="width: 58px; height: 43px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
+                  <b-tooltip target="Refresh1" title="Clear" placement="bottom"></b-tooltip>
               </v-layout>
                 <card style="padding: 15px;">
                   <h4 slot="header" class="card-title">Selecionar Salas</h4>
 					        <b-row>
                     <b-col md="3">
-                      <b-form-select v-model="selectedBlock" :options="bloco" slot="block">
-                        <option slot="bloco" :value="null">Bloco</option>
-                        </b-form-select>
-                    </b-col>
-                    <b-col md="3">
-                      <b-form-select v-model="selectedroomType" :options="tipoSala" slot="roomType"/>
+                      <b-form-select v-model="selectedroomType" :options="roomType"/>
                     </b-col>
                     <b-col md="4">
-                      <b-form-select v-model="selectedroom" :options="sala" slot="roomCode"/>
+                      <b-form-select v-model="selectedcapacity" :options="capacity"/>
                     </b-col>
                     <b-col md="1">
                       <button id="check" class="btn btn-success font-icon-detail" v-on:click="filterTable" v-b-tooltip.hover>
@@ -73,16 +73,24 @@
                       <b-tooltip target="Refresh" title="Refresh" placement="bottom"></b-tooltip>
                     </b-col>
                   </b-row>
-                   	<b-table show-empty striped hover :items="items" :fields="fields" :current-page="currentPage" :per-page="perPage" :filter="filter" @filtered="onFiltered" :sort-by.sync="sortBy">
-                       <template slot="bloco" slot-scope="row">
+                   	<b-table show-empty striped hover :items="items" :fields="field" :current-page="currentPage" :per-page="perPage" :filter="filter">
+                       <template slot="roomCode" slot-scope="row">
                          <span v-for="item in row.value">{{item}}</span>
                        </template>
-                       <template slot="tipo_Sala" slot-scope="row">
+                       <template slot="roomType" slot-scope="row">
                          <span v-for="item in row.value">{{item}}</span>
                        </template>
-                       <template slot="codigo_Sala" slot-scope="row">
-                         <span v-for="item in row.value">{{item}}</span>
-                          <b-form-checkbox @click.native.stop v-model="row.detailsShowing"></b-form-checkbox>
+                       <template slot="capacity" slot-scope="row">
+                         <span>{{row.item.capacity}}</span>
+                       </template>
+                       <template slot="start" slot-scope="row">
+                         <span>{{row.item.start}}</span>
+                       </template>
+                       <template slot="end" slot-scope="row">
+                         <span>{{row.item.end}}</span>
+                       </template>
+                       <template slot="actions" slot-scope="row">
+                          <b-form-checkbox v-on:click.stop :id="String(row.item.id)" :value="row.item" v-model="selectedRoom"></b-form-checkbox>
                        </template>
 					          </b-table>
                   <v-layout justify-center>
@@ -121,11 +129,12 @@ import Card from "src/components/UIComponents/Cards/Card.vue";
 import {freeRooms} from '../../services/GetsServices.js'
 import * as utils from '../../services/utils.js'
 import moment from "moment";
+import { FormCheckbox } from 'bootstrap-vue/es/components';
 
 
 export default {
   components: {
-    Card
+    Card,
   },
   data() {
     return {
@@ -153,6 +162,8 @@ export default {
                 start: moment(start._d).utc().format(),
                 end: moment(end._d).utc().format(),
                 id: this.id,
+                startBr: moment(start._d).utc().format('DD/MM/YYYY HH:mm'),
+                endBr: moment(start._d).utc().format('DD/MM/YYYY HH:mm')
               }
               $('#calendar').fullCalendar('renderEvent', eventData, true)
               this.eventsData.push(eventData)
@@ -166,6 +177,10 @@ export default {
             this.edit(delta)
           },
           slotDuration: '00:10:00',
+          eventOverlap: false,
+          minTime: '07:00:00',
+          maxTime: '23:00:00',
+          height: 650
       },
       //Table
       items: [],
@@ -177,31 +192,20 @@ export default {
       sortDesc: false,
       sortDirection: "asc",
       filter: null,
-      selectedBlock: null,
-      selectedroomType: null,
-      selectedroom: null,
-      bloco: [
-        { value: null, text: "Bloco", disabled: true },
-        { value: "A", text: "A" },
-        { value: "B", text: "B" },
-        { value: "C", text: "C" },
-        { value: "D", text: "D" },
-        { value: "E", text: "E" },
-        { value: "F", text: "F" },
-        { value: "G", text: "G" },
-        { value: "H", text: "H" }
+      selectedcapacity: [],
+      selectedroomType: [],
+      selectedRoom: [],
+      capacity: [
+        { value: 1, text: "Sem Filtro"},
+        { value: 30, text: "Até 30 lugares" },
+        { value: 40, text: "30 à 40" },
+        { value: 50, text: "50 e superior" },
       ],
-      tipoSala: [
-        { value: null, text: "Tipo da Sala", disabled: true },
+      roomType: [
+        { value: 1, text: "Sem Filtro"},
         { value: "Laboratório", text: "Laboratório" },
         { value: "Teórica", text: "Teórica" },
         { value: "Desenho", text: "Desenho" }
-      ],
-      sala: [
-        { value: null, text: 'Código da Sala', disabled: true },
-        { value: 'a', text: 'This is First option' },
-        { value: 'b', text: 'Selected Option' },
-        { value: 'c', text: 'Third Option' }
       ]
     };
   },
@@ -226,32 +230,47 @@ export default {
     },
     cleanCalendar(){
       $('#calendar').fullCalendar('removeEvents');
+      this.eventsData = []
     },
     search() {
-      var start = moment(this.eventsData[0].start).utc().format('YYYY-MM-DDTHH:mm:ss.sss')
-      var end = moment(this.eventsData[0].end).utc().format('YYYY-MM-DDTHH:mm:ss.sss')
-      var schedule = utils.parseHourToSchedule(start, end)
-      
-      freeRooms({"schedule": schedule}, start, end).then((res)=>{
-        for(var room of res){
-          var searchRoom = {
-            bloco: room._id.substr(0,1),
-            tipo_Sala: room.type_room ,
-            codigo_sala: room._id,
-          }
-            this.items.push(searchRoom)
-        }
-        this.items = this.items.sort(function (a, b) {
-          if (a.bloco > b.bloco) {
-            return 1;
-          }
-          if (a.bloco < b.bloco) {
-            return -1;
-          }
-          return 0;
+      for(var eventData of this.eventsData){
+          var start = moment(eventData.start).utc().format()
+          var end = moment(eventData.end).utc().format()
+          //var end = moment(eventData.end).utc().format('YYYY-MM-DDTHH:mm:ss.sss')
+          var schedule = utils.parseHourToSchedule(start, end)
+          freeRooms({"schedule": schedule}, moment(start).utc().format('YYYY-MM-DDTHH:mm:ss.sss'), moment(end).utc().format('YYYY-MM-DDTHH:mm:ss.sss')).then((res)=>{
+            for(var room of res){
+              var searchRoom = {
+                roomCode : room._id,
+                roomType: room.type_room,
+                capacity: room.capacity,
+                id: this.id,
+                start: moment(eventData.start).utc().format('DD/MM/YYYY HH:mm'),
+                end: moment(eventData.end).utc().format('DD/MM/YYYY HH:mm'),
+              }
+              if(searchRoom.capacity == null){
+                searchRoom.capacity = "Não definido"
+              }
+                this.items.push(searchRoom)
+                this.id++
+            }
+
+            this.items = this.items.sort(function (a, b) {
+              if (a.bloco > b.bloco) {
+                return 1;
+              }
+              if (a.bloco < b.bloco) {
+                return -1;
+              }
+              return 0;
+              })
           })
-      })
+      }
+      this.items =  this.items.filter(function (a) {
+	      return !this[JSON.stringify(a)] && (this[JSON.stringify(a)] = true);
+      }, Object.create(null))
       this.refresh = this.items
+
       this.dialog = false
     },
     onFiltered(filteredItems) {
@@ -259,98 +278,113 @@ export default {
             this.currentPage = 1;
     },
     filterTable() {
-      console.log('oi')
-      var bloco = this.selectedBlock
-      var tipo_Sala = this.selectedroomType
-      var codigo_Sala = this.selectedroom
-      //  console.log(Object.values(this.items[0]))
-        var searchData = []
-        if(bloco){
-            if(searchData != null){
-              for(var search of this.items){
+      var roomType = this.selectedroomType
+      var capacity = this.selectedcapacity
+      var searchData = []
+        if(roomType == 1){
+          this.items = this.refresh
+          return
+        }
+        else if(roomType){
+              for(var search of this.refresh){
                   var exist = Object.values(search)
-                  if(exist.find(x => x == bloco)){
+                  if(exist.find(x => x == roomType)){
                       searchData.push(search)
                   }
               }
-            }
         }
-        if(tipo_Sala){
-            if(searchData != null){
-              for(var search of this.items){
-                  var exist = Object.values(search)
-                  if(exist.find(x => x == tipo_Sala)){
-                      searchData.push(search)
-                  }
-              }
-            }
-            else{
-              var searchDatat = []
-              for(var search of searchDatat){
-                  var exist = Object.values(search)
-                  if(exist.find(x => x == tipo_Sala)){
-                      searchDatat.push(search)
-                  }
-              }
-              searchData = searchDatat
-            }
-        }
-        if(codigo_sala){
-            if(searchData != null){
-              for(var search of this.items){
-                  var exist = Object.values(search)
-                  if(exist.find(x => x == codigo_sala)){
-                      searchData.push(search)
-                  }
-              }
-            }
-            else{
-              var searchDatat = []
-              for(var search of searchDatat){
-                  var exist = Object.values(search)
-                  if(exist.find(x => x == codigo_sala)){
-                      searchDatat.push(search)
-                  }
-              }
-              searchData = searchDatat
-            }
-        }
-        console.log(searchData)
+        // if(capacity){
+        //     if(searchData != null){
+        //       for(var search of this.refresh){
+        //           var exist = Object.values(search)
+        //           if(capacity == 30){
+        //             if(exist.find(x => x <= capacity || x == null)){
+        //                 searchData.push(search)
+        //             }
+        //           }
+        //           else if(capacity == 40){
+        //              if(exist.find(x => x >= capacity && capacity < 50)){
+        //                 searchData.push(search)
+        //             }
+        //           }
+        //           else{
+        //              if(exist.find(x => x >= capacity)){
+        //                 searchData.push(search)
+        //             }
+        //           }
+        //       }
+        //     }
+        //     else{
+        //       for(var search of searchData){
+        //           var exist = Object.values(search)
+        //           if(capacity == 30){
+        //             if(exist.find(x => x <= capacity || x == null)){
+        //                 searchData.push(search)
+        //             }
+        //           }
+        //           else if(capacity == 40){
+        //              if(exist.find(x => x >= capacity && capacity < 50)){
+        //                 searchData.push(search)
+        //             }
+        //           }
+        //           else{
+        //              if(exist.find(x => x >= capacity)){
+        //                 searchData.push(search)
+        //             }
+        //           }
+        //       }
+        //     }
+        // }
         this.items = searchData
-      }
+      },
+  },
+  watch: {
+    "selectedRoom": function() {
+      this.$emit('passTwo',this.selectedRoom)
+    }
   },
   computed: {
-    fields() {
+    field() {
       var fields = []
       fields.push(
           {
-              key: "bloco",
-              label: "Bloco",
+              key: "roomCode",
+              label: "Código da Sala",
               sortable: true,
               sortDirection: "asc"
           },
           {
-              key: "tipo_Sala",
+              key: "roomType",
               label: "Tipo da Sala",
               sortable: true,
               sortDirection: "asc"
           },
           {
-              key: "codigo_sala",
-              label: "Código da Sala",
+              key: "capacity",
+              label: "Capacidade da Sala",
               sortable: true,
+              sortDirection: "asc"
+          },
+           {
+              key: "start",
+              label: "Inicio do Evento",
+              sortable: true,
+              sortDirection: "asc"
+          },
+           {
+              key: "end",
+              label: "Final do Evento",
+              sortable: true,
+              sortDirection: "asc"
+          },
+          {
+              key: "actions",
+              label: "Ações",
               sortDirection: "asc"
           },
         )
         return fields
-    },
-    sortOptions () {
-      // Create an options list from our fields
-      return this.fields
-        .filter(f => f.sortable)
-        .map(f => { return { text: f.label, value: f.key } })
-    },
-    
+    }  
   }
 };
 </script>
