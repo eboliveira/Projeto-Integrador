@@ -5,9 +5,8 @@ import NotFound from '../components/GeneralViews/NotFoundPage.vue'
 // Admin pages
 import Overview         from 'src/components/Dashboard/Views/Overview.vue'
 import UserProfile      from 'src/components/Dashboard/Views/UserProfile.vue'
-import Calendar         from 'src/components/Dashboard/Views/Calendar.vue'
+import Reserves         from 'src/components/Dashboard/Views/Reserves.vue'
 import Reserve          from 'src/components/Dashboard/Views/Reserve/Reserve.vue'
-import Classes          from 'src/components/Dashboard/Views/Classes.vue'
 import Equipments       from 'src/components/Dashboard/Views/Equipment.vue'
 import Pendents         from 'src/components/Dashboard/Views/Pendents.vue'
 import Reports          from 'src/components/Dashboard/Views/Reports.vue'
@@ -36,23 +35,9 @@ const routes = [
         component: UserProfile
       },
       {
-        path: 'classes',
-        redirect: 'classes/',
-        name: 'Classes',
-        component: Calendar,
-        children:[
-          {
-            path: '*',
-            components:{
-              calendarView: Classes
-            }
-          }
-        ]
-      },
-      {
-        path: 'calendar',
-        name: 'Calendar',
-        component: Calendar,
+        path: 'reserves',
+        name: 'Reserves',
+        component: Reserves,
       },
       {
         path: 'reserveclass',
@@ -60,8 +45,8 @@ const routes = [
         component: Form
       },
       {
-        path: 'reserve',
-        name: 'Reserve',
+        path: 'new_reserve',
+        name: 'New_Reserve',
         component: Reserve
       },
       {
