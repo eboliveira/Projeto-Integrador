@@ -18,6 +18,12 @@ export async function byDisciplineCodAtClass(cod, classroom){
   })
 }
 
+export async function byDisciplineCodAtSchedule(cod, schedule){
+  return await lessons.post('discipline/code/' + cod, schedule).then((res) => {
+    return res.data
+  })
+}
+
 export async function byDisciplineName(disciplineName){
   return await lessons.get('discipline/name/' + disciplineName).then((res) => {
     return res.data
