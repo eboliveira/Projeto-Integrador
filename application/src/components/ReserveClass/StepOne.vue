@@ -39,18 +39,18 @@
             </v-dialog>
         </v-layout>
         <b-row>
-            <b-col md="12">
-                <card style="padding: 15px;">
-                    <h4 slot="header" class="card-title">Reservar Horários</h4>
-                    <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" :config="config"></full-calendar>
+          <b-col md="12">
+				  <card style="padding: 15px;">
+              <h4 slot="header" class="card-title">Reservar Horários</h4>
+              <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" :config="config"></full-calendar>
 
-                </card>
-                <v-layout justify-center style="margin-top: 20px; margin-bottom: 20px">
-                    <b-btn variant="success" style="margin-left: 10px;" v-on:click="dialog = true"><i class="fa fa-search"></i></b-btn>
-                    <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar" v-b-tooltip.hover id="Refresh1"><v-icon style="position: center">mdi-cancel</v-icon></b-btn>
-                    <b-btn variant="info" style="width: 58px; height: 43px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
-                    <b-tooltip target="Refresh1" title="Clear" placement="bottom"></b-tooltip>
-                </v-layout>
+          </card>
+        <v-layout justify-center style="margin-top: 20px; margin-bottom: 20px">
+                  <b-btn variant="success" style="margin-left: 10px;" v-on:click="dialog = true"><i class="fa fa-search"></i></b-btn>
+                  <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar" v-b-tooltip.hover id="Refresh1"><v-icon style="position: center">mdi-broom</v-icon></b-btn>
+                  <b-btn variant="info" style="width: 58px; height: 43px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
+                  <b-tooltip target="Refresh1" title="Clear" placement="bottom"></b-tooltip>
+              </v-layout>
                 <card style="padding: 15px;">
                     <h4 slot="header" class="card-title">Selecionar Salas</h4>
                     <b-row>
@@ -386,6 +386,59 @@ export default {
             )
             return fields
         }
+        // if(capacity){
+        //     if(searchData != null){
+        //       for(var search of this.refresh){
+        //           var exist = Object.values(search)
+        //           if(capacity == 30){
+        //             if(exist.find(x => x <= capacity || x == null)){
+        //                 searchData.push(search)
+        //             }
+        //           }
+        //           else if(capacity == 40){
+        //              if(exist.find(x => x >= capacity && capacity < 50)){
+        //                 searchData.push(search)
+        //             }
+        //           }
+        //           else{
+        //              if(exist.find(x => x >= capacity)){
+        //                 searchData.push(search)
+        //             }
+        //           }
+        //       }
+        //     }
+        //     else{
+        //       for(var search of searchData){
+        //           var exist = Object.values(search)
+        //           if(capacity == 30){
+        //             if(exist.find(x => x <= capacity || x == null)){
+        //                 searchData.push(search)
+        //             }
+        //           }
+        //           else if(capacity == 40){
+        //              if(exist.find(x => x >= capacity && capacity < 50)){
+        //                 searchData.push(search)
+        //             }
+        //           }
+        //           else{
+        //              if(exist.find(x => x >= capacity)){
+        //                 searchData.push(search)
+        //             }
+        //           }
+        //       }
+        //     }
+        // }
+        this.items = searchData
+      },
+  },
+  watch: {
+    "selectedRoom": function() {
+      if(this.selectedRoom == null){
+        this.$emit('passTwo',null)
+      }
+      else{
+        this.$emit('passTwo',this.selectedRoom)
+      }
     }
 };
 </script>
