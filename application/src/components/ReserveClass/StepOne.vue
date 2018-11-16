@@ -47,7 +47,7 @@
           </card>
         <v-layout justify-center style="margin-top: 20px; margin-bottom: 20px">
                   <b-btn variant="success" style="margin-left: 10px;" v-on:click="dialog = true"><i class="fa fa-search"></i></b-btn>
-                  <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar" v-b-tooltip.hover id="Refresh1"><v-icon style="position: center">mdi-cancel</v-icon></b-btn>
+                  <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar" v-b-tooltip.hover id="Refresh1"><v-icon style="position: center">mdi-broom</v-icon></b-btn>
                   <b-btn variant="info" style="width: 58px; height: 43px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
                   <b-tooltip target="Refresh1" title="Clear" placement="bottom"></b-tooltip>
               </v-layout>
@@ -238,16 +238,20 @@ export default {
           var end = moment(eventData.end).utc().format()
           //var end = moment(eventData.end).utc().format('YYYY-MM-DDTHH:mm:ss.sss')
           var schedule = utils.parseHourToSchedule(start, end)
+          
           freeRooms({"schedule": schedule}, moment(start).utc().format('YYYY-MM-DDTHH:mm:ss.sss'), moment(end).utc().format('YYYY-MM-DDTHH:mm:ss.sss')).then((res)=>{
             for(var room of res){
               var searchRoom = {
                 roomCode : room._id,
                 roomType: room.type_room,
                 capacity: room.capacity,
+                isoStart: start,
+                isoEnd: end,
                 id: this.id,
                 start: moment(eventData.start).utc().format('DD/MM/YYYY HH:mm'),
                 end: moment(eventData.end).utc().format('DD/MM/YYYY HH:mm'),
               }
+             
               if(searchRoom.capacity == null){
                 searchRoom.capacity = "Não definido"
               }
@@ -340,7 +344,12 @@ export default {
   },
   watch: {
     "selectedRoom": function() {
-      this.$emit('passTwo',this.selectedRoom)
+      if(this.selectedRoom == null){
+        this.$emit('passTwo',null)
+      }
+      else{
+        this.$emit('passTwo',this.selectedRoom)
+      }
     }
   },
   computed: {
