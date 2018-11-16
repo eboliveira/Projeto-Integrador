@@ -7,17 +7,17 @@
 					<b-row>
 						<b-col md="12">
 							<b-form-group vertical :steptwo="result">
-								<b-form-input v-validate="'required|alpha'" placeholder="Título do evento" class="mb-2" v-model='title' name="title"></b-form-input>
+								<b-form-input v-validate="'required|alpha'" placeholder="Título do evento" class="mb-2" v-model='steptwo.title' name="title"></b-form-input>
                   <span v-show="errors.has('title')" class="help is-danger">{{ errors.first('title') }}</span>
 								  
-                <b-input v-validate="'required|alpha'" placeholder="Nome do responsável" class="mb-2" v-model='responsable' name="responsable"></b-input>
+                <b-input v-validate="'required|alpha'" placeholder="Nome do responsável" class="mb-2" v-model='steptwo.responsable' name="responsable"></b-input>
                   <span v-show="errors.has('responsable')" class="help is-danger">{{ errors.first('responsable') }}</span>
 								
-                <b-textarea v-validate="'required'" placeholder="Digite o motivo" class="mb-2" v-model='description' name="description" :rows=3></b-textarea>
+                <b-textarea v-validate="'required'" placeholder="Digite o motivo" class="mb-2" v-model='steptwo.description' name="description" :rows=3></b-textarea>
                   <span v-show="errors.has('description')" class="help is-danger">{{ errors.first('description') }}</span>
 							</b-form-group>
-							<b-form-group label="Escolha a repetição" style='margin-left:20px;margin-top:15px;'>
-								<b-form-radio-group id="radios1" v-model="selected" :options="options" name="radio"/>
+							<b-form-group label="Selecione a Frequência do Evento" style='margin-left:20px;margin-top:15px;'>
+								<b-form-radio-group id="radios1" v-model="steptwo.selected" :options="options" name="radio"/>
 							</b-form-group>
 						</b-col>
 					</b-row>
@@ -65,18 +65,14 @@ export default {
   data: () => {
     return {
       locale: "ar",
-      selected: "",
-      title: "",
-      description: "",
-      responsable: "",
-      steptwo:{
-        selected: null,
-        title: null,
-        description: null,
-        responsable: null
-      },
+      steptwo: {
+        title: "",
+        description: "",
+        responsable: "",
+        selected: ""
+        },
       options: [
-        { text: "Sem repetição", value: "" },
+        { text: "Unica", value: "" },
         { text: "Diariamente", value: "daily" },
         { text: "Semanalmente", value: "weekly" },
         { text: "Mensalmente", value: "monthly" }
@@ -94,21 +90,12 @@ export default {
     }
   },
   watch: {
-    steptwo: function() {
-      this.$emit("passThree", this.steptwo);
-    },
-    selected: function() {
-      this.steptwo.selected = this.selected
-    },
-    title: function() {
-      this.steptwo.title = this.title
-    },
-    description: function() {
-      this.steptwo.description = this.description
-    },
-    responsable: function() {
-      this.steptwo.responsable = this.responsable
-    },
+    steptwo: {
+     handler(val){
+      this.$emit("passThree",val);
+     },
+     deep: true
+  }
   },
   computed: {
     timeline() {
@@ -129,19 +116,12 @@ export default {
         });
 
         for (var item of timeLine) {
-          var start = moment(item.start)
-            .utc()
-            .format("YYYY-MM-DDTHH:mm:ss.sss");
-          var end = moment(item.end)
-            .utc()
-            .format("YYYY-MM-DDTHH:mm:ss.sss");
-          var schedule = utils.parseHourToSchedule(start, end);
           var timeRoom = {
             tag: String(
-              moment(item.start)
+              moment(item.isoStart)
                 .utc()
-                .format("DD/MM/YYYY ")
-            ).concat(schedule),
+                .format("DD/MM/YYYY HH:mm -")
+            ).concat(moment(item.isoEnd).utc().format("HH:mm")),
             color: "#dcdcdc",
             type: "circle",
             content: item.roomCode
