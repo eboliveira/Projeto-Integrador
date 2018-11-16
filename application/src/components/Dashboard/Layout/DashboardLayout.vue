@@ -10,11 +10,11 @@
         <i class="nc-icon nc-circle-09"></i>
         <p>Users</p>
       </sidebar-link>
-      <sidebar-link to="/admin/reserve">
+      <sidebar-link to="/admin/new_reserve">
         <i class="nc-icon nc-notes"></i>
         <p>Fazer reserva</p>
       </sidebar-link>
-      <sidebar-link to="/admin/classes">
+      <sidebar-link to="/admin/reserves">
         <i class="nc-icon nc-check-2 "></i>
         <p>Reservas feitas</p>
       </sidebar-link>

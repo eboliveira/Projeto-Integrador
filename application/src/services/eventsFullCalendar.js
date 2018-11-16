@@ -1,4 +1,5 @@
 import moment from 'moment'
+import {intToRGB, hashCode, toHSL} from './utils'
 
 function repeat(item, flag){
     let events_list = []
@@ -12,7 +13,8 @@ function repeat(item, flag){
             start:startDate.utc().format(),
             end:finalDateTemp,
             color: '#fffc77',
-            borderColor: '#000000'
+            borderColor: '#000000',
+            editable: false
         }
         startDate.add(1,flag)
         events_list.push(new_event)
@@ -26,18 +28,24 @@ function createEvent(item){
         start: item['startDate'],
         end: item['finalDate'],
         color: '#fffc77',
-        borderColor: '#000000'
+        borderColor: '#000000',
+        editable: false
     }
     return new_event
 }
 
 function createLesson(item, schedule){
+    const eventColor = '#' + intToRGB(hashCode((item['discipline_cod']+'_'+item['class_cod'])))
+    const textColor = toHSL(eventColor)[2] >= 40 ? '#000000' : '#F5F5F5'
     let new_event = {
-        title:item['discipline_name'],
+        title:item['discipline_cod'] + ' - ' + item['class_cod'],
         start: schedule['start'],
         end: schedule['end'],
         dow: [(parseInt(item['schedule'][0][0]))-1],
-        borderColor: '#000000',
+        color: eventColor,
+        textColor: textColor,
+        borderColor: eventColor,
+        editable: false
     }
     return new_event
 }
