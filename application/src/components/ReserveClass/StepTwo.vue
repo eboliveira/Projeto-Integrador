@@ -9,10 +9,10 @@
 							<b-form-group vertical :steptwo="result">
 								<b-form-input v-validate="'required|alpha'" placeholder="Título do evento" class="mb-2" v-model='title' name="title"></b-form-input>
                   <span v-show="errors.has('title')" class="help is-danger">{{ errors.first('title') }}</span>
-								  
+
                 <b-input v-validate="'required|alpha'" placeholder="Nome do responsável" class="mb-2" v-model='responsable' name="responsable"></b-input>
                   <span v-show="errors.has('responsable')" class="help is-danger">{{ errors.first('responsable') }}</span>
-								
+
                 <b-textarea v-validate="'required'" placeholder="Digite o motivo" class="mb-2" v-model='description' name="description" :rows=3></b-textarea>
                   <span v-show="errors.has('description')" class="help is-danger">{{ errors.first('description') }}</span>
 							</b-form-group>
@@ -129,19 +129,23 @@ export default {
         });
 
         for (var item of timeLine) {
-          var start = moment(item.start)
+            item.start = item.start.split('/')
+            item.end = item.end.split('/')
+        var itemStart = item.start[1] + '/' + item.start[0] + '/' + item.start[2]
+        var itemEnd = item.end[1] + '/' + item.end[0] + '/' + item.end[2]
+          var start = moment(itemStart)
             .utc()
-            .format("YYYY-MM-DDTHH:mm:ss.sss");
-          var end = moment(item.end)
+            .format();
+          var end = moment(itemEnd)
             .utc()
-            .format("YYYY-MM-DDTHH:mm:ss.sss");
+            .format();
           var schedule = utils.parseHourToSchedule(start, end);
           var timeRoom = {
             tag: String(
-              moment(item.start)
+              moment(itemStart)
                 .utc()
                 .format("DD/MM/YYYY ")
-            ).concat(schedule),
+            ).concat(schedule[0]),
             color: "#dcdcdc",
             type: "circle",
             content: item.roomCode
