@@ -42,6 +42,7 @@
     "vue-multiselect": "^2.1.0",
     "vue-notifyjs": "^0.2.0",
     "vue-router": "^3.0.1",
+    "vue-router-user-roles": "^0.1.9",
     "vue2-google-maps": "^0.8.4",
     "vuetify": "^1.2.3"
   },
