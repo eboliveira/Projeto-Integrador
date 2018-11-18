@@ -3,51 +3,70 @@ const admin = require('./firebaseSDK')
 const authDomain = '@utfpr.edu.br'
 const readOnlyDomain = '@alunos.utfpr.edu.br'
 
-module.exports.setCustomUserClaimsAdmin = async function(uid, role){
-    return await admin.auth.getUser(uid).then((user) => {
-        if((user.email.indexOf(authDomain) != -1 || user.email.indexOf(readOnlyDomain) != -1) && user.emailVerified){
-            return admin.auth.setCustomUserClaims(uid, {role: role}).then((log) => {
-                return log
-            });
+module.exports.setCustomUserClaims = async function(uidAdmin, uid, role, callback){
+    admin.auth.getUser(uidAdmin).then((userRecord) => {
+        if (userRecord.customClaims.role == 'admin') {
+            admin.auth.getUser(uid).then((user) => {
+                if((user.email.indexOf(authDomain) != -1 || user.email.indexOf(readOnlyDomain) != -1) && user.emailVerified){
+                    admin.auth.setCustomUserClaims(uid, {role: role}).then(() => {
+                        callback(null)
+                    });
+                } else {
+                    if (user.emailVerified) {
+                        callback(Error('E-mail domain not authorized'))
+                    } else {
+                        callback(Error('E-mail not verified'))
+                    }
+                }
+            }).catch((error) => {
+                callback(error)
+            })
         } else {
-            return false
+            callback(Error('Forbidden'))
         }
+    }).catch((error) => {
+        callback(error)
     })
 }
 
 module.exports.createUser = function(userData, callback){
+    let newUser = {
+        uid: userData.uid,
+        email: userData.email,
+        emailVerified: true,
+        password: userData.password,
+        displayName: userData.displayName,
+        disabled: true
+    }
     if (userData.email.indexOf(authDomain) != -1) {
-        newUser = {
-            uid: userData.registration,
-            email: userData.email,
-            emailVerified: true,
-            password: userData.password,
-            displayName: userData.userName,
-            disabled: true
-        }
+        console.log(userData.uid);
 
         admin.auth.createUser(newUser).then(function(user) {
-            admin.auth.setCustomUserClaimsAdmin(user.uid, {role: 'standart'}).then((log) => {
-                callback(log, null)
+            admin.auth.setCustomUserClaims(user.uid, {role: 'standart'}).then(() => {
+                callback(null)
             })
             console.log("Successfully created new user:", uid.uid);
         }).catch(function(error) {
-            callback(null, error)
+            callback(error)
         });
     } else if (userData.email.indexOf(readOnlyDomain) != -1) {
-        newUser = {
-            uid: userData.registration,
-            email: userData.email,
-            emailVerified: true,
-            password: userData.password,
-            displayName: userData.userName,
-            disabled: true
-        }
 
         admin.auth.createUser(newUser).then(function(user) {
-            admin.auth.setCustomUserClaimsAdmin(user.uid,  {role: 'student'}).then((log) => {
-                callback(log, null)
+            admin.auth.setCustomUserClaims(user.uid,  {role: 'student'}).then(() => {
+                callback(null)
             })
+        }).catch(function(error) {
+            callback(error)
+        });
+    } else {
+        callback(Error('E-mail domain not authorized'))
+    }
+}
+
+module.exports.updateUser = function(uid, userData, callback){
+    if ((userData.email.indexOf(authDomain) != -1 || userData.email.indexOf(readOnlyDomain) != -1)) {
+        admin.auth.updateUser(uid, userData).then(function(user) {
+            callback(user, null)
         }).catch(function(error) {
             callback(null, error)
         });
@@ -56,32 +75,22 @@ module.exports.createUser = function(userData, callback){
     }
 }
 
-module.exports.updateUser = function(uid, userData){
-    if ((user.email.indexOf(authDomain) != -1 || user.email.indexOf(readOnlyDomain) != -1)) {
-        admin.auth.updateUser(uid, userData).then(function(user) {
-            return user
-        }).catch(function(error) {
-            return error
-        });
-    } else {
-        return Error('E-mail domain not authorized')
-    }
-}
-
-module.exports.deleteUser = function(uid, userData){
-    return admin.auth.deleteUser(uid).then(function() {
-        return true
+module.exports.deleteUser = function(uid, callback){
+    admin.auth.deleteUser(uid).then(() => {
+        callback(null)
     }).catch(function(error) {
-        return error
+        callback(error)
     });
 }
 
-module.exports.isAdmin = function(idToken){
-    return admin.auth.verifyIdToken(idToken).then((claims) => {
-        if (claims.role == 'admin') {
-            return true
+module.exports.isAdmin = function(uid, callback){
+    admin.auth.getUser(uid).then((userRecord) => {
+        if (userRecord.customClaims.role == 'admin') {
+            callback(true, null)
         } else {
-            return false
+            callback(false, null)
         }
-    });
+    }).catch((error) => {
+        callback(null, error)
+    })
 }
