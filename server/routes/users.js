@@ -5,10 +5,6 @@ const User = require('../models/users')
 
 const router = express.Router();
 
-router.get('/', (req, res) => {
-    res.send("teste")
-})
-
 router.post('/register', (req,res) => {
     userManager.createUser(req.body.userData, function(err){
         if (err) {
@@ -50,7 +46,7 @@ router.put('/update', (req,res) => {
 })
 
 router.delete('/remove', (req,res) => {
-    userManager.deleteUser(req.body.uid, function(err){
+    userManager.deleteUser(req.body.uidAdmin, req.body.uid, function(err){
         if (err) {
             console.log(err.code);
             console.log(err.message);
@@ -60,6 +56,8 @@ router.delete('/remove', (req,res) => {
                 return res.status(500).send('Internal Server Error')
             } else if (err.code == 'auth/user-not-found') {
                 return res.status(409).send(err.code)
+            } else if (err.message == 'Forbidden') {
+                return res.status(403).send(err.message)
             } else {
                 return res.status(400).send('server could not understand the request ' + err.message)
             }
@@ -98,7 +96,7 @@ router.post('/setRole', (req,res) => {
                 return res.status(409).send(err.code)
             } else if (err.message == 'Forbidden') {
                 return res.status(403).send(err.message)
-            }else {
+            } else {
                 return res.status(400).send('server could not understand the request: ' + err.message)
             }
         } else {

@@ -7,7 +7,7 @@ var usersList = []
 
 module.exports.allUsers = function(uid, callback){
     const listAllUsers = (nextPageToken, callback) => {
-        admin.auth.listUsers(100, nextPageToken)
+        admin.auth.listUsers(1000, nextPageToken)
         .then(function(listUsersResult) {
             listUsersResult.users
             for (var i = 0; i < listUsersResult.users.length; i++){
@@ -106,12 +106,20 @@ module.exports.updateUser = function(uid, userData, callback){
     }
 }
 
-module.exports.deleteUser = function(uid, callback){
-    admin.auth.deleteUser(uid).then(() => {
-        callback(null)
-    }).catch(function(error) {
+module.exports.deleteUser = function(uidAdmin, uid, callback){
+    admin.auth.getUser(uidAdmin).then((userRecord) => {
+        if (userRecord.customClaims.role == 'admin') {
+            admin.auth.deleteUser(uid).then(() => {
+                callback(null)
+            }).catch(function(error) {
+                callback(error)
+            });
+        } else {
+            callback(Error('Forbidden'))
+        }
+    }).catch((error) => {
         callback(error)
-    });
+    })
 }
 
 module.exports.isAdmin = function(uid, callback){
