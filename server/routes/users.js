@@ -96,11 +96,31 @@ router.post('/setRole', (req,res) => {
                 return res.status(500).send('Internal Server Error')
             } else if (err.code == 'auth/user-not-found'){
                 return res.status(409).send(err.code)
-            } else {
+            } else if (err.message == 'Forbidden') {
+                return res.status(403).send(err.message)
+            }else {
                 return res.status(400).send('server could not understand the request: ' + err.message)
             }
         } else {
             return res.status(200).send('Role updated')
+        }
+    })
+})
+
+router.post('/all', (req,res) => {
+    userManager.allUsers(req.body.uid, function(users, err){
+        if (err) {
+            console.log(err.code);
+            console.log(err.message);
+            if (err.code == 'app/invalid-credential' || err.code == 'auth/maximum-user-count-exceeded' || err.code == 'auth/invalid-page-token') {
+                return res.status(500).send('Internal Server Error: ' + err.code)
+            } else if (err.message == 'Forbidden'){
+                return res.status(403).send(err.message)
+            } else {
+                return res.status(400).send('server could not understand the request: ' + err.message)
+            }
+        } else {
+            return res.status(200).send(users)
         }
     })
 })
