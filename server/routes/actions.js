@@ -1,5 +1,5 @@
 const express = require('express')
-const dateTime = require('../actions/dateTime')
+const dateTime = require('../utils/dateTime')
 
 const router = express.Router()
 
