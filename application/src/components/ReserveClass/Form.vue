@@ -121,7 +121,7 @@ export default {
                   "room": events.roomCode,
                   "startDate": events.isoStart,
                   "finalDate": events.isoEnd,
-                  "responsable": this.finish.responsable,
+                  "responsable": this.finish.selected,
                   "repeat": this.finish.repeat,
                   "status":"undefined"
               }
