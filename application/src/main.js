@@ -6,6 +6,12 @@ import App from './App.vue'
 import VTooltip from 'v-tooltip';
 Vue.use(VTooltip);
 
+import VeeValidate from 'vee-validate';
+import { Validator } from 'vee-validate';
+Validator.localize('pt_BR')
+
+Vue.use(VeeValidate, { inject: 'false', fieldsBagName: 'vvFields' });
+
 import vueButtonEffect from 'vue-button-effect'
 Vue.use(vueButtonEffect);
 

@@ -14,16 +14,30 @@
                         
                         <v-stepper-items>
                             <v-stepper-content step="1" style="padding: 0px;">
-                                <step-one></step-one>
+                                <step-one @passTwo="passStepTwo"></step-one>
                             </v-stepper-content>
                             <v-stepper-content step="2" style="padding: 0px;">
-                                <step-two></step-two>
+                                <step-two @passThree="passStepThree" :stepone="steptwo"></step-two>
                             </v-stepper-content>
                             <v-stepper-content step="3" style="padding: 0px;">
-                                <step-three></step-three>
+                                <step-three :result="finish" :room="steptwo"></step-three>
                             </v-stepper-content>
                         </v-stepper-items>
                         
+                        <v-layout justify-center style="margin-bottom: 10px;">
+                            <v-dialog v-model="confirm" persistent>
+                                <v-card>
+                                    <v-card-title class="headline">Deseja Confirmar o Evento?</v-card-title>
+                                    <v-card-text>As informações preenchidas serão registradas!</v-card-text>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="green darken-1" flat v-on:click.native="dialog = false">Cancelar</v-btn>
+                                        <v-btn color="green darken-1" flat v-on:click.native="sendEvent" to="/admin/reserve">Confimar</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+                        </v-layout>
+
                         <v-layout justify-center style="margin-bottom: 10px;">
                             <v-dialog v-model="dialog" persistent>
                                 <v-card>
@@ -45,8 +59,8 @@
                                 </b-col>
                                 <b-col md="6">
                                     <v-layout justify-center>
-                                        <b-btn v-if="nstep < '3'" variant="primary" v-on:click="nstep ++">Proximo</b-btn>
-                                        <b-btn v-if="nstep == '3'" variant="success" >Confirmar</b-btn>
+                                        <b-btn :disabled = disabled v-if="nstep < '3'" variant="primary" v-on:click="nstep ++" name="positive">Proximo</b-btn>
+                                        <b-btn v-if="nstep == '3'" variant="success" v-on:click="confirm = true" >Confirmar</b-btn>
                                     </v-layout>
                                 </b-col>
                                 <b-col md="3">
@@ -60,11 +74,19 @@
         </b-row>
     </b-container>
 </template>
+<style>
+    .btn:disabled, .btn[disabled], .btn.disabled{
+        background-color: #c9d0ff;
+        color: black;
+    }
+</style>
 
 <script>
 import StepOne from "./StepOne.vue";
 import StepTwo from "./StepTwo.vue";
 import StepThree from "./StepThree.vue";
+import { rooms } from '../../services/Api';
+import {postEvent} from '../../services/PostsService.js'
 
 export default {
   components: {
@@ -76,11 +98,53 @@ export default {
     return {
       nstep: 0,
       dialog: false,
+      confirm: false,
       cancel: false,
-      isValid:false
+      isValid:false,
+      steptwo: null,
+      finish: null,
+      disabled: true
     };
   },
   methods:{
+      passStepTwo(payload){
+          this.steptwo = payload
+      },
+      passStepThree(payload){
+          this.finish = payload
+      },
+      sendEvent(){
+          for(var events of this.steptwo){
+              var event = {
+                  "title": this.finish.title,
+                  "description": this.finish.description,
+                  "room": events.roomCode,
+                  "startDate": events.isoStart,
+                  "finalDate": events.isoEnd,
+                  "responsable": this.finish.responsable,
+                  "repeat": this.finish.repeat,
+                  "status":"undefined"
+              }
+              postEvent(event)
+            }
+            this.confirm = false
+      }
+  },
+  watch: {
+    "nstep": function() {
+        this.disabled = true
+              
+    },
+    "steptwo": function(){
+        if(this.steptwo){
+             this.disabled = false  
+        }
+    },
+    "finish": function(){
+        if(this.finish){
+             this.disabled = false  
+        }
+    }
   }
 };
 </script>
