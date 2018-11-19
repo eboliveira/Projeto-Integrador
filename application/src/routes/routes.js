@@ -1,19 +1,28 @@
-import DashboardLayout from '../components/Dashboard/Layout/DashboardLayout.vue'
+import DashboardLayout  from '../components/Dashboard/Layout/DashboardLayout.vue'
+
+// ReadOnly Views
+import Reserves         from 'src/components/Dashboard/Views/Reserves.vue'
+
 // GeneralViews
-import NotFound from '../components/GeneralViews/NotFoundPage.vue'
+import NotFound         from '../components/GeneralViews/NotFoundPage.vue'
+import Reserve          from 'src/components/Dashboard/Views/Reserve/Reserve.vue'
+import Form             from 'src/components/ReserveClass/Form.vue'
+import Login            from '../components/GeneralViews/Login.vue'
 
 // Admin pages
 import Overview         from 'src/components/Dashboard/Views/Overview.vue'
-import UserProfile      from 'src/components/Dashboard/Views/UserProfile.vue'
-import Reserves         from 'src/components/Dashboard/Views/Reserves.vue'
-import Reserve          from 'src/components/Dashboard/Views/Reserve/Reserve.vue'
+import UsersManager     from 'src/components/Dashboard/Views/UserProfile.vue'
 import Equipments       from 'src/components/Dashboard/Views/Equipment.vue'
 import Pendents         from 'src/components/Dashboard/Views/Pendents.vue'
 import Reports          from 'src/components/Dashboard/Views/Reports.vue'
-import Form             from 'src/components/ReserveClass/Form.vue'
-import ReserveEquipment from 'src/components/ReserveEquipment/Equipment.vue'
+import EquipmentManager from 'src/components/ReserveEquipment/Equipment.vue'
 
 const routes = [
+    {
+        path: '/login',
+        name: 'Login',
+        component: Login
+    },
     {
         path: '/',
         component: DashboardLayout,
@@ -30,9 +39,9 @@ const routes = [
                 component: Overview
             },
             {
-                path: 'user',
-                name: 'User',
-                component: UserProfile
+                path: 'usersManager',
+                name: 'UsersManager',
+                component: UsersManager
             },
             {
                 path: 'reserves',
@@ -55,9 +64,9 @@ const routes = [
                 component: Equipments
             },
             {
-                path: 'reserveEquipment',
-                name: 'reserveEquipment',
-                component: ReserveEquipment
+                path: 'equipmentManager',
+                name: 'EquipmentManager',
+                component: EquipmentManager
             },
             {
                 path: 'pendents',
