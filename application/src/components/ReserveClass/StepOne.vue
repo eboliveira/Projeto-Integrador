@@ -130,8 +130,6 @@ import {freeRooms} from '../../services/GetsServices.js'
 import * as utils from '../../services/utils.js'
 import moment from "moment";
 import { FormCheckbox } from 'bootstrap-vue/es/components';
-
-
 export default {
   components: {
     Card,
@@ -258,7 +256,6 @@ export default {
                 this.items.push(searchRoom)
                 this.id++
             }
-
             this.items = this.items.sort(function (a, b) {
               if (a.bloco > b.bloco) {
                 return 1;
@@ -274,7 +271,6 @@ export default {
 	      return !this[JSON.stringify(a)] && (this[JSON.stringify(a)] = true);
       }, Object.create(null))
       this.refresh = this.items
-
       this.dialog = false
     },
     onFiltered(filteredItems) {
