@@ -129,8 +129,7 @@ import Card from "src/components/UIComponents/Cards/Card.vue";
 import { freeRooms } from '../../services/GetsServices.js'
 import * as utils from '../../services/utils.js'
 import moment from "moment";
-
-
+import { FormCheckbox } from 'bootstrap-vue/es/components';
 export default {
     components: {
         Card,
@@ -209,71 +208,54 @@ export default {
             ]
         };
     },
-    methods: {
-        eventSelected(event) {
-            this.selected = event;
-        },
-        edit(newEvent) {
-            var index = this.eventsData.findIndex(x => x.id === newEvent.id);
-            this.eventsData[index].start = moment(newEvent.start._d)
-            .utc()
-            .format();
-            this.eventsData[index].end = moment(newEvent.end._d)
-            .utc()
-            .format();
-        },
-        refreshTable() {
-            this.items = this.refresh
-        },
-        renderEvent(dataEnv, stick){
-            stick = true;
-        },
-        cleanCalendar(){
-            $('#calendar').fullCalendar('removeEvents');
-            this.eventsData = []
-        },
-        search() {
-            for(var eventData of this.eventsData){
-                var start = moment(eventData.start).utc().format('MM/DD/YY HH:mm')
-                var end = moment(eventData.end).utc().format('MM/DD/YY HH:mm')
-                //var end = moment(eventData.end).utc().format('YYYY-MM-DDTHH:mm:ss.sss')
-                var schedule = utils.parseHourToSchedule(start, end)
-                freeRooms({"schedule": schedule}, moment(start).utc().format(), moment(end).utc().format()).then((res)=>{
-                    for(var room of res){
-                        var searchRoom = {
-                            roomCode: room._id,
-                            roomType: room.type_room,
-                            capacity: room.capacity,
-                            id: this.id,
-                            start: moment(eventData.start).utc().format('DD/MM/YYYY HH:mm'),
-                            end: moment(eventData.end).utc().format('DD/MM/YYYY HH:mm'),
-                        }
-                        if(searchRoom.capacity == null){
-                            searchRoom.capacity = "Não definido"
-                        }
-                        this.items.push(searchRoom)
-                        this.id++
-                    }
+    cleanCalendar(){
+      $('#calendar').fullCalendar('removeEvents');
+      this.eventsData = []
+    },
+    search() {
+      for(var eventData of this.eventsData){
+          var start = moment(eventData.start).utc().format()
+          var end = moment(eventData.end).utc().format()
+          //var end = moment(eventData.end).utc().format('YYYY-MM-DDTHH:mm:ss.sss')
+          var schedule = utils.parseHourToSchedule(start, end)
 
-                    this.items = this.items.sort(function (a, b) {
-                        if (a.bloco > b.bloco) {
-                            return 1;
-                        }
-                        if (a.bloco < b.bloco) {
-                            return -1;
-                        }
-                        return 0;
-                    })
-                })
+          freeRooms({"schedule": schedule}, moment(start).utc().format('YYYY-MM-DDTHH:mm:ss.sss'), moment(end).utc().format('YYYY-MM-DDTHH:mm:ss.sss')).then((res)=>{
+            for(var room of res){
+              var searchRoom = {
+                roomCode : room._id,
+                roomType: room.type_room,
+                capacity: room.capacity,
+                isoStart: start,
+                isoEnd: end,
+                id: this.id,
+                start: moment(eventData.start).utc().format('DD/MM/YYYY HH:mm'),
+                end: moment(eventData.end).utc().format('DD/MM/YYYY HH:mm'),
+              }
+
+              if(searchRoom.capacity == null){
+                searchRoom.capacity = "Não definido"
+              }
+                this.items.push(searchRoom)
+                this.id++
             }
-            this.items =  this.items.filter(function (a) {
-                return !this[JSON.stringify(a)] && (this[JSON.stringify(a)] = true);
-            }, Object.create(null))
-            this.refresh = this.items
-
-            this.dialog = false
-        },
-        onFiltered(filteredItems) {
+            this.items = this.items.sort(function (a, b) {
+              if (a.bloco > b.bloco) {
+                return 1;
+              }
+              if (a.bloco < b.bloco) {
+                return -1;
+              }
+              return 0;
+              })
+          })
+      }
+      this.items =  this.items.filter(function (a) {
+	      return !this[JSON.stringify(a)] && (this[JSON.stringify(a)] = true);
+      }, Object.create(null))
+      this.refresh = this.items
+      this.dialog = false
+    },
+    onFiltered(filteredItems) {
             this.totalRows = filteredItems.length;
             this.currentPage = 1;
         },
