@@ -31,7 +31,7 @@
                                     <v-card-text>As informações preenchidas serão registradas!</v-card-text>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="green darken-1" flat v-on:click.native="dialog = false">Cancelar</v-btn>
+                                        <v-btn color="green darken-1" flat v-on:click.native="confirm = false">Cancelar</v-btn>
                                         <v-btn color="green darken-1" flat v-on:click.native="sendEvent" to="/admin/reserve">Confimar</v-btn>
                                     </v-card-actions>
                                 </v-card>
@@ -113,6 +113,20 @@ export default {
       passStepThree(payload){
           this.finish = payload
       },
+        finish(){
+            $.notify({
+                icon:"nc-check-2",
+                message: "Cadastro Finalizado!"
+            },{
+                type: type["info"],
+                timer: 4000,
+                placement: {
+                    from: "top",
+                    align: "center"
+                }
+            }
+            )
+        },
       sendEvent(){
           for(var events of this.steptwo){
               var event = {
@@ -127,8 +141,9 @@ export default {
               }
               postEvent(event)
             }
+            finish()
             this.confirm = false
-      }
+      },
   },
   watch: {
     "nstep": function() {

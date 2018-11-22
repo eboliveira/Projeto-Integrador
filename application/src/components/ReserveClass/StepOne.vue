@@ -73,7 +73,7 @@
                       <b-tooltip target="Refresh" title="Refresh" placement="bottom"></b-tooltip>
                     </b-col>
                   </b-row>
-                   	<b-table show-empty striped hover :items="items" :fields="field" :current-page="currentPage" :per-page="perPage" :filter="filter">
+                   	<b-table show-empty striped hover :items="items" :fields="field" :current-page="currentPage" :per-page="perPage" :filter="filter" @filtered="onFiltered">
                        <template slot="roomCode" slot-scope="row">
                          <span v-for="item in row.value">{{item}}</span>
                        </template>
@@ -270,6 +270,7 @@ export default {
       this.items =  this.items.filter(function (a) {
 	      return !this[JSON.stringify(a)] && (this[JSON.stringify(a)] = true);
       }, Object.create(null))
+      this.totalRows = this.items.length
       this.refresh = this.items
       this.dialog = false
     },
