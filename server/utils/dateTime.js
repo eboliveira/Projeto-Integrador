@@ -1,5 +1,3 @@
-const express = require('express')
-const mongoose = require('mongoose');
 const EventCalendar = require('../models/events')
 const moment = require('moment');
 
