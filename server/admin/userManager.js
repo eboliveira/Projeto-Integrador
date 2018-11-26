@@ -66,14 +66,14 @@ module.exports.createUser = function(userData, callback){
     let newUser = {
         uid: userData.uid,
         email: userData.email,
-        emailVerified: true,
+        emailVerified: false,
         password: userData.password,
         displayName: userData.displayName,
-        disabled: true
+        disabled: false
     }
     if (userData.email.indexOf(authDomain) != -1) {
         admin.auth.createUser(newUser).then(function(user) {
-            admin.auth.setCustomUserClaims(user.uid, {role: 'standart'}).then(() => {
+            admin.auth.setCustomUserClaims(user.uid, {role: 'standard'}).then(() => {
                 callback(null)
             })
             console.log("Successfully created new user:", uid.uid);
