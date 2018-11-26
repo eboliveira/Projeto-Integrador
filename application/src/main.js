@@ -62,9 +62,18 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
 Vue.use(datePicker);
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  render: h => h(App),
-  router
-})
+// vue-router-user-roles
+import VueRouterUserRoles from "vue-router-user-roles";
+Vue.use(VueRouterUserRoles, { router });
+
+let authenticate = Promise.resolve({ role: "guest", emailVerified:false, uid:'' });
+
+authenticate.then(user => {
+  Vue.prototype.$user.set(user);
+  /* eslint-disable no-new */
+  new Vue({
+    el: '#app',
+    render: h => h(App),
+    router
+  })
+});

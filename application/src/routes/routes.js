@@ -26,64 +26,229 @@ const routes = [
     {
         path: '/',
         component: DashboardLayout,
-        redirect: '/admin/overview'
+        redirect: '/general/overview'
     },
     {
-        path: '/admin',
+        path: '/general',
+        name: 'General',
         component: DashboardLayout,
-        redirect: '/admin/overview',
+        redirect: '/general/overview',
         children: [
             {
                 path: 'overview',
                 name: 'Overview',
-                component: Overview
-            },
-            {
-                path: 'usersManager',
-                name: 'UsersManager',
-                component: UsersManager
+                component: Overview,
+                meta: {
+                    permissions: [
+                        {
+                            role: 'admin',
+                            access: true
+                        },
+                        {
+                            role: 'standard',
+                            access: (user) => user.emailVerified,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'guest',
+                            access: false,
+                            redirect: 'Login'
+                        }
+                    ]
+                }
             },
             {
                 path: 'reserves',
                 name: 'Reserves',
                 component: Reserves,
+                meta: {
+                    permissions: [
+                        {
+                            role: 'admin',
+                            access: true
+                        },
+                        {
+                            role: 'standard',
+                            access: true,
+                        },
+                        {
+                            role: "guest",
+                            access: false,
+                            redirect: 'Login'
+                        }
+                    ]
+                }
             },
             {
                 path: 'reserveclass',
                 name: 'ReserveClass',
-                component: Form
+                component: Form,
+                meta: {
+                    permissions: [
+                        {
+                            role: 'admin',
+                            access: true
+                        },
+                        {
+                            role: 'standard',
+                            access: true,
+                        },
+                        {
+                            role: 'guest',
+                            access: false,
+                            redirect: 'Login'
+                        }
+                    ]
+                }
             },
             {
                 path: 'new_reserve',
                 name: 'New_Reserve',
-                component: Reserve
-            },
-            {
-                path: 'equipment',
-                name: 'Equipment',
-                component: Equipments
-            },
-            {
-                path: 'equipmentManager',
-                name: 'EquipmentManager',
-                component: EquipmentManager
+                component: Reserve,
+                meta: {
+                    permissions: [
+                        {
+                            role: 'admin',
+                            access: true
+                        },
+                        {
+                            role: 'standard',
+                            access: true,
+                        },
+                        {
+                            role: "guest",
+                            access: false,
+                            redirect: 'Login'
+                        }
+                    ]
+                }
             },
             {
                 path: 'pendents',
                 name: 'pendentsReserves',
-                component: Pendents
+                component: Pendents,
+                meta: {
+                    permissions: [
+                        {
+                            role: 'admin',
+                            access: true
+                        },
+                        {
+                            role: 'standard',
+                            access: true,
+                        },
+                        {
+                            role: "guest",
+                            access: false,
+                            redirect: 'Login'
+                        }
+                    ]
+                }
+            },
+            {
+                path: 'equipment',
+                name: 'Equipment',
+                component: Equipments,
+                meta: {
+                    permissions: [
+                        {
+                            role: 'admin',
+                            access: true
+                        },
+                        {
+                            role: 'standard',
+                            access: true,
+                        },
+                        {
+                            role: "guest",
+                            access: false,
+                            redirect: 'Login'
+                        }
+                    ]
+                }
+            },
+        ]
+    },
+    {
+        path: '/admin',
+        component: DashboardLayout,
+        redirect: '/general/overview',
+        children: [
+            {
+                path: 'usersManager',
+                name: 'UsersManager',
+                component: UsersManager,
+                meta: {
+                    permissions: [
+                        {
+                            role: 'admin',
+                            access: true
+                        },
+                        {
+                            role: 'standard',
+                            access: false,
+                            redirect: 'General'
+                        },
+                        {
+                            role: "guest",
+                            access: false,
+                            redirect: 'Login'
+                        }
+                    ]
+                }
+            },
+            {
+                path: 'equipmentManager',
+                name: 'EquipmentManager',
+                component: EquipmentManager,
+                meta: {
+                    permissions: [
+                        {
+                            role: 'admin',
+                            access: true
+                        },
+                        {
+                            role: 'standard',
+                            access: false,
+                            redirect: 'General'
+                        },
+                        {
+                            role: "guest",
+                            access: false,
+                            redirect: 'Login'
+                        }
+                    ]
+                }
             },
             {
                 path: 'reports',
                 name: 'Reports',
-                component: Reports
+                component: Reports,
+                meta: {
+                    permissions: [
+                        {
+                            role: 'admin',
+                            access: true
+                        },
+                        {
+                            role: 'standard',
+                            access: false,
+                            redirect: 'General'
+                        },
+                        {
+                            role: "guest",
+                            access: false,
+                            redirect: 'Login'
+                        }
+                    ]
+                }
             },
         ]
     },
     {
         path: '*',
         component: DashboardLayout,
-        redirect: '/admin/overview'
+        redirect: '/general/overview'
     }
 ]
 

@@ -2,7 +2,7 @@
   <div class="wrapper">
     <side-bar>
       <mobile-menu slot="content"></mobile-menu>
-      <sidebar-link to="/admin/overview">
+      <sidebar-link to="/general/overview">
         <i class="nc-icon nc-chart-pie-35"></i>
         <p>Dashboard</p>
       </sidebar-link>
@@ -10,19 +10,19 @@
         <i class="nc-icon nc-circle-09"></i>
         <p>Users</p>
       </sidebar-link>
-      <sidebar-link to="/admin/new_reserve">
+      <sidebar-link to="/general/new_reserve">
         <i class="nc-icon nc-notes"></i>
         <p>Fazer reserva</p>
       </sidebar-link>
-      <sidebar-link to="/admin/reserves">
+      <sidebar-link to="/general/reserves">
         <i class="nc-icon nc-check-2 "></i>
         <p>Reservas feitas</p>
       </sidebar-link>
-      <sidebar-link to="/admin/equipment">
+      <sidebar-link to="/general/equipment">
         <i class="nc-icon nc-camera-20"></i>
         <p>Equipamentos</p>
       </sidebar-link>
-      <sidebar-link to="/admin/pendents">
+      <sidebar-link to="/general/pendents">
         <i class="nc-icon nc-bullet-list-67"></i>
         <p>Reservas pendentes</p>
       </sidebar-link>

@@ -206,8 +206,9 @@ export default {
                 { value: "Teórica", text: "Teórica" },
                 { value: "Desenho", text: "Desenho" }
             ]
-        };
+        }
     },
+    methods: {
     cleanCalendar(){
       $('#calendar').fullCalendar('removeEvents');
       this.eventsData = []

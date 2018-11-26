@@ -7,13 +7,13 @@
                     <form>
                         <div class="row">
                             <div class="col-12">
-                                <fg-input type="email" label="E-mail institucional" placeholder="Digite seu E-mail" v-model="user">
+                                <fg-input type="email" label="E-mail institucional" placeholder="Digite seu E-mail" v-model="user"  autocomplete="username">
                                 </fg-input>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-12">
-                                <fg-input type="password" label="Senha" placeholder="Digite sua senha" v-model="password">
+                                <fg-input type="password" label="Senha" placeholder="Digite sua senha" v-model="password" autocomplete="current-password">
                                 </fg-input>
                             </div>
                         </div>
