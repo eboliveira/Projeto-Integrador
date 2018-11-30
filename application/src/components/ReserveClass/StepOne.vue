@@ -52,6 +52,17 @@
                   <b-tooltip target="Refresh1" title="Clear" placement="bottom"></b-tooltip>
               </v-layout>
                 <card style="padding: 15px;">
+                    <h4 slot="header" class="card-title">Reservar Horários</h4>
+                    <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" :config="config"></full-calendar>
+
+                </card>
+                <v-layout justify-center style="margin-top: 20px; margin-bottom: 20px">
+                    <b-btn variant="success" style="margin-left: 10px;" v-on:click="dialog = true"><i class="fa fa-search"></i></b-btn>
+                    <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar" v-b-tooltip.hover id="Refresh1"><v-icon style="position: center">mdi-broom</v-icon></b-btn>
+                    <b-btn variant="info" style="width: 58px; height: 43px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
+                    <b-tooltip target="Refresh1" title="Clear" placement="bottom"></b-tooltip>
+                </v-layout>
+                <card style="padding: 15px;">
                   <h4 slot="header" class="card-title">Selecionar Salas</h4>
 					        <b-row>
                     <b-col md="3">
@@ -73,7 +84,7 @@
                       <b-tooltip target="Refresh" title="Refresh" placement="bottom"></b-tooltip>
                     </b-col>
                   </b-row>
-                   	<b-table show-empty striped hover :items="items" :fields="field" :current-page="currentPage" :per-page="perPage" :filter="filter">
+                   	<b-table show-empty striped hover :items="items" :fields="field" :current-page="currentPage" :per-page="perPage" :filter="filter" @filtered="onFiltered">
                        <template slot="roomCode" slot-scope="row">
                          <span v-for="item in row.value">{{item}}</span>
                        </template>
@@ -99,8 +110,8 @@
                             <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
                         </b-col>
                     </b-row>
-                  </v-layout>
-				          </card>
+                    </v-layout>
+                </card>
             </b-col>
         </b-row>
 	</b-container>
@@ -256,36 +267,44 @@
                   this.items.push(searchRoom)
                   this.id++
               }
-              this.items = this.items.sort(function (a, b) {
-                if (a.bloco > b.bloco) {
-                  return 1;
-                }
-                if (a.bloco < b.bloco) {
-                  return -1;
-                }
-                return 0;
-                })
-            })
-        }
-        this.items =  this.items.filter(function (a) {
-          return !this[JSON.stringify(a)] && (this[JSON.stringify(a)] = true);
-        }, Object.create(null))
-        this.refresh = this.items
-        this.dialog = false
-      },
-      onFiltered(filteredItems) {
-              this.totalRows = filteredItems.length;
-              this.currentPage = 1;
-      },
-      filterTable() {
-        var roomType = this.selectedroomType
-        var capacity = this.selectedcapacity
-        var searchData = []
-          if(roomType == 1){
-            this.items = this.refresh
-            return
-          }
-          else if(roomType){
+
+              if(searchRoom.capacity == null){
+                searchRoom.capacity = "Não definido"
+              }
+                this.items.push(searchRoom)
+                this.id++
+            }
+            this.items = this.items.sort(function (a, b) {
+              if (a.bloco > b.bloco) {
+                return 1;
+              }
+              if (a.bloco < b.bloco) {
+                return -1;
+              }
+              return 0;
+              })
+          })
+      }
+      this.items =  this.items.filter(function (a) {
+	      return !this[JSON.stringify(a)] && (this[JSON.stringify(a)] = true);
+      }, Object.create(null))
+      this.totalRows = this.items.length
+      this.refresh = this.items
+      this.dialog = false
+    },
+    onFiltered(filteredItems) {
+            this.totalRows = filteredItems.length;
+            this.currentPage = 1;
+        },
+        filterTable() {
+            var roomType = this.selectedroomType
+            var capacity = this.selectedcapacity
+            var searchData = []
+            if(roomType == 1){
+                this.items = this.refresh
+                return
+            }
+            else if(roomType){
                 for(var search of this.refresh){
                     var exist = Object.values(search)
                     if(exist.find(x => x == roomType)){
@@ -337,7 +356,6 @@
           // }
           this.items = searchData
         },
-    },
     watch: {
       "selectedRoom": function() {
         if(this.selectedRoom == null){
@@ -391,5 +409,5 @@
           return fields
       }  
     }
-  };
+}
 </script>

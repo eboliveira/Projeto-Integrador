@@ -176,10 +176,26 @@ export default {
             modal_repeat:"",
             modal_timestamp:"",
             fields: [
-                {key: "room",        label: "Sala",               sortable: true},
-                {key: "responsable", label: "Requisitante",       sortable: true},
-                {key: "date",        label: "Data da requisição", sortable: true},
-                {key: "options",     label: "", class: "text-center"}
+                {
+                    key: "room",
+                    label: "Sala",
+                    sortable: true
+                },
+                {
+                    key: "responsable",
+                    label: "Requisitante",
+                    sortable: true
+                },
+                {
+                    key: "date",
+                    label: "Data da requisição",
+                    sortable: true
+                },
+                {
+                    key: "options",
+                    label: "",
+                    class: "text-center"
+                }
             ],
             items: [],
             perPage: 10,
