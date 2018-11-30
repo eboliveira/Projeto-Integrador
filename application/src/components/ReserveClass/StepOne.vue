@@ -267,31 +267,23 @@
                   this.items.push(searchRoom)
                   this.id++
               }
-
-              if(searchRoom.capacity == null){
-                searchRoom.capacity = "Não definido"
-              }
-                this.items.push(searchRoom)
-                this.id++
-            }
-            this.items = this.items.sort(function (a, b) {
-              if (a.bloco > b.bloco) {
-                return 1;
-              }
-              if (a.bloco < b.bloco) {
-                return -1;
-              }
-              return 0;
-              })
-          })
-      }
-      this.items =  this.items.filter(function (a) {
-	      return !this[JSON.stringify(a)] && (this[JSON.stringify(a)] = true);
-      }, Object.create(null))
-      this.totalRows = this.items.length
-      this.refresh = this.items
-      this.dialog = false
-    },
+              this.items = this.items.sort(function (a, b) {
+                if (a.bloco > b.bloco) {
+                  return 1;
+                }
+                if (a.bloco < b.bloco) {
+                  return -1;
+                }
+                return 0;
+                })
+            })
+        }
+        this.items =  this.items.filter(function (a) {
+          return !this[JSON.stringify(a)] && (this[JSON.stringify(a)] = true);
+        }, Object.create(null))
+        this.refresh = this.items
+        this.dialog = false
+      },
     onFiltered(filteredItems) {
             this.totalRows = filteredItems.length;
             this.currentPage = 1;
@@ -409,5 +401,6 @@
           return fields
       }  
     }
+  }
 }
 </script>
