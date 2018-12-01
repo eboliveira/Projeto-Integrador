@@ -24,7 +24,7 @@
                             </v-stepper-content>
                         </v-stepper-items>
                         
-                        <b-modal v-model="confirm" header-bg-variant="success" header-text-variant="light" title="Deseja Confirmar o Evento?" no-close-on-backdrop="false" hide-header-close="false">
+                        <b-modal v-model="confirm" header-bg-variant="success" header-text-variant="light" title="Deseja Confirmar o Evento?" :no-close-on-backdrop="false" :hide-header-close="false">
                             <b-container fluid>
                                 <b-row>
                                     <b-col md=10>
@@ -39,7 +39,7 @@
                         </b-modal>
 
 
-                        <b-modal v-model="dialog" header-bg-variant="danger" header-text-variant="light" title="Deseja Cancelar a Reserva de Horarios?" no-close-on-backdrop="false" hide-header-close="false">
+                        <b-modal v-model="dialog" header-bg-variant="danger" header-text-variant="light" title="Deseja Cancelar a Reserva de Horarios?" :no-close-on-backdrop="false" :hide-header-close="false">
                             <b-container fluid>
                                 <b-row>
                                     <b-col md=12>
@@ -108,7 +108,8 @@ export default {
       isValid:false,
       steptwo: null,
       finish: null,
-      disabled: true
+      disabled: true,
+      header : false,
     };
   },
   methods:{
@@ -118,20 +119,20 @@ export default {
       passStepThree(payload){
           this.finish = payload
       },
-        finish(){
-            $.notify({
-                icon:"nc-check-2",
-                message: "Cadastro Finalizado!"
-            },{
-                type: type["info"],
-                timer: 4000,
-                placement: {
-                    from: "top",
-                    align: "center"
-                }
-            }
-            )
-        },
+        // finish(){
+        //     $.notify({
+        //         icon:"nc-check-2",
+        //         message: "Cadastro Finalizado!"
+        //     },{
+        //         type: type["info"],
+        //         timer: 4000,
+        //         placement: {
+        //             from: "top",
+        //             align: "center"
+        //         }
+        //     }
+        //     )
+        // },
       sendEvent(){
           for(var events of this.steptwo){
               var event = {
@@ -145,9 +146,9 @@ export default {
                   "status":"undefined"
               }
               postEvent(event)
-            }
-            finish()
-            this.confirm = false
+      }
+      finish()
+        this.confirm = false
       },
   },
   watch: {
