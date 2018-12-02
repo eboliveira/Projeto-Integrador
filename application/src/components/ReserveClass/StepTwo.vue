@@ -95,7 +95,7 @@ export default {
       this.$emit("passThree",val);
      },
      deep: true
-  }
+    }
   },
   computed: {
     timeline() {
