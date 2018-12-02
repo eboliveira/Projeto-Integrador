@@ -59,7 +59,7 @@
             </b-container>
 
             <div slot="modal-footer" class="w-100">
-                
+                <b-btn size="md" class="float-right" variant="primary" @click="show=false">Fechar</b-btn>
             </div>
         </b-modal>
         <b-modal header-bg-variant="danger" header-text-variant="light" ok-title="Fechar" @click="show=true" id="modalReason" title="Rejeitar reserva" @ok="handleRefuse(refuseReason)" :ok-disabled="isReasonEmpty()">

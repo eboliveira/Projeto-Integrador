@@ -11,7 +11,7 @@
                             <v-divider></v-divider>
                             <v-stepper-step step="3">Confirmação</v-stepper-step>
                         </v-stepper-header>
-                        
+
                         <v-stepper-items>
                             <v-stepper-content step="1" style="padding: 0px;">
                                 <step-one @passTwo="passStepTwo"></step-one>
@@ -23,36 +23,35 @@
                                 <step-three :result="finish" :room="steptwo"></step-three>
                             </v-stepper-content>
                         </v-stepper-items>
-                        
-                        <b-modal v-model="confirm" header-bg-variant="success" header-text-variant="light" title="Deseja Confirmar o Evento?" no-close-on-backdrop="false" hide-header-close="false">
-                            <b-container fluid>
-                                <b-row>
-                                    <b-col md=10>
-                                        <v-card-text rows="1"><h4 class="text">As informações preenchidas serão registradas!</h4></v-card-text>
-                                    </b-col>
-                                </b-row>
-                            </b-container>
-                            <div slot="modal-footer" class="w-100">
-                                <b-btn class="float-right" variant="danger" @click="confirm=false">Cancelar</b-btn>
-                                <b-btn style="margin-right: 10px" class="float-right" variant="success" @click="sendEvent" to="/admin/overview">Confirmar</b-btn>
-                            </div>
-                        </b-modal>
 
+                        <v-layout justify-center style="margin-bottom: 10px;">
+                            <v-dialog v-model="confirm" persistent>
+                                <v-card>
+                                    <v-card-title class="headline">Deseja Confirmar o Evento?</v-card-title>
+                                    <v-card-text>As informações preenchidas serão registradas!</v-card-text>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="green darken-1" flat v-on:click.native="dialog = false">Cancelar</v-btn>
+                                        <v-btn color="green darken-1" flat v-on:click.native="sendEvent">Confimar</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+                        </v-layout>
 
-                        <b-modal v-model="dialog" header-bg-variant="danger" header-text-variant="light" title="Deseja Cancelar a Reserva de Horarios?" no-close-on-backdrop="false" hide-header-close="false">
-                            <b-container fluid>
-                                <b-row>
-                                    <b-col md=12>
-                                        <v-card-text rows="2"><h4 class="text">As informações preenchidas no cadastro até o momento serão perdidas caso deseja sair!</h4></v-card-text>
-                                    </b-col>
-                                </b-row>
-                            </b-container>
-                            <div slot="modal-footer" class="w-100">
-                                <b-btn class="float-right" variant="danger" @click="dialog=false">Cancelar</b-btn>
-                                <b-btn style="margin-right: 10px" class="float-right" variant="success" @click="dialog=false" to="/admin/overview">Confirmar</b-btn>
-                            </div>
-                        </b-modal>
-                        
+                        <v-layout justify-center style="margin-bottom: 10px;">
+                            <v-dialog v-model="dialog" persistent>
+                                <v-card>
+                                    <v-card-title class="headline">Deseja Cancelar a Reserva de Horarios?</v-card-title>
+                                    <v-card-text>As informações preenchidas no cadastro até o momento serão perdidas caso deseja sair!</v-card-text>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="green darken-1" flat v-on:click.native="dialog = false">Cancelar</v-btn>
+                                        <v-btn color="green darken-1" flat v-on:click.native="dialog = false" to="/admin/overview">Confimar</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+                        </v-layout>
+
                         <b-container fluid style="margin-bottom: 10px">
                             <b-row>
                                 <b-col md="3">
@@ -79,10 +78,6 @@
     .btn:disabled, .btn[disabled], .btn.disabled{
         background-color: #c9d0ff;
         color: black;
-    }
-
-    .text{
-        font-size: 20px;
     }
 </style>
 
@@ -118,20 +113,6 @@ export default {
       passStepThree(payload){
           this.finish = payload
       },
-        finish(){
-            $.notify({
-                icon:"nc-check-2",
-                message: "Cadastro Finalizado!"
-            },{
-                type: type["info"],
-                timer: 4000,
-                placement: {
-                    from: "top",
-                    align: "center"
-                }
-            }
-            )
-        },
       sendEvent(){
           for(var events of this.steptwo){
               var event = {
@@ -140,29 +121,28 @@ export default {
                   "room": events.roomCode,
                   "startDate": events.isoStart,
                   "finalDate": events.isoEnd,
-                  "responsable": this.finish.selected,
+                  "responsable": this.finish.responsable,
                   "repeat": this.finish.repeat,
                   "status":"undefined"
               }
               postEvent(event)
             }
-            finish()
             this.confirm = false
-      },
+      }
   },
   watch: {
     "nstep": function() {
         this.disabled = true
-              
+
     },
     "steptwo": function(){
         if(this.steptwo){
-             this.disabled = false  
+             this.disabled = false
         }
     },
     "finish": function(){
         if(this.finish){
-             this.disabled = false  
+             this.disabled = false
         }
     }
   }
