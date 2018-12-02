@@ -23,13 +23,26 @@
                                     <button type="button" class="btn-simple btn btn-sm btn-warning" v-on:click="onEdit(row.item)">
                                         <i class="fa fa-edit"></i>
                                     </button>
-                                    <button type="button" class="btn-simple btn btn-sm btn-danger" style="margin-left: 5px;">
+                                    <button type="button" class="btn-simple btn btn-sm btn-danger" style="margin-left: 5px;" v-on:click = "modal = true; selected = row.item">
                                         <i class="fa fa-times"></i>
                                     </button>
                                 </template>
                             </b-table>
                         </b-row>
                     </b-container>
+                    <v-layout justify-center style="margin-bottom: 10px;">
+                        <v-dialog v-model="modal" persistent>
+                            <v-card>
+                                <v-card-title class="headline">Deseja remover o equipamento?</v-card-title>
+                                <v-card-text>As informações do equipamento serão apagadas!</v-card-text>
+                                <v-card-actions>
+                                    <v-spacer></v-spacer>
+                                    <v-btn color="green darken-1" flat v-on:click.native="modal=false">Cancelar</v-btn>
+                                    <v-btn color="green darken-1" flat v-on:click.native="deleteEquipment()">Confimar</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </v-layout>
                 </card>
             </b-col>
         </b-row>
@@ -61,7 +74,8 @@
                     marca: '',
                     modelo: '',
                 },
-
+                selected : {},
+                modal:false,
                 equipFormToggled : true
             }
         },
@@ -99,6 +113,22 @@
                         this.items.push({ codigo: element.patrimonio, tipo_equipamento: element.nome, marca: element.marca, modelo: element.modelo})
                     });
                 })
+            },
+            deleteEquipment(){
+                equipments.remove(this.selected).then(res =>{
+                })
+                var i = this.findItem(this.selected)
+                this.items.splice(i,1)
+                this.modal = false
+            },
+            findItem(item){
+                var i;
+                for (i=0; i<this.items.length; i++){
+                    if(this.items[i].codigo == item.codigo){
+                        return i;
+                    }
+                }
+                return false;
             }
         },
         mounted(){

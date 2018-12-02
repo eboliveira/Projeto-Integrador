@@ -28,6 +28,18 @@ router.put('/set', (req, res) => {
     })
 })
 
+router.delete('/:id', (req,res) =>{
+    Equipments.delete(req.params.codigo,(err, evnt) =>{
+        if(err){
+            console.log(err)
+            return res.status(400).send('server could not understand the request')
+        }
+        else{
+            res.status(200).send(evnt);
+        }
+    })
+})
+
 module.exports = {
     path : '/equipments',
     router: router
