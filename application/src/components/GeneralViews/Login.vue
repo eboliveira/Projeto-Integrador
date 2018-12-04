@@ -42,6 +42,7 @@
     </div>
 </template>
 <script>
+import auth from '../../services/firebase-controller'
 import Card from 'src/components/UIComponents/Cards/Card.vue'
 
 export default {
@@ -57,6 +58,14 @@ export default {
     methods: {
         teste () {
             alert('user: ' + this.user + '\npass: ' + this.password)
+        },
+        logIn(){
+            auth.signInWithEmailAndPassword(email, password).then((value) => {
+                this.$router.replace('/general/overview')
+            }).catch(function(error) {
+                var errorCode = error.code;
+                var errorMessage = error.message;
+            });
         }
     }
 }
