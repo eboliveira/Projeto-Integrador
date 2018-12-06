@@ -28,7 +28,7 @@
                 </card>
             </b-col>
         </b-row>
-        <b-modal @click="show=true" header-bg-variant="primary" header-text-variant="light" ok-title="Fechar" id="modalInfo" :title="modal_room">
+        <b-modal header-bg-variant="primary" header-text-variant="light" id="modalInfo" ok-title="Fechar" ok-only v :title="modal_room">
             <b-container fluid>
                 <b-row>
                     <b-col md=12>
@@ -44,6 +44,12 @@
                         <b>Data final:</b> {{this.modal_finalDate}}
                     </b-col>
                     <b-col md=12>
+                        <b>Hora de início:</b> {{this.modal_startHour}}
+                    </b-col>
+                    <b-col md=12> 
+                        <b>Hora de fim:</b> {{this.modal_finalHour}}
+                    </b-col>
+                    <b-col md=12>
                         <b>Responsável:</b> {{this.modal_responsable}}
                     </b-col>
                     <b-col md=12>
@@ -57,10 +63,6 @@
                     </b-col>
                 </b-row>
             </b-container>
-
-            <div slot="modal-footer" class="w-100">
-                <b-btn size="md" class="float-right" variant="primary" @click="show=false">Fechar</b-btn>
-            </div>
         </b-modal>
         <b-modal header-bg-variant="danger" header-text-variant="light" ok-title="Fechar" @click="show=true" id="modalReason" title="Rejeitar reserva" @ok="handleRefuse(refuseReason)" :ok-disabled="isReasonEmpty()">
             <b-container fluid>
@@ -94,12 +96,14 @@ export default {
                     this.modal_title       = iterator.title,
                     this.modal_description = iterator.description,
                     this.modal_room        = iterator.room,
-                    this.modal_startDate   = iterator.startDate,
-                    this.modal_finalDate   = iterator.finalDate,
+                    this.modal_startDate   = moment(iterator.startDate).format("DD/MM/YYYY"),
+                    this.modal_finalDate   = moment(iterator.finalDate).format("DD/MM/YYYY"),
+                    this.modal_startHour   = moment(iterator.startDate).format("HH:mm")
+                    this.modal_finalHour   = moment(iterator.finalDate).format("HH:mm")
                     this.modal_responsable = iterator.responsable,
-                    this.modal_status      = iterator.status,
-                    this.modal_repeat      = iterator.repeat,
-                    this.modal_timestamp   = iterator.timestamp
+                    this.formatStatus(iterator.status),
+                    this.formatRepeat(iterator.repeat),
+                    this.modal_timestamp   = moment(iterator.timestamp).format("DD/MM/YYYY-HH:mm")
                 }
             })
             this.$root.$emit('bv::show::modal','modalInfo', button)
@@ -142,6 +146,23 @@ export default {
                 return true
             }
             return false
+        },
+        formatStatus(stat){
+            this.modal_status = "Esperando aprovação"
+        },
+        formatRepeat(repeat){
+            if(repeat == "daily"){
+                this.modal_repeat = "Diariamente"
+            }
+            else if(repeat == "monthly"){
+                this.modal_repeat = "Mensalmente"
+            }
+            else if(repeat == "weekly"){
+                this.modal_repeat = "Semanalmente"
+            }
+            else{
+                this.modal_repeat = "Sem repetição"
+            }
         }
     },
     created:function(){
@@ -151,7 +172,7 @@ export default {
                 const room = item['room']
                 const responsable = item['responsable']
                 let formattedDate = item['timestamp']
-                formattedDate = moment(formattedDate).add(3,'h').format('DD/MM/YYYY-HH:mm:ss')
+                formattedDate = moment(formattedDate).add(3,'h').format('DD/MM/YYYY-HH:mm')
                 const id = item['_id']
                 this.items.push({ room: room, responsable: responsable, date:formattedDate, id:id });
                 this.allItems.push(item)
@@ -171,6 +192,8 @@ export default {
             modal_description:"",
             modal_startDate:"",
             modal_finalDate:"",
+            modal_finalHour:"",
+            modal_startHour:"",
             modal_responsable:"",
             modal_status:"",
             modal_repeat:"",

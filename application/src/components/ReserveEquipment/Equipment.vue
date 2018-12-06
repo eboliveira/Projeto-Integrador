@@ -105,6 +105,7 @@
             toggleCadastro(){
                 this.$root.$emit('bv::toggle::collapse', 'cadastroEquipamento')
                 this.equipFormToggled = !this.equipFormToggled
+                this.onReset();
             },
             getAllEquipments(){
                 equipments.all().then(res =>{

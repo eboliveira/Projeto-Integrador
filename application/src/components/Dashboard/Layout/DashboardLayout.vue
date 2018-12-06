@@ -6,10 +6,10 @@
         <i class="nc-icon nc-chart-pie-35"></i>
         <p>Dashboard</p>
       </sidebar-link>
-      <sidebar-link to="/admin/user">
+      <!-- <sidebar-link to="/admin/user">
         <i class="nc-icon nc-circle-09"></i>
         <p>Users</p>
-      </sidebar-link>
+      </sidebar-link> -->
       <sidebar-link to="/admin/new_reserve">
         <i class="nc-icon nc-notes"></i>
         <p>Salas</p>
