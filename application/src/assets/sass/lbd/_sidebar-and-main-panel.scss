@@ -35,8 +35,7 @@ body > .navbar-collapse{
     }
 
     .logo{
-        padding: 10px 5px;
-        margin: 0 20px;
+        margin: 10px 20px;
 
         border-bottom: 1px solid rgba(255, 255, 255, 0.2);
         position: relative;
@@ -57,23 +56,23 @@ body > .navbar-collapse{
             display: block;
             font-size: $font-size-large;
             color: $white-color;
-            text-align: left;
+            text-align: center;
             font-weight: $font-weight-normal;
-            line-height: 40px;
 
             .logo-img{
-                width: 40px;
+                width: 50px;
                 display: inline-block;
-                height: 40px;
+                height: 50px;
                 margin-left: 0px;
                 margin-right: 10px;
                 background: white;
                 border-radius: 40px;
                 text-align: center;
+                overflow: hidden;
 
-              img{
-                  max-width: 21px;
-              }
+                img{
+                    max-width: 50px;
+                }
             }
         }
     }

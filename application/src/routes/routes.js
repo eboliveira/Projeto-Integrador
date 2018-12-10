@@ -11,8 +11,9 @@ import Equipments       from 'src/components/Dashboard/Views/Equipment.vue'
 import Pendents         from 'src/components/Dashboard/Views/Pendents.vue'
 import Reports          from 'src/components/Dashboard/Views/Reports.vue'
 import Form             from 'src/components/ReserveClass/Form.vue'
-import ReserveEquipment from 'src/components/ReserveEquipment/Equipment.vue'
-import ManagerRooms   from 'src/components/Dashboard/Views/ManagerRooms.vue'
+import ManagerEquipment from 'src/components/ReserveEquipment/Equipment.vue'
+import ManagerRooms     from 'src/components/Dashboard/Views/ManagerRooms.vue'
+import ReserveEquipment from 'src/components/ReserveEquipment/Reserve.vue'
 
 const routes = [
     {
@@ -59,6 +60,11 @@ const routes = [
                 path: 'equipment',
                 name: 'Equipment',
                 component: Equipments
+            },
+            {
+                path: 'managerEquipment',
+                name: 'managerEquipment',
+                component: ManagerEquipment
             },
             {
                 path: 'reserveEquipment',
