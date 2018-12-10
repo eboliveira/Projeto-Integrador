@@ -2,12 +2,12 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-xl-3 col-md-6">
-                    <stats-card>
+                <div class="col-xl-3 col-md-6" v-on:click.stop="goTo('pendentsReserves')">
+                    <stats-card >
                         <div slot="header" class="icon-warning">
                             <i class="nc-icon nc-bullet-list-67 text-warning"></i>
                         </div>
-                        <div slot="content" v-on:click.stop="goTo('pendentsReserves')">
+                        <div slot="content">
                             <p class="card-category">Reservas Pendentes</p>
                             <h4 class="card-title">{{ NumPendents }}</h4>
                         </div>
