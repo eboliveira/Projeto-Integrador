@@ -28,16 +28,7 @@
                             <b-col md="6" style="margin-top: 10px;">
                                 <b-form>
                                     <b-form-group>
-                                        <b-form-input type="number" class="mr-sm-2 mb-sm-0" id="patrimonio" placeholder="Patrimônio" required/>
-                                    </b-form-group>
-                                    <b-form-group>
-                                        <b-form-input class="mr-sm-2 mb-sm-0" id="tipoEquipamento" placeholder="Tipo Equipamento" required/>
-                                    </b-form-group>
-                                    <b-form-group>
-                                        <b-form-input class="mr-sm-2 mb-sm-0" id="marca" placeholder="Marca" required/>
-                                    </b-form-group>
-                                    <b-form-group>
-                                        <b-form-input class="mr-sm-2 mb-sm-0" id="modelo" placeholder="Modelo" required/>
+                                        <b-form-input class="mr-sm-2 mb-sm-0" id="responsavel" placeholder="Responsável" required/>
                                     </b-form-group>
                                     <b-button type="submit" variant="success">Salvar</b-button>
                                 </b-form>
