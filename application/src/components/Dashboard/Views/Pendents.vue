@@ -58,9 +58,7 @@
                 </b-row>
             </b-container>
 
-            <div slot="modal-footer" class="w-100">
-                <b-btn size="md" class="float-right" variant="primary" @click="show=false">Fechar</b-btn>
-            </div>
+            <div slot="modal-footer" class="w-100"></div>
         </b-modal>
         <b-modal header-bg-variant="danger" header-text-variant="light" ok-title="Fechar" @click="show=true" id="modalReason" title="Rejeitar reserva" @ok="handleRefuse(refuseReason)" :ok-disabled="isReasonEmpty()">
             <b-container fluid>
@@ -78,130 +76,130 @@
 </template>
 
 <script>
-import Card from 'src/components/UIComponents/Cards/Card.vue'
-import moment from "moment"
-import {byStatus} from './../../../services/eventQuerys'
-import {changeStatus} from './../../../services/eventsRequests'
-export default {
-    components: {
-        Card
-    },
+    import Card from 'src/components/UIComponents/Cards/Card.vue'
+    import moment from "moment"
+    import {byStatus} from './../../../services/eventQuerys'
+    import {changeStatus} from './../../../services/eventsRequests'
+    export default {
+        components: {
+            Card
+        },
 
-    methods:{
-        showModal(item ,button){
-            this.allItems.forEach(iterator => {
-                if(item.room==iterator.room){
-                    this.modal_title       = iterator.title,
-                    this.modal_description = iterator.description,
-                    this.modal_room        = iterator.room,
-                    this.modal_startDate   = iterator.startDate,
-                    this.modal_finalDate   = iterator.finalDate,
-                    this.modal_responsable = iterator.responsable,
-                    this.modal_status      = iterator.status,
-                    this.modal_repeat      = iterator.repeat,
-                    this.modal_timestamp   = iterator.timestamp
+        methods:{
+            showModal(item ,button){
+                this.allItems.forEach(iterator => {
+                    if(item.room==iterator.room){
+                        this.modal_title       = iterator.title,
+                        this.modal_description = iterator.description,
+                        this.modal_room        = iterator.room,
+                        this.modal_startDate   = iterator.startDate,
+                        this.modal_finalDate   = iterator.finalDate,
+                        this.modal_responsable = iterator.responsable,
+                        this.modal_status      = iterator.status,
+                        this.modal_repeat      = iterator.repeat,
+                        this.modal_timestamp   = iterator.timestamp
+                    }
+                })
+                this.$root.$emit('bv::show::modal','modalInfo', button)
+            },
+            handleAcept(item){
+                this.handleChangeStatus(item, 'confirmed');
+                this.sendEmailConfirm(item)
+            },
+            handleRefuse(reason){
+                this.handleChangeStatus(this.clickedItem, 'refused')
+                this.sendEmailRefuse(reason)
+            },
+            handleChangeStatus(item, status){
+                const i = this.findItem(item);
+                this.items.splice(i,1)
+                changeStatus(item.id, status)
+            },
+            showModalReason(item){
+                this.$root.$emit('bv::show::modal','modalReason')
+                this.clickedItem = item
+                this.refuseReason=''
+            },
+            findItem(item){
+                var i;
+                for (i=0; i<this.items.length; i++){
+                    if(this.items[i].id == item.id){
+                        return i;
+                    }
                 }
+                return false;
+            },
+            sendEmailConfirm(item){
+                console.log(item)
+            },
+            sendEmailRefuse(refuseReason, item){
+                console.log(refuseReason)
+            },
+            isReasonEmpty(){
+                if(this.refuseReason == ''){
+                    return true
+                }
+                return false
+            }
+        },
+        created:function(){
+
+            byStatus('undefined').then(res =>{
+                res.forEach(item =>{
+                    const room = item['room']
+                    const responsable = item['responsable']
+                    let formattedDate = item['timestamp']
+                    formattedDate = moment(formattedDate).add(3,'h').format('DD/MM/YYYY-HH:mm')
+                    const id = item['_id']
+                    this.items.push({ room: room, responsable: responsable, date:formattedDate, id:id });
+                    this.allItems.push(item)
+                })
             })
-            this.$root.$emit('bv::show::modal','modalInfo', button)
         },
-        handleAcept(item){
-            this.handleChangeStatus(item, 'confirmed');
-            this.sendEmailConfirm(item)
-        },
-        handleRefuse(reason){
-            this.handleChangeStatus(this.clickedItem, 'refused')
-            this.sendEmailRefuse(reason)
-        },
-        handleChangeStatus(item, status){
-            const i = this.findItem(item);
-            this.items.splice(i,1)
-            changeStatus(item.id, status)
-        },
-        showModalReason(item){
-            this.$root.$emit('bv::show::modal','modalReason')
-            this.clickedItem = item
-            this.refuseReason=''
-        },
-        findItem(item){
-            var i;
-            for (i=0; i<this.items.length; i++){
-                if(this.items[i].id == item.id){
-                    return i;
-                }
-            }
-            return false;
-        },
-        sendEmailConfirm(item){
-            console.log(item)
-        },
-        sendEmailRefuse(refuseReason, item){
-            console.log(refuseReason)
-        },
-        isReasonEmpty(){
-            if(this.refuseReason == ''){
-                return true
-            }
-            return false
+        data() {
+            return {
+                show: false,
+
+                allItems:[],
+                clickedItem:{},
+                filter: "",
+                refuseReason:"",
+                modal_room:"",
+                modal_title:"",
+                modal_description:"",
+                modal_startDate:"",
+                modal_finalDate:"",
+                modal_responsable:"",
+                modal_status:"",
+                modal_repeat:"",
+                modal_timestamp:"",
+                fields: [
+                    {
+                        key: "room",
+                        label: "Sala",
+                        sortable: true
+                    },
+                    {
+                        key: "responsable",
+                        label: "Requisitante",
+                        sortable: true
+                    },
+                    {
+                        key: "date",
+                        label: "Data da requisição",
+                        sortable: true
+                    },
+                    {
+                        key: "options",
+                        label: "",
+                        class: "text-center"
+                    }
+                ],
+                items: [],
+                perPage: 10,
+                isDesc: false,
+                sortBy: "date"
+            };
         }
-    },
-    created:function(){
-
-        byStatus('undefined').then(res =>{
-            res.forEach(item =>{
-                const room = item['room']
-                const responsable = item['responsable']
-                let formattedDate = item['timestamp']
-                formattedDate = moment(formattedDate).add(3,'h').format('DD/MM/YYYY-HH:mm:ss')
-                const id = item['_id']
-                this.items.push({ room: room, responsable: responsable, date:formattedDate, id:id });
-                this.allItems.push(item)
-            })
-        })
-    },
-    data() {
-        return {
-            show: false,
-
-            allItems:[],
-            clickedItem:{},
-            filter: "",
-            refuseReason:"",
-            modal_room:"",
-            modal_title:"",
-            modal_description:"",
-            modal_startDate:"",
-            modal_finalDate:"",
-            modal_responsable:"",
-            modal_status:"",
-            modal_repeat:"",
-            modal_timestamp:"",
-            fields: [
-                {
-                    key: "room",
-                    label: "Sala",
-                    sortable: true
-                },
-                {
-                    key: "responsable",
-                    label: "Requisitante",
-                    sortable: true
-                },
-                {
-                    key: "date",
-                    label: "Data da requisição",
-                    sortable: true
-                },
-                {
-                    key: "options",
-                    label: "",
-                    class: "text-center"
-                }
-            ],
-            items: [],
-            perPage: 10,
-            isDesc: false,
-            sortBy: "date"
-        };
-    }
-};
+    };
 </script>
