@@ -25,6 +25,7 @@
     "es6-promise": "^4.1.1",
     "google-maps": "^3.2.1",
     "i": "^0.3.6",
+    "luxon": "^1.8.2",
     "moment": "^2.22.2",
     "npm": "^6.4.1",
     "v-suggest": "^1.0.4",
@@ -34,6 +35,7 @@
     "vue-bootstrap-datetimepicker": "^5.0.1",
     "vue-button-effect": "0.0.3",
     "vue-clickaway": "^2.1.0",
+    "vue-datetime": "^1.0.0-beta.8",
     "vue-full-calendar": "^2.6.1",
     "vue-light-timeline": "^1.0.1",
     "vue-moment": "^4.0.0",
@@ -41,7 +43,8 @@
     "vue-notifyjs": "^0.2.0",
     "vue-router": "^3.0.1",
     "vue2-google-maps": "^0.8.4",
-    "vuetify": "^1.2.3"
+    "vuetify": "^1.2.3",
+    "weekstart": "^1.0.0"
   },
   "devDependencies": {
     "autoprefixer": "^7.1.2",

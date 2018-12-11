@@ -62,6 +62,22 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
 Vue.use(datePicker);
 
+import Datetime from 'vue-datetime'
+// You need a specific loader for CSS files
+import 'vue-datetime/dist/vue-datetime.css'
+ 
+Vue.use(Datetime)
+import { Settings } from 'luxon'
+ 
+Settings.defaultLocale = 'pt-br'
+
+
+
+//Search bar autocomplete
+import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
+Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead)
+
+
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
