@@ -3,7 +3,7 @@
         <div class="container-fluid">
             <div class="row justify-content-center" style="padding-top:25vh">
                 <card>
-                    <h4 slot="header" class="card-title text-center"> <strong>Reservas de salas UTFPR-CM</strong> </h4>
+                    <h4 slot="header" class="card-title text-center"> <strong>Reservas de salas UTFPR-CM<br><span v-if="!recuperar_senha">Realizar login</span><span v-else>Recuperar senha</span></strong> </h4>
                     <form>
                         <div class="row">
                             <div class="col-12">
@@ -11,7 +11,7 @@
                                 </fg-input>
                             </div>
                         </div>
-                        <div class="row">
+                        <div v-if="!recuperar_senha" class="row">
                             <div class="col-12">
                                 <fg-input type="password" label="Senha" placeholder="Digite sua senha" v-model="password" autocomplete="current-password">
                                 </fg-input>
@@ -19,8 +19,11 @@
                         </div>
                         <br>
                         <div class="row justify-content-center">
-                                <button type="submit" class="btn btn-info btn-block" @click.prevent="teste">
+                                <button v-if="!recuperar_senha" type="submit" class="btn btn-info btn-block" @click.prevent="logIn">
                                     Realizar login
+                                </button>
+                                <button v-else type="submit" class="btn btn-info btn-block" @click.prevent="recuperarSenha">
+                                    Recuperar senha
                                 </button>
                         </div>
                         <br>
@@ -28,10 +31,13 @@
                         <div slot="footer" class="clearfix">
                             <div class="row">
                                 <div class="col-6 text-left">
-                                    <router-link to="/login/#" class="text-link">Realizar cadastro</router-link>
+                                    <router-link to="/register" class="text-link">Realizar cadastro</router-link>
                                 </div>
-                                <div class="col-6 text-right">
-                                    <router-link to="/login/#" class="text-link">Recuperar senha</router-link>
+                                <div v-if="!recuperar_senha" class="col-6 text-right">
+                                    <a href="#" v-on:click="recuperar_senha = true" class="text-link">Esqueci minha senha</a>
+                                </div>
+                                <div v-else class="col-6 text-right">
+                                    <a href="#" v-on:click="recuperar_senha = false" class="text-link">Realizar login</a>
                                 </div>
                             </div>
                         </div>
@@ -51,20 +57,62 @@ export default {
     },
     data () {
         return {
+            recuperar_senha: false,
             user: null,
             password: null
         }
     },
     methods: {
-        teste () {
-            alert('user: ' + this.user + '\npass: ' + this.password)
+        recuperarSenha(){
+            auth.sendPasswordResetEmail(this.user).then(() => {
+                this.$noty.success("E-mail de recuperação enviado com sucesso!<br>Acesse o link em seu e-mail para <b>redefinir</b> sua senha.<br>Não deixe de olhar sua caixa de spams.")
+                recuperar_senha = false
+            }).catch((error) => {
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        this.$noty.error("E-mail inválido!")
+                        break
+                    case 'auth/user-disabled':
+                        this.$noty.error("Usuário desabilitado!<br>Contate o administrador do sistema para mais informações.")
+                        break
+                    case 'auth/user-not-found':
+                        this.$noty.error("Usuário não encontrado.<br>Você já realizou seu cadastro?")
+                        break
+                    default:
+                        this.$noty.error("Um erro inesperado ocorreu.<br>Por favor, tente novamente mais tarde")
+                        break
+                }
+            })
         },
         logIn(){
-            auth.signInWithEmailAndPassword(email, password).then((value) => {
-                this.$router.replace('/general/overview')
-            }).catch(function(error) {
-                var errorCode = error.code;
-                var errorMessage = error.message;
+            auth.signInWithEmailAndPassword(this.user, this.password).then((value) => {
+                let userRole = null
+                auth.currentUser.getIdTokenResult().then((idTokenResult) => {
+                    userRole = idTokenResult.claims.role
+                    this.$user.set(Object.assign(auth.currentUser, { role: null }))
+                    this.$noty.success("Logado com sucesso!")
+                    this.$router.replace('/general/overview')
+                })
+            }).catch((error) => {
+                switch (error.code) {
+                    case 'auth/invalid-email':
+                        this.$noty.error("E-mail inválido!")
+                        break
+                    case 'auth/user-disabled':
+                        this.$noty.error("Usuário desabilitado!<br>Contate o administrador do sistema para mais informações.")
+                        break
+                    case 'auth/user-not-found':
+                        this.$noty.error("Usuário não encontrado ou senha incorreta.<br>Você já realizou seu cadastro?")
+                        break
+                    case 'auth/wrong-password':
+                        this.$noty.error("Usuário não encontrado ou senha incorreta.<br>Você já realizou seu cadastro no sistema?")
+                        break
+                    default:
+                        this.$noty.error("Um erro inesperado ocorreu.<br>Por favor, tente novamente mais tarde")
+                        break
+                }
+                console.log('Error code: ' + error.code)
+                console.log('Error: ' + error)
             });
         }
     }
@@ -77,7 +125,7 @@ body {
     overflow-y:hidden;
     background-image: linear-gradient(0deg, #D0D0D0 50%, #D0D0D0 50%);
 }
-.card {
+#login .card {
     min-height: 50vh;
     min-width: 25vw;
     padding: 2em;
