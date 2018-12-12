@@ -8,6 +8,7 @@ import NotFound         from '../components/GeneralViews/NotFoundPage.vue'
 import Reserve          from 'src/components/Dashboard/Views/Reserve/Reserve.vue'
 import Form             from 'src/components/ReserveClass/Form.vue'
 import Login            from '../components/GeneralViews/Login.vue'
+import Register            from '../components/GeneralViews/Registration.vue'
 
 // Admin pages
 import Overview         from 'src/components/Dashboard/Views/Overview.vue'
@@ -21,7 +22,48 @@ const routes = [
     {
         path: '/login',
         name: 'Login',
-        component: Login
+        component: Login,
+        meta:{
+            permissions:[
+                {
+                    role: 'guest',
+                    access: true
+                },
+                {
+                    role: 'admin',
+                    access: false,
+                    redirect: 'Overview'
+                },
+                {
+                    role: 'standard',
+                    access: false,
+                    redirect: 'Overview'
+                }
+            ]
+        }
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register,
+        meta:{
+            permissions:[
+                {
+                    role: 'guest',
+                    access: true
+                },
+                {
+                    role: 'admin',
+                    access: false,
+                    redirect: 'Overview'
+                },
+                {
+                    role: 'standard',
+                    access: false,
+                    redirect: 'Overview'
+                }
+            ]
+        }
     },
     {
         path: '/',
