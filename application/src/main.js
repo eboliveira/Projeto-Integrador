@@ -52,24 +52,33 @@ const router = new VueRouter({
   linkActiveClass: 'nav-item active'
 })
 
-import FullCalendar from 'vue-full-calendar';
-import 'fullcalendar/dist/locale/pt';
+import FullCalendar from 'vue-full-calendar'
+import 'fullcalendar/dist/locale/pt'
 Vue.use(FullCalendar);
 
 // vue-bootstrap-datetimepicker
-import datePicker from 'vue-bootstrap-datetimepicker';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
-Vue.use(datePicker);
+import datePicker from 'vue-bootstrap-datetimepicker'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'
+Vue.use(datePicker)
+
+// Noty for notifications on client
+import VueNoty from 'vuejs-noty'
+import 'vuejs-noty/dist/vuejs-noty.css'
+Vue.use(VueNoty, {
+  timeout: 6000,
+  visibilityControl: true
+})
+
 
 // vue-router-user-roles
-import VueRouterUserRoles from "vue-router-user-roles";
-Vue.use(VueRouterUserRoles, { router });
+import VueRouterUserRoles from "vue-router-user-roles"
+Vue.use(VueRouterUserRoles, { router })
 
-let authenticate = Promise.resolve({ role: "guest", emailVerified:false, uid:'' });
+let authenticate = Promise.resolve({ role: "guest" })
 
 authenticate.then(user => {
-  Vue.prototype.$user.set(user);
+  Vue.prototype.$user.set(user)
   /* eslint-disable no-new */
   new Vue({
     el: '#app',
