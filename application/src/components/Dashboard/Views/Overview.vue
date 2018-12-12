@@ -21,7 +21,7 @@
                         </div>
                         <div slot="content">
                             <p class="card-category">Eventos de hoje</p>
-                            <h4 class="card-title">{{  }}</h4>
+                            <h4 class="card-title">{{ eventsToday }}</h4>
                         </div>
                     </stats-card>
                 </div>
@@ -85,7 +85,8 @@ export default {
     },
     data () {
         return {
-            NumPendents: null
+            NumPendents: null,
+            eventsToday: 0
         }
     },
     mounted: function () {
