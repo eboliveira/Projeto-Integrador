@@ -1,4 +1,4 @@
-import DashboardLayout  from '../components/Dashboard/Layout/DashboardLayout.vue'
+import DashboardLayout from '../components/Dashboard/Layout/DashboardLayout.vue'
 
 // ReadOnly Views
 import Reserves         from 'src/components/Dashboard/Views/Reserves.vue'
@@ -12,23 +12,21 @@ import Register            from '../components/GeneralViews/Registration.vue'
 
 // Admin pages
 import Overview         from 'src/components/Dashboard/Views/Overview.vue'
-import UsersManager     from 'src/components/Dashboard/Views/UserProfile.vue'
+import UsersManager      from 'src/components/Dashboard/Views/UserProfile.vue'
 import Equipments       from 'src/components/Dashboard/Views/Equipment.vue'
 import Pendents         from 'src/components/Dashboard/Views/Pendents.vue'
 import Reports          from 'src/components/Dashboard/Views/Reports.vue'
-import EquipmentManager from 'src/components/ReserveEquipment/Equipment.vue'
+import ManagerEquipment from 'src/components/ReserveEquipment/Equipment.vue'
+import ManagerRooms     from 'src/components/Dashboard/Views/ManagerRooms.vue'
+import ReserveEquipment from 'src/components/ReserveEquipment/Reserve.vue'
 
 const routes = [
     {
         path: '/login',
         name: 'Login',
         component: Login,
-        meta:{
-            permissions:[
-                {
-                    role: 'guest',
-                    access: true
-                },
+        meta: {
+            permissions: [
                 {
                     role: 'admin',
                     access: false,
@@ -38,6 +36,15 @@ const routes = [
                     role: 'standard',
                     access: false,
                     redirect: 'Overview'
+                },
+                {
+                    role: 'student',
+                    access: false,
+                    redirect: 'Overview'
+                },
+                {
+                    role: 'guest',
+                    access: true
                 }
             ]
         }
@@ -46,12 +53,8 @@ const routes = [
         path: '/register',
         name: 'Register',
         component: Register,
-        meta:{
-            permissions:[
-                {
-                    role: 'guest',
-                    access: true
-                },
+        meta: {
+            permissions: [
                 {
                     role: 'admin',
                     access: false,
@@ -61,6 +64,15 @@ const routes = [
                     role: 'standard',
                     access: false,
                     redirect: 'Overview'
+                },
+                {
+                    role: 'student',
+                    access: false,
+                    redirect: 'Overview'
+                },
+                {
+                    role: 'guest',
+                    access: true
                 }
             ]
         }
@@ -88,8 +100,11 @@ const routes = [
                         },
                         {
                             role: 'standard',
-                            access: (user) => user.emailVerified,
-                            redirect: 'Login'
+                            access: true
+                        },
+                        {
+                            role: 'student',
+                            access: true
                         },
                         {
                             role: 'guest',
@@ -111,10 +126,15 @@ const routes = [
                         },
                         {
                             role: 'standard',
-                            access: true,
+                            access: true
                         },
                         {
-                            role: "guest",
+                            role: 'student',
+                            access: false,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'guest',
                             access: false,
                             redirect: 'Login'
                         }
@@ -133,7 +153,40 @@ const routes = [
                         },
                         {
                             role: 'standard',
-                            access: true,
+                            access: true
+                        },
+                        {
+                            role: 'student',
+                            access: false,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'guest',
+                            access: false,
+                            redirect: 'Login'
+                        }
+                    ]
+                }
+            },
+            {
+                path: 'manager_rooms',
+                name: 'Manager rooms',
+                component: ManagerRooms,
+                meta: {
+                    permissions: [
+                        {
+                            role: 'admin',
+                            access: true
+                        },
+                        {
+                            role: 'standard',
+                            access: false,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'student',
+                            access: false,
+                            redirect: 'Login'
                         },
                         {
                             role: 'guest',
@@ -155,10 +208,15 @@ const routes = [
                         },
                         {
                             role: 'standard',
-                            access: true,
+                            access: true
                         },
                         {
-                            role: "guest",
+                            role: 'student',
+                            access: false,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'guest',
                             access: false,
                             redirect: 'Login'
                         }
@@ -177,10 +235,15 @@ const routes = [
                         },
                         {
                             role: 'standard',
-                            access: true,
+                            access: true
                         },
                         {
-                            role: "guest",
+                            role: 'student',
+                            access: false,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'guest',
                             access: false,
                             redirect: 'Login'
                         }
@@ -199,10 +262,15 @@ const routes = [
                         },
                         {
                             role: 'standard',
-                            access: true,
+                            access: true
                         },
                         {
-                            role: "guest",
+                            role: 'student',
+                            access: false,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'guest',
                             access: false,
                             redirect: 'Login'
                         }
@@ -229,10 +297,15 @@ const routes = [
                         {
                             role: 'standard',
                             access: false,
-                            redirect: 'General'
+                            redirect: 'Login'
                         },
                         {
-                            role: "guest",
+                            role: 'student',
+                            access: false,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'guest',
                             access: false,
                             redirect: 'Login'
                         }
@@ -240,9 +313,9 @@ const routes = [
                 }
             },
             {
-                path: 'equipmentManager',
-                name: 'EquipmentManager',
-                component: EquipmentManager,
+                path: 'managerEquipment',
+                name: 'managerEquipment',
+                component: ManagerEquipment,
                 meta: {
                     permissions: [
                         {
@@ -252,10 +325,43 @@ const routes = [
                         {
                             role: 'standard',
                             access: false,
-                            redirect: 'General'
+                            redirect: 'Login'
                         },
                         {
-                            role: "guest",
+                            role: 'student',
+                            access: false,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'guest',
+                            access: false,
+                            redirect: 'Login'
+                        }
+                    ]
+                }
+            },
+            {
+                path: 'reserveEquipment',
+                name: 'reserveEquipment',
+                component: ReserveEquipment,
+                meta: {
+                    permissions: [
+                        {
+                            role: 'admin',
+                            access: true
+                        },
+                        {
+                            role: 'standard',
+                            access: true,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'student',
+                            access: false,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'guest',
                             access: false,
                             redirect: 'Login'
                         }
@@ -275,10 +381,15 @@ const routes = [
                         {
                             role: 'standard',
                             access: false,
-                            redirect: 'General'
+                            redirect: 'Login'
                         },
                         {
-                            role: "guest",
+                            role: 'student',
+                            access: false,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'guest',
                             access: false,
                             redirect: 'Login'
                         }

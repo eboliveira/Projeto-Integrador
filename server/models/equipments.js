@@ -58,3 +58,9 @@ module.exports.updateOrCreate = function(evnt, callback){
       callback
     )
   }
+
+  module.exports.delete = function (codigo, callback){
+    Equi.remove({
+      codigo : codigo
+    }, callback)
+  }

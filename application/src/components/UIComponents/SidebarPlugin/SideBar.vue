@@ -6,9 +6,6 @@
     <div class="sidebar-wrapper">
       <div class="logo">
         <a href="#" class="simple-text">
-            <div class="logo-img">
-                <img src="static/img/vue-logo.png" alt="">
-            </div>
           {{title}}
         </a>
       </div>
@@ -40,7 +37,7 @@
     props: {
       title: {
         type: String,
-        default: 'Vue LBD'
+        default: 'JEED'
       },
       backgroundColor: {
         type: String,

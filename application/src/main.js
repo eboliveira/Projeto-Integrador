@@ -70,6 +70,20 @@ Vue.use(VueNoty, {
   visibilityControl: true
 })
 
+import Datetime from 'vue-datetime'
+// You need a specific loader for CSS files
+import 'vue-datetime/dist/vue-datetime.css'
+ 
+Vue.use(Datetime)
+import { Settings } from 'luxon'
+ 
+Settings.defaultLocale = 'pt-br'
+
+
+
+//Search bar autocomplete
+import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
+Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead)
 
 // vue-router-user-roles
 import VueRouterUserRoles from "vue-router-user-roles"

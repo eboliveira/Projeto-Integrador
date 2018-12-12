@@ -11,3 +11,9 @@ export async function set(equipment){
         return res.data
     })
 }
+
+export async function remove(equipment){
+    return await equipments.delete(equipment.codigo).then((res) =>{
+        return res.data
+    })
+}

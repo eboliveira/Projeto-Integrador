@@ -9,10 +9,10 @@
 							<b-form-group vertical :steptwo="result">
 								<b-form-input v-validate="'required|alpha'" placeholder="Título do evento" class="mb-2" v-model='steptwo.title' name="title"></b-form-input>
                   <span v-show="errors.has('title')" class="help is-danger">{{ errors.first('title') }}</span>
-
+								  
                 <b-input v-validate="'required|alpha'" placeholder="Nome do responsável" class="mb-2" v-model='steptwo.responsable' name="responsable"></b-input>
                   <span v-show="errors.has('responsable')" class="help is-danger">{{ errors.first('responsable') }}</span>
-
+								
                 <b-textarea v-validate="'required'" placeholder="Digite o motivo" class="mb-2" v-model='steptwo.description' name="description" :rows=3></b-textarea>
                   <span v-show="errors.has('description')" class="help is-danger">{{ errors.first('description') }}</span>
 							</b-form-group>
@@ -95,7 +95,7 @@ export default {
       this.$emit("passThree",val);
      },
      deep: true
-  }
+    }
   },
   computed: {
     timeline() {

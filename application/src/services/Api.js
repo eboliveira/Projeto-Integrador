@@ -25,7 +25,3 @@ export const actions = axios.create({
 export const lessons = axios.create({
   baseURL: base + '/lesson/'
 })
-
-export const users = axios.create({
-  baseURL: base + '/users/'
-})

@@ -244,3 +244,9 @@ module.exports.getById = function (id, callback){
     _id : id
   }, callback)
 }
+
+module.exports.delete = function (id, callback){
+  Room.remove({
+    _id : id
+  }, callback)
+}
