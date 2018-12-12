@@ -76,12 +76,11 @@ module.exports.createUser = function(userData, callback){
             admin.auth.setCustomUserClaims(user.uid, {role: 'standard'}).then(() => {
                 callback(null)
             })
-            console.log("Successfully created new user:", uid.uid);
+            console.log("Successfully created new user: " + user.uid);
         }).catch(function(error) {
             callback(error)
         });
     } else if (userData.email.indexOf(readOnlyDomain) != -1) {
-
         admin.auth.createUser(newUser).then(function(user) {
             admin.auth.setCustomUserClaims(user.uid,  {role: 'student'}).then(() => {
                 callback(null)
