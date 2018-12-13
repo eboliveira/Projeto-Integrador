@@ -246,3 +246,8 @@ export default {
   },
 };
 </script>
+<style>
+.fc-event > .fc-bg, .fc-content {
+    cursor: url('../../../static/trash-icon.png'), pointer;
+}
+</style>
