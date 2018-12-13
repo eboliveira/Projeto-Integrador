@@ -133,6 +133,7 @@ export default {
           for(var events of this.finish.selectedRoom){
               var event = {
                   "title": this.finish.title,
+                  "uid": "standard",
                   "description": this.finish.description,
                   "room": events.roomCode,
                   "startDate": events.isoStart,
