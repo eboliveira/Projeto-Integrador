@@ -18,8 +18,14 @@ export async function update(uid, userData){
     })
 }
 
+export async function isUser(uid){
+    return await users.post('isUser', {'uid': uid}).then((res) => {
+        return res.data
+    })
+}
+
 export async function deleteUser(uidAdmin, uid){
-    return await users.delete('remove', {'uid': uid, 'uidAdmin': userData}).then((res) => {
+    return await users.delete('remove', {'uid': uid, 'uidAdmin': uidAdmin}).then((res) => {
         return res.data
     })
 }
@@ -31,7 +37,7 @@ export async function isAdmin(uid){
 }
 
 export async function setRole(uidAdmin, uid, role){
-    return await users.delete('remove', {'uid': uid, 'uidAdmin': userData, 'role': role}).then((res) => {
+    return await users.post('setRole', {'uid': uid, 'uidAdmin': uidAdmin, 'role': role}).then((res) => {
         return res.data
     })
 }

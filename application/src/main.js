@@ -52,19 +52,64 @@ const router = new VueRouter({
   linkActiveClass: 'nav-item active'
 })
 
-import FullCalendar from 'vue-full-calendar';
-import 'fullcalendar/dist/locale/pt';
+// FullCalendar
+import FullCalendar from 'vue-full-calendar'
+import 'fullcalendar/dist/locale/pt'
 Vue.use(FullCalendar);
 
 // vue-bootstrap-datetimepicker
-import datePicker from 'vue-bootstrap-datetimepicker';
-import 'bootstrap/dist/css/bootstrap.css';
-import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css';
-Vue.use(datePicker);
+import datePicker from 'vue-bootstrap-datetimepicker'
+import 'bootstrap/dist/css/bootstrap.css'
+import 'pc-bootstrap4-datetimepicker/build/css/bootstrap-datetimepicker.css'
+Vue.use(datePicker)
 
-/* eslint-disable no-new */
-new Vue({
-  el: '#app',
-  render: h => h(App),
-  router
+// Noty for notifications on client
+import VueNoty from 'vuejs-noty'
+import 'vuejs-noty/dist/vuejs-noty.css'
+Vue.use(VueNoty, {
+  timeout: 6000,
+  visibilityControl: true
 })
+
+// Datetim picker
+import Datetime from 'vue-datetime'
+import 'vue-datetime/dist/vue-datetime.css'
+Vue.use(Datetime)
+import { Settings } from 'luxon'
+Settings.defaultLocale = 'pt-br'
+
+// Load spinners
+import { VueSpinners } from '@saeris/vue-spinners'
+Vue.use(VueSpinners)
+
+// Load overlay
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+Vue.use(Loading, {
+    isFullPage: true,
+    color: '#3472F7',
+    height: 128,
+    width: 128,
+    opacity:0.8,
+    backgroundColor: '#000000'
+  });
+
+//Search bar autocomplete
+import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
+Vue.component('vue-bootstrap-typeahead', VueBootstrapTypeahead)
+
+// vue-router-user-roles
+import VueRouterUserRoles from "vue-router-user-roles"
+Vue.use(VueRouterUserRoles, { router })
+
+let authenticate = Promise.resolve({ role: "guest" })
+
+authenticate.then(user => {
+  Vue.prototype.$user.set(user)
+  /* eslint-disable no-new */
+  new Vue({
+    el: '#app',
+    render: h => h(App),
+    router
+  })
+});

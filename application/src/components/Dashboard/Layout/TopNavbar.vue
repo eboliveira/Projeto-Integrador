@@ -7,7 +7,7 @@
             <a class="nav-link" href="#">Account</a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">Log out</a>
+            <a href="#" v-on:click="logOut" class="nav-link">Log out</a>
           </li>
         </ul>
       </div>
@@ -15,6 +15,7 @@
   </nav>
 </template>
 <script>
+import auth from '../../../services/firebase-controller'
   export default {
     computed: {
       routeName () {
@@ -28,6 +29,11 @@
       }
     },
     methods: {
+      logOut(){
+        auth.signOut().then((value) => {
+          this.$user.set({ role: "guest" })
+        })
+      },
       capitalizeFirstLetter (string) {
         return string.charAt(0).toUpperCase() + string.slice(1)
       },
