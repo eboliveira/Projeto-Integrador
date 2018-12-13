@@ -45,9 +45,9 @@
         <i class="nc-icon nc-paper-2"></i>
         <p>Relatórios</p>
       </sidebar-link>
-      <sidebar-link v-if="$user.get().role == 'admin'" to="/admin/config">
+      <sidebar-link v-if="$user.get().role == 'admin'" to="/admin/configurations">
         <i class="nc-icon nc-settings-gear-64"></i>
-        <p>Configurações do sistema</p>
+        <p>Configurações</p>
       </sidebar-link>
     </side-bar>
     <div class="main-panel">
