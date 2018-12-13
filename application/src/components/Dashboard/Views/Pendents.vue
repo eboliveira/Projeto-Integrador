@@ -187,6 +187,15 @@
                 }
                 return false;
             },
+            findEquip(item){
+                var i;
+                for (i=0; i<this.allEquip.length; i++){
+                    if(this.allEquip[i].patrimonio == item.patrimonio){
+                        return i;
+                    }
+                }
+                return false;
+            },
             sendEmailConfirm(item){
                 console.log(item)
             },
@@ -217,7 +226,10 @@
                 }
             },
             handleAceptEquipments(item){
-                acceptReserve(item)
+                // acceptReserve(item)
+                const i = this.findEquip(item)
+                console.log(i)
+                // this.all()
             },
             handleRejectEquipments(item){
                 rejectReserve(item)
@@ -249,13 +261,14 @@
                     
                 })
             }),
-            all('pendent').then(res =>{
+            all().then(res =>{
                 res.forEach(item =>{
-                    if(item['status'] == "pendent"){
-                        const patrimonio = item['patrimonio']
-                        const responsavel = item['responsavel']
-                        const modelo = item['modelo']
-                        this.allEquip.push(item)
+                    for (let index = 0; index < item.status.length; index++) {
+                        const element = item.status[index];
+                        if(element == "pendent"){
+                            this.allEquip.push(item)
+                            break
+                        }
                     }
                 })
             })
