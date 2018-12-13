@@ -1,10 +1,28 @@
 const express = require('express')
-const User = require('../models/users')
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
+const userManager = require('../admin/userManager')
 
 
 const router = express.Router();
+
+router.post('/all', (req,res) => {
+    userManager.allUsers(req.body.uid, function(users, err){
+        if (err) {
+            console.log(err.code);
+            console.log(err.message);
+            if (err.message == 'Forbidden') {
+                return res.status(403).send(err.message)
+            } else if (err.code == 'app/invalid-credential') {
+                return res.status(401).send('Internal Server Error')
+            } else if (err.code == 'auth/operation-not-allowed') {
+                return res.status(405).send(err.code)
+            } else {
+                return res.status(400).send('server could not understand the request ' + err.message)
+            }
+        } else {
+            res.status(200).send(users)
+        }
+    })
+})
 
 router.post('/register', (req,res) => {
     userManager.createUser(req.body.userData, function(err){
@@ -48,6 +66,26 @@ router.put('/update', (req,res) => {
     })
 })
 
+router.post('/isUser', (req,res) => {
+    userManager.getUser(req.body.uid, function(hasUser, err){
+        if (err) {
+            console.log(err.code);
+            console.log(err.message);
+            if (err.message == 'Forbidden') {
+                return res.status(403).send(err.message)
+            } else if (err.code == 'app/invalid-credential') {
+                return res.status(401).send('Internal Server Error')
+            } else if (err.code == 'auth/operation-not-allowed') {
+                return res.status(405).send(err.code)
+            } else {
+                return res.status(400).send('server could not understand the request ' + err.message)
+            }
+        } else {
+            res.status(200).send(hasUser)
+        }
+    })
+})
+
 router.delete('/remove', (req,res) => {
     userManager.deleteUser(req.body.uidAdmin, req.body.uid, function(err){
         if (err) {
@@ -70,28 +108,27 @@ router.delete('/remove', (req,res) => {
     })
 })
 
-router.post('/register', (req,res) => {
-  let new_user = {}
-  new_user.username = req.body.username;
-  new_user.password = req.body.password;
-  bcrypt.genSalt(saltRounds, (err, salt) => {
-      if(err){
-          return res.status(500).send()
-      }
-      bcrypt.hash(new_user.password, salt, (err, hash) => {
-          new_user.password = hash
-          User.addUser(new_user, function (err, evnt) {
-              if (err) {
-                  console.log(err)
-                  return res.status(400).send('server could not understand the request')
-              }
-              res.status(201).json("user registred")
-          })
-      })
-  })
+router.post('/setRole', (req,res) => {
+    userManager.setCustomUserClaims(req.body.uidAdmin, req.body.uid, req.body.role, function(err){
+        if (err) {
+            console.log(err.code);
+            console.log(err.message);
+            if (err.message == 'Forbidden') {
+                return res.status(403).send(err.message)
+            } else if (err.code == 'app/invalid-credential') {
+                return res.status(401).send('Internal Server Error')
+            } else if (err.code == 'auth/operation-not-allowed') {
+                return res.status(405).send(err.code)
+            } else {
+                return res.status(400).send('server could not understand the request ' + err.message)
+            }
+        } else {
+            res.status(200).send('role updated')
+        }
+    })
 })
 
 module.exports = {
-    path: '/user',
+    path: '/users',
     router: router
 }

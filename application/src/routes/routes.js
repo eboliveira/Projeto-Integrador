@@ -5,15 +5,15 @@ import Reserves         from 'src/components/Dashboard/Views/Reserves.vue'
 
 // GeneralViews
 import NotFound         from '../components/GeneralViews/NotFoundPage.vue'
-import Reserve          from 'src/components/Dashboard/Views/Reserve/Reserve.vue'
 import Form             from 'src/components/ReserveClass/Form.vue'
 import Login            from '../components/GeneralViews/Login.vue'
 import Register            from '../components/GeneralViews/Registration.vue'
 
 // Admin pages
 import Overview         from 'src/components/Dashboard/Views/Overview.vue'
-import UsersManager      from 'src/components/Dashboard/Views/UserProfile.vue'
+import UsersManager      from 'src/components/Dashboard/Views/UsersManager.vue'
 import Equipments       from 'src/components/Dashboard/Views/Equipment.vue'
+import Reserve          from 'src/components/Dashboard/Views/Reserve/Reserve.vue'
 import Pendents         from 'src/components/Dashboard/Views/Pendents.vue'
 import Reports          from 'src/components/Dashboard/Views/Reports.vue'
 import ManagerEquipment from 'src/components/ReserveEquipment/Equipment.vue'
@@ -169,9 +169,9 @@ const routes = [
                 }
             },
             {
-                path: 'manager_rooms',
-                name: 'Manager rooms',
-                component: ManagerRooms,
+                path: 'pendents/:uid',
+                name: 'pendentsReservesUser',
+                component: Pendents,
                 meta: {
                     permissions: [
                         {
@@ -180,7 +180,7 @@ const routes = [
                         },
                         {
                             role: 'standard',
-                            access: false,
+                            access: (user, to) => user.uid === to.params.uid,
                             redirect: 'Login'
                         },
                         {
@@ -197,9 +197,9 @@ const routes = [
                 }
             },
             {
-                path: 'new_reserve',
-                name: 'New_Reserve',
-                component: Reserve,
+                path: 'reserveEquipment',
+                name: 'reserveEquipment',
+                component: ReserveEquipment,
                 meta: {
                     permissions: [
                         {
@@ -208,7 +208,43 @@ const routes = [
                         },
                         {
                             role: 'standard',
+                            access: true,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'student',
+                            access: false,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'guest',
+                            access: false,
+                            redirect: 'Login'
+                        }
+                    ]
+                }
+            }
+        ]
+    },
+    {
+        path: '/admin',
+        component: DashboardLayout,
+        redirect: '/general/overview',
+        children: [
+            {
+                path: 'usersManager',
+                name: 'UsersManager',
+                component: UsersManager,
+                meta: {
+                    permissions: [
+                        {
+                            role: 'admin',
                             access: true
+                        },
+                        {
+                            role: 'standard',
+                            access: false,
+                            redirect: 'Login'
                         },
                         {
                             role: 'student',
@@ -251,9 +287,9 @@ const routes = [
                 }
             },
             {
-                path: 'equipment',
-                name: 'Equipment',
-                component: Equipments,
+                path: 'new_reserve',
+                name: 'New_Reserve',
+                component: Reserve,
                 meta: {
                     permissions: [
                         {
@@ -277,17 +313,10 @@ const routes = [
                     ]
                 }
             },
-        ]
-    },
-    {
-        path: '/admin',
-        component: DashboardLayout,
-        redirect: '/general/overview',
-        children: [
             {
-                path: 'usersManager',
-                name: 'UsersManager',
-                component: UsersManager,
+                path: 'equipment',
+                name: 'Equipment',
+                component: Equipments,
                 meta: {
                     permissions: [
                         {
@@ -297,7 +326,7 @@ const routes = [
                         {
                             role: 'standard',
                             access: false,
-                            redirect: 'Login'
+                            redirect: 'Overview'
                         },
                         {
                             role: 'student',
@@ -341,9 +370,9 @@ const routes = [
                 }
             },
             {
-                path: 'reserveEquipment',
-                name: 'reserveEquipment',
-                component: ReserveEquipment,
+                path: 'manager_rooms',
+                name: 'Manager_rooms',
+                component: ManagerRooms,
                 meta: {
                     permissions: [
                         {
@@ -352,7 +381,7 @@ const routes = [
                         },
                         {
                             role: 'standard',
-                            access: true,
+                            access: false,
                             redirect: 'Login'
                         },
                         {
