@@ -133,7 +133,7 @@ export default {
           for(var events of this.finish.selectedRoom){
               var event = {
                   "title": this.finish.title,
-                  "uid": "standard",
+                  "uid": this.$user.get().uid,
                   "description": this.finish.description,
                   "room": events.roomCode,
                   "startDate": events.isoStart,
@@ -142,7 +142,6 @@ export default {
                   "repeat": this.finish.selected,
                   "status":"Pendente"
               }
-              console.log(event)
               postEvent(event)
       }
       finish()

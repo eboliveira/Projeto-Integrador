@@ -156,6 +156,9 @@ export default {
       ],
     };
   },
+  created() {
+    this.steptwo.responsable = this.$user.get().displayName
+  },
   methods: {
     validate: function() {
      this.$validator.validateAll().then((result) => {
