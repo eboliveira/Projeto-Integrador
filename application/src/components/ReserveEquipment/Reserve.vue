@@ -56,7 +56,6 @@ export default {
   data() {
     return {
       // Note 'isActive' is left out and will not appear in the rendered table
-      fields: ["first_name", "last_name", "age"],
       startDate: "",
       finalDate: "",
       options: {
@@ -84,7 +83,7 @@ export default {
       items: [],
       selectedItem: {},
       isModal: false,
-      date:new Date()
+      date:new Date(),
     };
   },
   methods: {
@@ -108,10 +107,26 @@ export default {
       this.isModal = false;
       this.selectedItem = row;
     },
+    limpaCampos(){
+      this.startDate = ""
+      this.finalDate = ""
+      this.selectedItem = {}
+    },
     reserveEquipment(item) {
-      if (item.codigo) {
-        console.log(item);
-      }
+      let new_reserve = {}
+      new_reserve.patrimonio = item.codigo
+      new_reserve.reservasInicio = this.startDate
+      new_reserve.reservasFim = this.finalDate
+      new_reserve.status = "pendent"
+      new_reserve.responsavel = this.$user.get().uid
+      equipments.reserveEquip(new_reserve).then((res) =>{
+        if(res == 200){
+          this.$noty.success(
+            "Reserva do equipamento solicitada com sucesso!"
+          );
+          this.limpaCampos()
+        }
+      })
     }
   },
 

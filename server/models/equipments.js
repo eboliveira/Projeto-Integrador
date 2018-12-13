@@ -1,5 +1,4 @@
 var mongoose = require('mongoose');
-const dateTime = require('../actions/dateTime')
 var Schema = mongoose.Schema;
 
 var Schema = new Schema({
@@ -8,7 +7,9 @@ var Schema = new Schema({
     marca: String,
     modelo: String,
     reservasInicio:[String],
-    reservasFim:[String]
+    reservasFim:[String],
+    status:[String],
+    responsavel:[String]
 }, { versionKey: false })
 
 
@@ -38,11 +39,38 @@ module.exports.reserve = function(equip, callback){
         let equipment = res
         equipment.reservasInicio.push(equip.reservasInicio)
         equipment.reservasFim.push(equip.reservasFim)
+        equipment.status.push(equip.status)
+        equipment.responsavel.push(equip.responsavel)
         Equi.updateOne({
             patrimonio:equip.patrimonio
         }, equipment,callback)
     })
 }
+
+module.exports.accept = function(patrimonio, callback){
+    Equi.findOne({
+        patrimonio:patrimonio
+    }).then( (res) =>{
+        let equipment = res
+        equipment.status[equipment.status.length-1] = "confirmed"
+        Equi.updateOne({
+            patrimonio:patrimonio
+        }, equipment, callback)
+    })
+}
+
+module.exports.reject = function(patrimonio, callback){
+    Equi.findOne({
+        patrimonio:patrimonio
+    }).then( (res) =>{
+        let equipment = res
+        equipment.status[equipment.status.length-1] = "rejected"
+        Equi.updateOne({
+            patrimonio:patrimonio
+        }, equipment, callback)
+    })
+}
+
 
 module.exports.updateEqui = function (updateEqui, callback){
     Equi.getequiById(updateEqui.id,(err, equi) =>{
@@ -53,6 +81,8 @@ module.exports.updateEqui = function (updateEqui, callback){
             equi.modelo     = (updateEqui.modelo     && updateEqui.modelo     != equi.modelo)     ? updateEqui.modelo     : equi.modelo
             equi.reservasInicio     = (updateEqui.reservasInicio     && updateEqui.reservasInicio     != equi.reservasInicio)     ? updateEqui.reservasInicio     : equi.reservasInicio
             equi.reservasFim     = (updateEqui.reservasFim     && updateEqui.reservasFim     != equi.reservasFim)     ? updateEqui.reservasFim     : equi.reservasFim
+            equi.status     = (updateEqui.status     && updateEqui.status     != equi.status)     ? updateEqui.status     : equi.status
+            equi.responsavel     = (updateEqui.responsavel     && updateEqui.responsavel     != equi.responsavel)     ? updateEqui.responsavel     : equi.responsavel
             equi.save(callback)
         } else {
             callback(true, null)
@@ -70,8 +100,6 @@ module.exports.updateOrCreate = function(evnt, callback){
           nome:evnt.nome,
           marca:evnt.marca,
           modelo:evnt.modelo,
-          reservasInicio: evnt.reservasInicio,
-          reservasFim: evnt.reservasFim
         }
       },
       {

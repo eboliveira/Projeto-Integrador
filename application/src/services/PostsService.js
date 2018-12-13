@@ -1,5 +1,6 @@
 import {events} from './Api'
 
+
 export function postEvent (json) {
   let new_event = {}
   new_event.title = json.title
@@ -15,3 +16,5 @@ export function postEvent (json) {
   }).catch((err) => {
   })
 }
+
+

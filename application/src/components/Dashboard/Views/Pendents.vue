@@ -5,13 +5,16 @@
         <card style="padding: 15px;">
           <h4 slot="header" class="card-title">Reservas pendentes</h4>
           <div class="card-body">
+              <b-row style="padding-left:25px; padding-bottom:8px;">
+                  <b-form-radio-group id="radios1" v-model="selected" :options="optionsRadio" name="radio"/>
+              </b-row>
             <b-input-group style="margin-bottom:15px;">
               <b-form-input placeholder="Digite o filtro da busca" v-model="filter"></b-form-input>
               <b-input-group-append>
                 <b-button variant="primary" v-on:click="filter=''">Limpar</b-button>
               </b-input-group-append>
             </b-input-group>
-            <b-table striped hover fixed responsive :filter="filter" :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="isDesc">
+            <b-table v-if="selected == 'salas'" striped hover fixed responsive :filter="filter" :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="isDesc">
               <template slot="options" slot-scope="row">
                 <button v-if="$user.get().role == 'admin'" type="button" class="btn-simple btn btn-sm btn-success" v-on:click.stop="handleAcept(row.item)" v-b-tooltip.hover title="Aprovar reserva">
                   <i class="fa fa-check"></i>
@@ -21,6 +24,16 @@
                 </button>
                 <button type="button" class="btn-simple btn btn-sm btn-info" v-b-tooltip.hover title="Visualizar mais informações" v-on:click.stop="showModal(row.item, $event.target)">
                   <i class="fa fa-eye"></i>
+                </button>
+              </template>
+            </b-table>
+            <b-table v-if="selected == 'equipamentos'" striped hover fixed responsive :filter="filter" :items="allEquip" :fields="fields2" :sort-by.sync="sortBy" :sort-desc.sync="isDesc">
+              <template slot="options" slot-scope="row">
+                <button v-if="$user.get().role == 'admin'" type="button" class="btn-simple btn btn-sm btn-success" v-on:click.stop="handleAceptEquipments(row.item)" v-b-tooltip.hover title="Aprovar reserva">
+                  <i class="fa fa-check"></i>
+                </button>
+                <button type="button" class="btn-simple btn btn-sm btn-danger" v-on:click.stop="showModalReason(row.item)" v-b-tooltip.hover title="Rejeitar reserva">
+                  <i class="fa fa-times"></i>
                 </button>
               </template>
             </b-table>
@@ -99,6 +112,8 @@
     import moment from "moment"
     import {byStatus} from './../../../services/eventQuerys'
     import {changeStatus} from './../../../services/eventsRequests'
+    import {all} from './../../../services/equipmentsQuery'
+    import {acceptReserve} from './../../../services/equipmentsQuery'
     export default {
         components: {
             Card
@@ -187,7 +202,14 @@
                 else{
                     this.modal_repeat = "Sem repetição"
                 }
-            }
+            },
+            handleAceptEquipments(item){
+                acceptReserve(item)
+            },
+            handleRejectEquipments(item){
+                rejectReserve(item)
+            },
+
         },
         created:function(){
             byStatus('pendent').then(res =>{
@@ -200,12 +222,23 @@
                     this.items.push({ room: room, responsable: responsable, date:formattedDate, id:id });
                     this.allItems.push(item)
                 })
+            }),
+            all('pendent').then(res =>{
+                res.forEach(item =>{
+                    if(item['status'] == "pendent"){
+                        const patrimonio = item['patrimonio']
+                        const responsavel = item['responsavel']
+                        const modelo = item['modelo']
+                        this.allEquip.push(item)
+                    }
+                })
             })
         },
         data() {
             return {
                 show: false,
                 allItems:[],
+                allEquip:[],
                 clickedItem:{},
                 filter: "",
                 refuseReason:"",
@@ -220,6 +253,7 @@
                 modal_status:"",
                 modal_repeat:"",
                 modal_timestamp:"",
+                selected:null,
                 fields: [
                     {
                         key: "room",
@@ -242,10 +276,36 @@
                         class: "text-center"
                     }
                 ],
+                fields2: [
+                    {
+                        key: "patrimonio",
+                        label: "Patrimonio",
+                        sortable: true
+                    },
+                    {
+                        key: "responsavel",
+                        label: "Requisitante",
+                        sortable: true
+                    },
+                    {
+                        key: "modelo",
+                        label: "Modelo do equipamento",
+                        sortable: true
+                    },
+                    {
+                        key: "options",
+                        label: "",
+                        class: "text-center"
+                    }
+                ],
                 items: [],
                 perPage: 10,
                 isDesc: false,
-                sortBy: "date"
+                sortBy: "date",
+                optionsRadio: [
+                    { text: "Salas", value: "salas" },
+                    { text: "Equipamentos", value: "equipamentos" }
+                ]
             };
         }
     }

@@ -43,7 +43,21 @@ router.delete('/:id', (req,res) =>{
 router.post("/reserve", (req, res) =>{
     Equipments.reserve(req.body, (err,resp) =>{
         if(err) res.status(500).send(err)
-        res.status(500).send(resp)
+        res.status(200).send(resp)
+    })
+})
+
+router.get("/accept/:patrimonio", (req,res) =>{
+    Equipments.accept(req.params.patrimonio, (err,resp) =>{
+        if(err) res.status(500).send(err)
+        res.status(200).send(resp)
+    })
+})
+
+router.get("/reject/:patrimonio", (req,res) =>{
+    Equipments.accept(req.params.patrimonio, (err,resp) =>{
+        if(err) res.status(500).send(err)
+        res.status(200).send(resp)
     })
 })
 
