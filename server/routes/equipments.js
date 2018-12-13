@@ -40,6 +40,13 @@ router.delete('/:id', (req,res) =>{
     })
 })
 
+router.post("/reserve", (req, res) =>{
+    Equipments.reserve(req.body, (err,resp) =>{
+        if(err) res.status(500).send(err)
+        res.status(500).send(resp)
+    })
+})
+
 module.exports = {
     path : '/equipments',
     router: router
