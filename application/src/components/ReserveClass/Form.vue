@@ -139,13 +139,8 @@ export default {
                   "startDate": events.isoStart,
                   "finalDate": events.isoEnd,
                   "responsable": this.finish.responsable,
-<<<<<<< HEAD
                   "repeat": this.finish.selected,
                   "status":"Pendente"
-=======
-                  "repeat": this.finish.repeat,
-                  "status":"pendent"
->>>>>>> master
               }
               console.log(event)
               postEvent(event)
