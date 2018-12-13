@@ -185,7 +185,7 @@
             }
         },
         created:function(){
-            byStatus('undefined').then(res =>{
+            byStatus('pendent').then(res =>{
                 res.forEach(item =>{
                     const room = item['room']
                     const responsable = item['responsable']

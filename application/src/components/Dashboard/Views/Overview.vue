@@ -90,7 +90,7 @@ export default {
         }
     },
     mounted: function () {
-        byStatus('undefined').then(res =>{
+        byStatus('pendent').then(res =>{
             this.NumPendents = res.length
         })
     },
