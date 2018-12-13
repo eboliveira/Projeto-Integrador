@@ -208,8 +208,7 @@ const routes = [
                         },
                         {
                             role: 'standard',
-                            access: true,
-                            redirect: 'Login'
+                            access: true
                         },
                         {
                             role: 'student',
