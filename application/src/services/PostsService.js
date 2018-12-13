@@ -4,6 +4,7 @@ import {events} from './Api'
 export function postEvent (json) {
   let new_event = {}
   new_event.title = json.title
+  new_event.uid = json.uid
   new_event.description = json.description
   new_event.room = json.room
   new_event.startDate = json.startDate

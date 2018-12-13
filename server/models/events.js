@@ -3,6 +3,7 @@ var Schema = mongoose.Schema;
 
 var EventCalendar = new Schema({
     title: String,
+    uid: String,
     description: String,
     room: String,
     startDate: Date,

@@ -7,11 +7,11 @@ import Reserves         from 'src/components/Dashboard/Views/Reserves.vue'
 import NotFound         from '../components/GeneralViews/NotFoundPage.vue'
 import Form             from 'src/components/ReserveClass/Form.vue'
 import Login            from '../components/GeneralViews/Login.vue'
-import Register            from '../components/GeneralViews/Registration.vue'
+import Register         from '../components/GeneralViews/Registration.vue'
 
 // Admin pages
 import Overview         from 'src/components/Dashboard/Views/Overview.vue'
-import UsersManager      from 'src/components/Dashboard/Views/UsersManager.vue'
+import UsersManager     from 'src/components/Dashboard/Views/UsersManager.vue'
 import Equipments       from 'src/components/Dashboard/Views/Equipment.vue'
 import Reserve          from 'src/components/Dashboard/Views/Reserve/Reserve.vue'
 import Pendents         from 'src/components/Dashboard/Views/Pendents.vue'
@@ -19,6 +19,7 @@ import Reports          from 'src/components/Dashboard/Views/Reports.vue'
 import ManagerEquipment from 'src/components/ReserveEquipment/Equipment.vue'
 import ManagerRooms     from 'src/components/Dashboard/Views/ManagerRooms.vue'
 import ReserveEquipment from 'src/components/ReserveEquipment/Reserve.vue'
+import Configurations   from 'src/components/Dashboard/Views/Configurations.vue'
 
 const routes = [
     {
@@ -208,8 +209,7 @@ const routes = [
                         },
                         {
                             role: 'standard',
-                            access: true,
-                            redirect: 'Login'
+                            access: true
                         },
                         {
                             role: 'student',
@@ -231,6 +231,34 @@ const routes = [
         component: DashboardLayout,
         redirect: '/general/overview',
         children: [
+            {
+                path: 'configurations',
+                name: 'Configurations',
+                component: Configurations,
+                meta: {
+                    permissions: [
+                        {
+                            role: 'admin',
+                            access: true
+                        },
+                        {
+                            role: 'standard',
+                            access: false,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'student',
+                            access: false,
+                            redirect: 'Login'
+                        },
+                        {
+                            role: 'guest',
+                            access: false,
+                            redirect: 'Login'
+                        }
+                    ]
+                }
+            },
             {
                 path: 'usersManager',
                 name: 'UsersManager',
