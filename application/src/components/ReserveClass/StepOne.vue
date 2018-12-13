@@ -17,10 +17,9 @@
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="info" width="500" backdrop='static'>
-           
-      <v-card>
-          <v-card-title class="headline grey lighten-2" primary-title>Selecionando Horário</v-card-title>
+          <v-dialog v-model="info" width="500" backdrop='static'> 
+            <v-card>
+              <v-card-title class="headline grey lighten-2" primary-title>Selecionando Horário</v-card-title>
               <v-card-text>
                   Para Selecionar um horário basta clicar no espaço vazio no calendário correspondente ao início do evento
                   e arrastar até o período final do evento.
@@ -35,34 +34,22 @@
               <v-layout justify-center>
                 <v-btn color="green lighten-1" v-on:click="info=false">OK</v-btn>
               </v-layout>
-          </v-card>
-    </v-dialog>
+            </v-card>
+          </v-dialog>
         </v-layout>
         <b-row>
           <b-col md="12">
-				  <card style="padding: 15px;">
-              <h4 slot="header" class="card-title">Reservar Horários</h4>
-              <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" :config="config"></full-calendar>
-             
-          </card>
-        <v-layout justify-center style="margin-top: 20px; margin-bottom: 20px">
-                  <b-btn variant="success" style="margin-left: 10px;" v-on:click="dialog = true"><i class="fa fa-search"></i></b-btn>
-                  <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar" v-b-tooltip.hover id="Refresh1"><v-icon style="position: center">mdi-broom</v-icon></b-btn>
-                  <b-btn variant="info" style="width: 58px; height: 43px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
-                  <b-tooltip target="Refresh1" title="Clear" placement="bottom"></b-tooltip>
-              </v-layout>
-                <card style="padding: 15px;">
-                    <h4 slot="header" class="card-title">Reservar Horários</h4>
-                    <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" :config="config"></full-calendar>
-
-                </card>
-                <v-layout justify-center style="margin-top: 20px; margin-bottom: 20px">
-                    <b-btn variant="success" style="margin-left: 10px;" v-on:click="dialog = true"><i class="fa fa-search"></i></b-btn>
-                    <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar" v-b-tooltip.hover id="Refresh1"><v-icon style="position: center">mdi-broom</v-icon></b-btn>
-                    <b-btn variant="info" style="width: 58px; height: 43px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
-                    <b-tooltip target="Refresh1" title="Clear" placement="bottom"></b-tooltip>
-                </v-layout>
-                <card style="padding: 15px;">
+            <card style="padding: 15px;">
+                <h4 slot="header" class="card-title">Reservar Horários</h4>
+                <full-calendar ref="calendar" :events="events" @event-selected="eventSelected" :config="config"></full-calendar>
+            </card>
+            <v-layout justify-center style="margin-top: 20px; margin-bottom: 20px">
+              <b-btn variant="success" style="margin-left: 10px;" v-on:click="dialog = true"><i class="fa fa-search"></i></b-btn>
+              <b-btn variant="primary" style="margin-left: 10px;" v-on:click="cleanCalendar" v-b-tooltip.hover id="Refresh1"><v-icon style="position: center">mdi-broom</v-icon></b-btn>
+              <b-btn variant="info" style="width: 58px; height: 43px; margin-left: 10px;" v-on:click="info=true, editable = false"><v-icon style="position: center">mdi-information-variant</v-icon></b-btn>
+              <b-tooltip target="Refresh1" title="Clear" placement="bottom"></b-tooltip>
+            </v-layout>
+            <card style="padding: 15px;">
                   <h4 slot="header" class="card-title">Selecionar Salas</h4>
 					        <b-row>
                     <b-col md="3">
@@ -84,7 +71,7 @@
                       <b-tooltip target="Refresh" title="Refresh" placement="bottom"></b-tooltip>
                     </b-col>
                   </b-row>
-                   	<b-table show-empty striped hover :items="items" :fields="field" :current-page="currentPage" :per-page="perPage" :filter="filter" @filtered="onFiltered">
+                   	<b-table show-empty striped hover :items="items" :fields="field" :current-page="currentPage" :per-page="perPage" :filter="filter">
                        <template slot="roomCode" slot-scope="row">
                          <span v-for="item in row.value">{{item}}</span>
                        </template>
@@ -110,8 +97,8 @@
                             <b-pagination :total-rows="totalRows" :per-page="perPage" v-model="currentPage" class="my-0" />
                         </b-col>
                     </b-row>
-                    </v-layout>
-                </card>
+                  </v-layout>
+				          </card>
             </b-col>
         </b-row>
 	</b-container>
@@ -424,6 +411,49 @@ export default {
         this.$emit("passTwo", this.selectedRoom);
       }
     }
+  },
+  computed: {
+    field() {
+      var fields = []
+      fields.push(
+          {
+              key: "roomCode",
+              label: "Código da Sala",
+              sortable: true,
+              sortDirection: "asc"
+          },
+          {
+              key: "roomType",
+              label: "Tipo da Sala",
+              sortable: true,
+              sortDirection: "asc"
+          },
+          {
+              key: "capacity",
+              label: "Capacidade da Sala",
+              sortable: true,
+              sortDirection: "asc"
+          },
+           {
+              key: "start",
+              label: "Inicio do Evento",
+              sortable: true,
+              sortDirection: "asc"
+          },
+           {
+              key: "end",
+              label: "Final do Evento",
+              sortable: true,
+              sortDirection: "asc"
+          },
+          {
+              key: "actions",
+              label: "Ações",
+              sortDirection: "asc"
+          },
+        )
+        return fields
+    }  
   }
 };
 </script>

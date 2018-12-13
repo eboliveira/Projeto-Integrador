@@ -11,7 +11,7 @@
                             <v-divider></v-divider>
                             <v-stepper-step step="3">Confirmação</v-stepper-step>
                         </v-stepper-header>
-                        
+
                         <v-stepper-items>
                             <v-stepper-content step="1" style="padding: 0px;">
                                 <step-one @passTwo="passStepTwo"></step-one>
@@ -38,6 +38,33 @@
                             </div>
                         </b-modal>
 
+                        <v-layout justify-center style="margin-bottom: 10px;">
+                            <v-dialog v-model="confirm" persistent>
+                                <v-card>
+                                    <v-card-title class="headline">Deseja Confirmar o Evento?</v-card-title>
+                                    <v-card-text>As informações preenchidas serão registradas!</v-card-text>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="green darken-1" flat v-on:click.native="dialog = false">Cancelar</v-btn>
+                                        <v-btn color="green darken-1" flat v-on:click.native="sendEvent">Confimar</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+                        </v-layout>
+
+                        <v-layout justify-center style="margin-bottom: 10px;">
+                            <v-dialog v-model="dialog" persistent>
+                                <v-card>
+                                    <v-card-title class="headline">Deseja Cancelar a Reserva de Horarios?</v-card-title>
+                                    <v-card-text>As informações preenchidas no cadastro até o momento serão perdidas caso deseja sair!</v-card-text>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="green darken-1" flat v-on:click.native="dialog = false">Cancelar</v-btn>
+                                        <v-btn color="green darken-1" flat v-on:click.native="dialog = false" to="/admin/overview">Confimar</v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
+                        </v-layout>
 
                         <b-modal v-model="dialog" header-bg-variant="danger" header-text-variant="light" title="Deseja Cancelar a Reserva de Horarios?" :no-close-on-backdrop="false" :hide-header-close="false">
                             <b-container fluid>
@@ -79,10 +106,6 @@
     .btn:disabled, .btn[disabled], .btn.disabled{
         background-color: #c9d0ff;
         color: black;
-    }
-
-    .text{
-        font-size: 20px;
     }
 </style>
 
@@ -141,7 +164,7 @@ export default {
                   "room": events.roomCode,
                   "startDate": events.isoStart,
                   "finalDate": events.isoEnd,
-                  "responsable": this.finish.selected,
+                  "responsable": this.finish.responsable,
                   "repeat": this.finish.repeat,
                   "status":"undefined"
               }
@@ -154,16 +177,16 @@ export default {
   watch: {
     "nstep": function() {
         this.disabled = true
-              
+
     },
     "steptwo": function(){
         if(this.steptwo){
-             this.disabled = false  
+             this.disabled = false
         }
     },
     "finish": function(){
         if(this.finish){
-             this.disabled = false  
+             this.disabled = false
         }
     }
   }

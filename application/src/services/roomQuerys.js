@@ -41,3 +41,9 @@ export async function set(room){
     return res.data
   })
 }
+
+export async function remove(room){
+    return await rooms.delete(room._id).then((res) =>{
+        return res.data
+    })
+}
