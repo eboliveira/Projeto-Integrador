@@ -83,7 +83,6 @@
                     </v-layout>
                 </card>
             </b-col>
-            {{this.steptwo}}
         </b-row>
 	</b-container>
 </template>
