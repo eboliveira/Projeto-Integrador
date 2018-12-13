@@ -19,6 +19,7 @@
     "mongoose": "^5.2.13",
     "morgan": "^1.9.0",
     "nodemon": "^1.18.4",
+    "python-shell": "^1.0.6",
     "url-join": "^4.0.0"
   }
 }

@@ -1,5 +1,6 @@
 const express = require('express')
 const dateTime = require('../actions/dateTime')
+const {generateCSV} = require('../actions/generateCSV')
 
 const router = express.Router()
 
@@ -20,6 +21,16 @@ router.get('/checkConflicts/p1/:reservationStart/:reservationEnd/p2/:periodStart
   } else {
     res.status(200).send("false")
   }
+})
+
+router.get("/generateCSV/:user/:passwd", (req,resp) =>{
+  generateCSV(req.params.user, req.params.passwd, (err,res) =>{
+    if(err){
+      resp.status(500).send(err.message)
+      return
+    }
+    resp.status(200).send(res)
+  })
 })
 
 module.exports = {
