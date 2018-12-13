@@ -52,6 +52,7 @@ const router = new VueRouter({
   linkActiveClass: 'nav-item active'
 })
 
+// FullCalendar
 import FullCalendar from 'vue-full-calendar'
 import 'fullcalendar/dist/locale/pt'
 Vue.use(FullCalendar);
@@ -70,16 +71,28 @@ Vue.use(VueNoty, {
   visibilityControl: true
 })
 
+// Datetim picker
 import Datetime from 'vue-datetime'
-// You need a specific loader for CSS files
 import 'vue-datetime/dist/vue-datetime.css'
- 
 Vue.use(Datetime)
 import { Settings } from 'luxon'
- 
 Settings.defaultLocale = 'pt-br'
 
+// Load spinners
+import { VueSpinners } from '@saeris/vue-spinners'
+Vue.use(VueSpinners)
 
+// Load overlay
+import Loading from 'vue-loading-overlay';
+import 'vue-loading-overlay/dist/vue-loading.css';
+Vue.use(Loading, {
+    isFullPage: true,
+    color: '#3472F7',
+    height: 128,
+    width: 128,
+    opacity:0.8,
+    backgroundColor: '#000000'
+  });
 
 //Search bar autocomplete
 import VueBootstrapTypeahead from 'vue-bootstrap-typeahead'
