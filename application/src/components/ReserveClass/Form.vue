@@ -20,7 +20,7 @@
                                 <step-two @passThree="passStepThree" :stepone="steptwo" :itemTable="tableSteptwo"></step-two>
                             </v-stepper-content>
                             <v-stepper-content step="3" style="padding: 0px;">
-                                <step-three :result="finish" :room="steptwo"></step-three>
+                                <step-three :result="finish"></step-three>
                             </v-stepper-content>
                         </v-stepper-items>
                         
@@ -137,10 +137,10 @@ export default {
                   "description": this.finish.description,
                   "room": events.roomCode,
                   "startDate": events.isoStart,
-                  "finalDate": events.isoEnd,
+                  "finalDate": this.finish.finalDate,
                   "responsable": this.finish.responsable,
                   "repeat": this.finish.selected,
-                  "status":"Pendente"
+                  "status":"pendent"
               }
               postEvent(event)
       }

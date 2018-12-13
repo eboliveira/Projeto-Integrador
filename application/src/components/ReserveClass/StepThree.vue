@@ -13,7 +13,7 @@
             <b-col md="7">
                 <card>
                     <h4 slot="header" class="card-title">Salas Selecionadas</h4>
-                   <b-table show-empty striped hover :items="room" :fields="field" :current-page="currentPage" :per-page="perPage">
+                   <b-table show-empty striped hover :items="this.result.selectedRoom" :fields="field" :current-page="currentPage" :per-page="perPage">
                        <template slot="roomCode" slot-scope="row">
                          <span v-for="item in row.value">{{item}}</span>
                        </template>

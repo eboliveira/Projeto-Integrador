@@ -71,14 +71,17 @@
 							<b-form-group label="Selecione a Frequência do Evento" style='margin-left:20px;margin-top:15px;'>
 								<b-form-radio-group id="radios1" v-model="steptwo.selected" :options="options" name="radio"/>
 							</b-form-group>
+              <b-form-group label="Data Final da repetição" style='margin-left:20px;margin-top:15px;'>
+                <b-form-input id="date" type="date" v-model="finaldate"></b-form-input>
+              </b-form-group>
 						</b-col>
 					</b-row>
                 </card>
             </b-col>
             <b-col md="5">
                 <card>
-                    <h4 slot="header" class="card-title" style='margin-left:80px'>Horários Selecionados</h4>
-                    <v-layout justify-center>
+                    <h4 slot="header" class="card-title" style='margin-left:80px;'>Horários Selecionados</h4>
+                    <v-layout justify-center class="lineTime">
                         <light-timeline :items="timeline"></light-timeline>
                     </v-layout>
                 </card>
@@ -92,6 +95,11 @@
   display: block;
   font-size: 0.75rem;
   margin-top: 0.15rem;
+}
+
+.lineTime {
+  max-height: 264px;
+  overflow: scroll;
 }
 
 .help.is-danger {
@@ -120,6 +128,7 @@ export default {
       refresh: [],
       currentPage: 1,
       perPage: 10,
+      finaldate:"",
       totalRows: null,
       sortBy: null,
       sortDesc: false,
@@ -145,7 +154,8 @@ export default {
         description: "",
         responsable: "",
         selected: null,
-        selectedRoom: ""
+        selectedRoom: "",
+        finaldate: "",
         },
       locale: "ar",
       options: [
@@ -248,6 +258,11 @@ export default {
     },
     selectedRoom: function(){
       this.steptwo.selectedRoom = this.selectedRoom
+    },
+    finaldate: function(){
+      this.steptwo.finaldate = moment(this.finaldate)
+            .utc()
+            .format("YYYY-MM-DDTHH:mm:ss.sss")
     }
   },
   computed: {
