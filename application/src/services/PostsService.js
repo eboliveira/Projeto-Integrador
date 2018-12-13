@@ -9,11 +9,9 @@ export function postEvent (json) {
   new_event.finalDate = json.finalDate
   new_event.responsable = json.responsable
   new_event.repeat = json.repeat
-  new_event.status = "undefined"
-  events.post('post', new_event).then(response =>{
-    console.log(response)
+  new_event.status = json.status
+  events.post('post', new_event).then(response => {
     return response.status
   }).catch((err) => {
-    console.log(err)
   })
 }

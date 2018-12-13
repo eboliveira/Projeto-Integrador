@@ -46,7 +46,7 @@
                                         <b-form-input v-if="searchData.filter.type !== 'status' && searchData.filter.type" v-model="searchData.filter.value" :placeholder="filterPlaceholder"/>
                                         <b-form-select v-if="searchData.filter.type === 'status'" v-model="searchData.filter.value" :options="searchData.filter.options">
                                             <option :value="null">Todos</option>
-                                            <option value="undefined">Pendentes</option>
+                                            <option value="pendent">Pendentes</option>
                                             <option value="Aprovada">Aprovados</option>
                                         </b-form-select>
                                     </b-form-group>
