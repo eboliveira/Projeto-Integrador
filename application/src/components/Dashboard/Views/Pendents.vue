@@ -84,10 +84,11 @@
         </b-row>
       </b-container>
       <div slot="modal-footer" class="w-100">
-        <b-btn v-if="$user.get().role == 'admin'" size="md" class="float-right" variant="danger" @click="show=false">Cancelar reserva</b-btn>
-        <b-btn v-if="$user.get().role != 'admin'" size="md" class="float-right" variant="primary" @click="show=false">Sim, quero cancelar minha reserva</b-btn>
-        <b-btn v-if="$user.get().role != 'admin'" size="md" class="float-right" variant="primary" @click="show=false">Não, quero manter minha reserva
-        </b-btn>
+        <b-row>
+            <b-btn class="col-4" v-if="$user.get().role == 'admin'" size="md" variant="danger" @click="show=false">Cancelar reserva</b-btn>
+            <b-btn class="col-4" v-if="$user.get().role != 'admin'" size="md" variant="warning" @click="show=false">Não, quero manter</b-btn>
+            <b-btn class="col-4" v-if="$user.get().role != 'admin'" size="md" variant="danger" @click="show=false">Sim, quero cancelar</b-btn>
+        </b-row>
       </div>
     </b-modal>
   </b-container>
