@@ -166,7 +166,7 @@ export default {
                   "finalDate": events.isoEnd,
                   "responsable": this.finish.responsable,
                   "repeat": this.finish.repeat,
-                  "status":"undefined"
+                  "status":"pendent"
               }
               postEvent(event)
       }

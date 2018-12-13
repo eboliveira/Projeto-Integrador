@@ -15,6 +15,8 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "firebase-admin": "^6.1.0",
+    "googleapis": "^27.0.0",
     "moment": "^2.22.2",
     "mongoose": "^5.2.13",
     "morgan": "^1.9.0",

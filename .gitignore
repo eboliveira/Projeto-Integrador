@@ -8,6 +8,7 @@ package-lock.json
 test/unit/coverage
 
 server/admin/*.json
+server/email/*.json
 
 # Editor directories and files
 .idea
