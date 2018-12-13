@@ -2,6 +2,7 @@ import httplib2
 import urllib.parse
 import re
 import os
+import sys
 
 from base64 import b64encode
 
@@ -170,8 +171,8 @@ def capturaHorarioSalas(headers, salas, ano, semestre):
 
 
 
-username = "user"
-password = "teste"
+username = sys.argv[1]
+password = sys.argv[2]
 
 #gera o cabecalho autenticado para usar nas requisicoes
 header = geraCabecalho(username, password)

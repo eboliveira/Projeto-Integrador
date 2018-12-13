@@ -63,7 +63,7 @@ app.get('/', function (req, res) {
     res.status(200).send('Root')
 })
 app.get('/generateDB', function (req, res) {
-    fs.readFile('resources/horarios-2018-2.csv', 'utf8', (err, csv) =>{
+    fs.readFile('salas.csv', 'utf8', (err, csv) =>{
         format_csv(csv)
     })
     res.status(201).json("Database generated")

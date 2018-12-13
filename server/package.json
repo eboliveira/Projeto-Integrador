@@ -15,10 +15,13 @@
     "body-parser": "^1.18.3",
     "cors": "^2.8.4",
     "express": "^4.16.3",
+    "firebase-admin": "^6.1.0",
+    "googleapis": "^27.0.0",
     "moment": "^2.22.2",
     "mongoose": "^5.2.13",
     "morgan": "^1.9.0",
     "nodemon": "^1.18.4",
+    "python-shell": "^1.0.6",
     "url-join": "^4.0.0"
   }
 }

@@ -13,7 +13,7 @@
             </b-input-group>
             <b-table striped hover fixed responsive :filter="filter" :items="items" :fields="fields" :sort-by.sync="sortBy" :sort-desc.sync="isDesc">
               <template slot="options" slot-scope="row">
-                <button type="button" class="btn-simple btn btn-sm btn-success" v-on:click.stop="handleAcept(row.item)" v-b-tooltip.hover title="Aprovar reserva">
+                <button v-if="$user.get().role == 'admin'" type="button" class="btn-simple btn btn-sm btn-success" v-on:click.stop="handleAcept(row.item)" v-b-tooltip.hover title="Aprovar reserva">
                   <i class="fa fa-check"></i>
                 </button>
                 <button type="button" class="btn-simple btn btn-sm btn-danger" v-on:click.stop="showModalReason(row.item)" v-b-tooltip.hover title="Rejeitar reserva">
@@ -77,13 +77,18 @@
     <b-modal header-bg-variant="danger" header-text-variant="light" ok-title="Fechar" @click="show=true" id="modalReason" title="Rejeitar reserva" @ok="handleRefuse(refuseReason)" :ok-disabled="isReasonEmpty()">
       <b-container fluid>
         <b-row>
-          <b-col md="12">
-            <b-textarea rows="4" placeholder="Digite o motivo pelo qual está rejeitando" v-model="refuseReason"></b-textarea>
+            <h4 v-if="$user.get().role != 'admin'"><strong>Tem certeza que deseja cancelar sua reserva?</strong></h4>
+          <b-col v-if="$user.get().role == 'admin'" md="12">
+            <b-textarea rows="4" placeholder="Digite o motivo pelo qual está rejeitando a reserva" v-model="refuseReason"></b-textarea>
           </b-col>
         </b-row>
       </b-container>
       <div slot="modal-footer" class="w-100">
-        <b-btn size="md" class="float-right" variant="danger" @click="show=false">Cancelar</b-btn>
+        <b-row>
+            <b-btn class="col-4" v-if="$user.get().role == 'admin'" size="md" variant="danger" @click="show=false">Cancelar reserva</b-btn>
+            <b-btn class="col-4" v-if="$user.get().role != 'admin'" size="md" variant="warning" @click="show=false">Não, quero manter</b-btn>
+            <b-btn class="col-4" v-if="$user.get().role != 'admin'" size="md" variant="danger" @click="show=false">Sim, quero cancelar</b-btn>
+        </b-row>
       </div>
     </b-modal>
   </b-container>
@@ -185,7 +190,7 @@
             }
         },
         created:function(){
-            byStatus('undefined').then(res =>{
+            byStatus('pendent').then(res =>{
                 res.forEach(item =>{
                     const room = item['room']
                     const responsable = item['responsable']

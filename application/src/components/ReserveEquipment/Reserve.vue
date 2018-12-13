@@ -4,71 +4,43 @@
       <b-col md="12">
         <card>
           <h4 slot="header" class="card-title">Reservar Equipamentos</h4>
-          <b-container fluid>
-              <b-row>
-            <b-col md="2">
-                <b-card
-                        border-variant="info"
-                        header-bg-variant="info"
-                        header="Escolha uma data inicial"
-                        class="text-center"
-                        header-text-variant="white">
-                        <datetime format="dd-MM-yyyy HH:mm" v-model="startDate" type="datetime" style="border:1px solid #f0f0f0;"></datetime>
-                </b-card>
-            </b-col>
-            <b-col md="2">
-                <b-card
-                        border-variant="info"
-                        header-bg-variant="info"
-                        header="Escolha uma data final"
-                        class="text-center"
-                        header-text-variant="white">
-                        <datetime format="dd-MM-yyyy HH:mm" v-model="finalDate" type="datetime" style="border:1px solid #f0f0f0;"></datetime>
-                </b-card>
-            </b-col>
-              </b-row>
-            <b-row style="padding-bottom:12px;">
-                <b-col md="2">
-                    <label for="">Selecione a data</label>
+          <b-container>
+            <b-row align-h="center">
+                <b-col md="3">
+                  <b-card border-variant="primary" header-bg-variant="primary" header="Escolha uma data inicial" class="text-center" header-text-variant="white">
+                    <datetime format="dd-MM-yyyy HH:mm" v-model="startDate" type="datetime"></datetime>
+                  </b-card>
                 </b-col>
-                <b-col md="2">
+                <b-col md="3">
+                  <b-card border-variant="primary" header-bg-variant="primary" header="Escolha uma data final" class="text-center" header-text-variant="white">
+                    <datetime format="dd-MM-yyyy HH:mm" v-model="finalDate" type="datetime"></datetime>
+                  </b-card>
                 </b-col>
             </b-row>
-            <b-row>
-                <b-col md="6">
-                    <b-input-group prepend="Patrimônio">
-                        <b-input readonly :value="this.selectedItem.codigo"></b-input>
-                        <b-button variant="success" v-on:click="showModal()">Escolher equipamento</b-button>
-                    </b-input-group>
-                </b-col>
+            
+            <b-row class="mt-3">
+              <b-col>
+                <b-input-group>
+                  <b-form-input readonly :value="this.selectedItem.codigo" placeholder="Patrimônio"></b-form-input>
+                  <b-input-group-append>
+                    <b-btn variant="primary" v-on:click="showModal()">Equipamento</b-btn>
+                  </b-input-group-append>
+                </b-input-group>
+              </b-col>
             </b-row>
-            <b-modal
-              v-model="isModal"
-              header-bg-variant="primary"
-              header-text-variant="light"
-              id="modalInfo"
-              ok-title="Fechar"
-              ok-only
-              title="Selecione um equipamento"
-            >
-              <b-container fluid>
-                <b-table
-                  striped
-                  hover
-                  stacked="md"
-                  :items="items"
-                  :fields="fields"
-                  v-on:row-clicked="selectItem"
-                ></b-table>
-              </b-container>
-            </b-modal>
-            <b-row style="padding-top:10px; padding-left:15px;">
-              <b-button variant="info" v-on:click="reserveEquipment(selectedItem)">Reservar</b-button>
+            
+            <b-row class="mt-3">
+              <b-col md="12">
+                <b-btn variant="success" v-on:click="reserveEquipment(selectedItem)">Reservar</b-btn>
+              </b-col>
             </b-row>
           </b-container>
         </card>
       </b-col>
     </b-row>
+    <b-modal v-model="isModal" header-bg-variant="primary" header-text-variant="light" id="modalInfo" ok-title="Fechar" ok-only title="Selecione um equipamento">
+        <b-table hover stacked="md" :items="items" :fields="fields" v-on:row-clicked="selectItem"></b-table>
+    </b-modal>
   </b-container>
 </template>
 
