@@ -14,21 +14,21 @@
 
                         <v-stepper-items>
                             <v-stepper-content step="1" style="padding: 0px;">
-                                <step-one @passTwo="passStepTwo"></step-one>
+                                <step-one @itemsTable="itemsTableTwo"></step-one>
                             </v-stepper-content>
                             <v-stepper-content step="2" style="padding: 0px;">
-                                <step-two @passThree="passStepThree" :stepone="steptwo"></step-two>
+                                <step-two @passThree="passStepThree" :stepone="steptwo" :itemTable="tableSteptwo"></step-two>
                             </v-stepper-content>
                             <v-stepper-content step="3" style="padding: 0px;">
                                 <step-three :result="finish" :room="steptwo"></step-three>
                             </v-stepper-content>
                         </v-stepper-items>
                         
-                        <b-modal v-model="confirm" header-bg-variant="success" header-text-variant="light" title="Deseja Confirmar o Evento?" :no-close-on-backdrop="false" :hide-header-close="false">
+                        <b-modal v-model="confirm" header-bg-variant="success" header-text-variant="light" title="Confirmação do evento" :no-close-on-backdrop="false" :hide-header-close="false">
                             <b-container fluid>
                                 <b-row>
                                     <b-col md=10>
-                                        <v-card-text rows="1"><h4 class="text">As informações preenchidas serão registradas!</h4></v-card-text>
+                                        <v-card-text rows="1"><h4 class="text">Deseja Confirmar o Evento?</h4></v-card-text>
                                     </b-col>
                                 </b-row>
                             </b-container>
@@ -37,34 +37,6 @@
                                 <b-btn style="margin-right: 10px" class="float-right" variant="success" @click="sendEvent" to="/admin/overview">Confirmar</b-btn>
                             </div>
                         </b-modal>
-
-                        <v-layout justify-center style="margin-bottom: 10px;">
-                            <v-dialog v-model="confirm" persistent>
-                                <v-card>
-                                    <v-card-title class="headline">Deseja Confirmar o Evento?</v-card-title>
-                                    <v-card-text>As informações preenchidas serão registradas!</v-card-text>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="green darken-1" flat v-on:click.native="dialog = false">Cancelar</v-btn>
-                                        <v-btn color="green darken-1" flat v-on:click.native="sendEvent">Confimar</v-btn>
-                                    </v-card-actions>
-                                </v-card>
-                            </v-dialog>
-                        </v-layout>
-
-                        <v-layout justify-center style="margin-bottom: 10px;">
-                            <v-dialog v-model="dialog" persistent>
-                                <v-card>
-                                    <v-card-title class="headline">Deseja Cancelar a Reserva de Horarios?</v-card-title>
-                                    <v-card-text>As informações preenchidas no cadastro até o momento serão perdidas caso deseja sair!</v-card-text>
-                                    <v-card-actions>
-                                        <v-spacer></v-spacer>
-                                        <v-btn color="green darken-1" flat v-on:click.native="dialog = false">Cancelar</v-btn>
-                                        <v-btn color="green darken-1" flat v-on:click.native="dialog = false" to="/admin/overview">Confimar</v-btn>
-                                    </v-card-actions>
-                                </v-card>
-                            </v-dialog>
-                        </v-layout>
 
                         <b-modal v-model="dialog" header-bg-variant="danger" header-text-variant="light" title="Deseja Cancelar a Reserva de Horarios?" :no-close-on-backdrop="false" :hide-header-close="false">
                             <b-container fluid>
@@ -130,14 +102,15 @@ export default {
       cancel: false,
       isValid:false,
       steptwo: null,
+      tableSteptwo: null,
       finish: null,
-      disabled: true,
+      disabled: false,
       header : false,
     };
   },
   methods:{
-      passStepTwo(payload){
-          this.steptwo = payload
+      itemsTableTwo(payload) {
+          this.tableSteptwo = payload
       },
       passStepThree(payload){
           this.finish = payload
@@ -157,7 +130,7 @@ export default {
         //     )
         // },
       sendEvent(){
-          for(var events of this.steptwo){
+          for(var events of this.finish.selectedRoom){
               var event = {
                   "title": this.finish.title,
                   "uid": "standard",
@@ -166,9 +139,15 @@ export default {
                   "startDate": events.isoStart,
                   "finalDate": events.isoEnd,
                   "responsable": this.finish.responsable,
+<<<<<<< HEAD
+                  "repeat": this.finish.selected,
+                  "status":"Pendente"
+=======
                   "repeat": this.finish.repeat,
                   "status":"pendent"
+>>>>>>> master
               }
+              console.log(event)
               postEvent(event)
       }
       finish()
@@ -176,20 +155,20 @@ export default {
       },
   },
   watch: {
-    "nstep": function() {
-        this.disabled = true
+    // "nstep": function() {
+    //     this.disabled = true
 
-    },
-    "steptwo": function(){
-        if(this.steptwo){
-             this.disabled = false
-        }
-    },
-    "finish": function(){
-        if(this.finish){
-             this.disabled = false
-        }
-    }
+    // },
+    // "steptwo": function(){
+    //     if(this.steptwo){
+    //          this.disabled = false
+    //     }
+    // },
+    // "finish": function(){
+    //     if(this.finish){
+    //          this.disabled = false
+    //     }
+    // }
   }
 };
 </script>

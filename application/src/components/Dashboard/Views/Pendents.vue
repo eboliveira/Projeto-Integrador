@@ -85,8 +85,8 @@
       </b-container>
       <div slot="modal-footer" class="w-100">
         <b-btn v-if="$user.get().role == 'admin'" size="md" class="float-right" variant="danger" @click="show=false" :disabled="showCancel">Cancelar reserva</b-btn>
-        <b-btn v-if="$user.get().role != 'admin'" size="md" class="float-left" variant="primary" @click="cancel()">Sim, cancelar minha reserva</b-btn>
-        <b-btn v-if="$user.get().role != 'admin'" size="md" class="float-right" variant="primary" @click="$refs.cancel_modal.hide()">Não, manter minha reserva
+        <b-btn v-if="$user.get().role != 'admin'" size="md" class="float-left" variant="warning" @click="cancel()">Sim, cancelar minha reserva</b-btn>
+        <b-btn v-if="$user.get().role != 'admin'" size="md" class="float-right" variant="danger" @click="$refs.cancel_modal.hide()">Não, manter minha reserva
         </b-btn>
       </div>
     </b-modal>
