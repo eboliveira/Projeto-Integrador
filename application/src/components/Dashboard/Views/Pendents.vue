@@ -74,7 +74,7 @@
         </b-row>
       </b-container>
     </b-modal>
-    <b-modal header-bg-variant="danger" header-text-variant="light" ok-title="Fechar" id="modalReason" title="Rejeitar reserva" @ok="handleRefuse(refuseReason)" :ok-disabled="isReasonEmpty()" ref="cancel_modal">
+    <b-modal header-bg-variant="danger" header-text-variant="light" id="modalReason" title="Rejeitar reserva" ref="cancel_modal" @hidden="refuseReason=null">
       <b-container fluid>
         <b-row>
             <h4 v-if="$user.get().role != 'admin'"><strong>Tem certeza que deseja cancelar sua reserva?</strong></h4>
@@ -84,7 +84,7 @@
         </b-row>
       </b-container>
       <div slot="modal-footer" class="w-100">
-        <b-btn v-if="$user.get().role == 'admin'" size="md" class="float-right" variant="danger" @click="show=false">Cancelar reserva</b-btn>
+        <b-btn v-if="$user.get().role == 'admin'" size="md" class="float-right" variant="danger" @click="show=false" :disabled="showCancel">Cancelar reserva</b-btn>
         <b-btn v-if="$user.get().role != 'admin'" size="md" class="float-left" variant="primary" @click="cancel()">Sim, cancelar minha reserva</b-btn>
         <b-btn v-if="$user.get().role != 'admin'" size="md" class="float-right" variant="primary" @click="$refs.cancel_modal.hide()">Não, manter minha reserva
         </b-btn>
@@ -114,6 +114,19 @@
                     
                 })
             },
+            cancelWithReason(){
+                this.handleChangeStatus(this.clickedItem, 'refused').then(() => {
+                    this.$noty.success("Reserva cancelada com sucesso!");
+                    this.$refs.cancel_modal.hide()
+                    this.refuseReason = null
+                }).catch((err) => {
+                    this.$noty.error("Um erro inesperado ocorreu.<br>Por favor, tente novamente mais tarde");
+                    this.$refs.cancel_modal.hide()
+                    console.log(err)
+                    this.refuseReason = null
+                    
+                })
+            },
             showModal(item ,button){
                 this.allItems.forEach(iterator => {
                     if(item.room==iterator.room){
@@ -136,9 +149,9 @@
                 this.handleChangeStatus(item, 'confirmed');
                 this.sendEmailConfirm(item)
             },
-            handleRefuse(reason){
+            handleRefuse(){
                 this.handleChangeStatus(this.clickedItem, 'refused')
-                this.sendEmailRefuse(reason)
+                this.sendEmailRefuse()
             },
             handleChangeStatus(item, status){
                 const i = this.findItem(item);
@@ -148,7 +161,7 @@
             showModalReason(item){
                 this.$root.$emit('bv::show::modal','modalReason')
                 this.clickedItem = item
-                this.refuseReason=''
+                this.refuseReason
             },
             findItem(item){
                 var i;
@@ -162,20 +175,11 @@
             sendEmailConfirm(item){
                 console.log(item)
             },
-            sendEmailRefuse(refuseReason, item){
-                console.log(refuseReason)
+            sendEmailRefuse(){
+                console.log(this.refuseReason)
             },
             isReasonEmpty(){
-                if(this.refuseReason == ''){
-                    return true
-                }
-                return false
-            },
-            sendEmailRefuse(refuseReason, item){
-                console.log(refuseReason)
-            },
-            isReasonEmpty(){
-                if(this.refuseReason == ''){
+                if(!this.refuseReason){
                     return true
                 }
                 return false
@@ -196,6 +200,15 @@
                 else{
                     this.modal_repeat = "Sem repetição"
                 }
+            }
+        },
+        watch: {
+            "refuseReason": function() {
+                if (this.refuseReason) {
+                    this.showCancel = false
+                    return;
+                }
+                this.showCancel = true
             }
         },
         created:function(){
@@ -221,7 +234,8 @@
                 allItems:[],
                 clickedItem:{},
                 filter: "",
-                refuseReason:"",
+                refuseReason:null,
+                showCancel: true,
                 modal_room:"",
                 modal_title:"",
                 modal_description:"",
